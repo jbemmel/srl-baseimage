@@ -28,10 +28,10 @@ RUN sudo sed -i.orig 's/(ancestor_keys=False, print_on_data=True)/(ancestor_keys
 # Fix 4-byte ASN private range to allow target:4200000000:12345
 RUN cd /opt/srlinux/models/srl_nokia/models/ && sudo sed -i.orig 's/4\[0-1\]\[0-9\]{7}/4[0-2][0-9]{}/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang
 
-# Use global authorized_keys file
-RUN sudo sed -i.orig 's|.ssh/authorized_keys|/authorized_keys|g' /etc/ssh/sshd_config
+# Add global authorized_keys file
+RUN sudo sed -i.orig 's|.ssh/authorized_keys|.ssh/authorized_keys /etc/ssh/authorized_keys|g' /etc/ssh/sshd_config
 # This file must be owned by root:root with 644 permissions
-COPY ./authorized_keys /authorized_keys
+COPY ./authorized_keys /etc/ssh/authorized_keys
 
 # Using a build arg to set the release tag, set a default for running docker build manually
 ARG SRL_CUSTOMBASE_RELEASE="[custom build]"
