@@ -11,7 +11,7 @@ override SR_LINUX_RELEASE="latest"
 endif
 
 build:
-	cd .. && sudo docker build --build-arg SRL_CUSTOMBASE_RELEASE=${TAG} --build-arg http_proxy=${HTTP_PROXY} --build-arg https_proxy=${HTTP_PROXY} \
+	sudo docker build --build-arg SRL_CUSTOMBASE_RELEASE=${TAG} --build-arg http_proxy=${HTTP_PROXY} --build-arg https_proxy=${HTTP_PROXY} \
 	                           --build-arg SR_LINUX_RELEASE="${SR_LINUX_RELEASE}" \
 	                           -f ./Dockerfile -t ${IMG} .
 	sudo docker tag ${IMG} ${LATEST}

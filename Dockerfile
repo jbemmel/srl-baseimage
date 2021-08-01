@@ -26,7 +26,7 @@ RUN sudo sed -i 's/(ancestor_keys=False, print_on_data=True)/(ancestor_keys=Fals
     /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_evpn*_routes_report.py
 
 # Fix 4-byte ASN private range to allow target:4200000000:12345
-RUN cd /opt/srlinux/srl_nokia/models/ && sudo sed -i 's/4[0-1]/4[0-2]/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang
+RUN cd /opt/srlinux/models/srl_nokia/models/ && sudo sed -i 's/4[0-1]/4[0-2]/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang
 
 # Using a build arg to set the release tag, set a default for running docker build manually
 ARG SRL_CUSTOMBASE_RELEASE="[custom build]"
