@@ -1,0 +1,4 @@
+#
+# This file gets copied to /etc/ssh/authorized_keys in the custom base image
+#
+# Add any public keys (like ~/.ssh/id_rsa.pub) to this file to get passwordless access to all user accounts in the SR Linux image
