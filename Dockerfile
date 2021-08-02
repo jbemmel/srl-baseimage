@@ -26,7 +26,7 @@ RUN sudo sed -i.orig 's/(ancestor_keys=False, print_on_data=True)/(ancestor_keys
     /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_evpn*_routes_report.py
 
 # Fix 4-byte ASN private range to allow target:4200000000:12345
-RUN cd /opt/srlinux/models/srl_nokia/models/ && sudo sed -i.orig 's/4\[0-1\]\[0-9\]{7}/4[0-2][0-9]{}/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang
+RUN cd /opt/srlinux/models/srl_nokia/models/ && sudo sed -i.orig 's/4\[0-1\]\[0-9\]{7}/4[0-2][0-9]{8}/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang
 
 # Add global authorized_keys file
 RUN sudo sed -i.orig 's|.ssh/authorized_keys|.ssh/authorized_keys /etc/ssh/authorized_keys|g' /etc/ssh/sshd_config
