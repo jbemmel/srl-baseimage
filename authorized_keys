@@ -1,4 +1,1 @@
-#
-# This file gets copied to /etc/ssh/authorized_keys in the custom base image
-#
-# Add any public keys (like ~/.ssh/id_rsa.pub) to this file to get passwordless access to all user accounts in the SR Linux image
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsh+wXxa27lhD8he9GE+AgAzvSXRGE7zN/eNX5B9Hc2QOK3yXL+Q9q0Habg2bP8Pnmr5fhONLtECC41naAwD5GpBuFNlixgoVi0DCT5+uo+6YnuNmVlz8c0H39Wv2XRqPQ1b63VuZl5a+FBVvrhUT0Nhy59iQeeVnUjR9fEkmnjtLf9P/GrhVcHKl1mUmBzWGhIRfHEt9OtLSwm/COHGvwdeRsi2YqIxYwrhrkfVimxeYcah/tGDIDREReXFV7F3dN8ww7qVItqEsvu1POZwu7EfXsn5+9ei692yVYa2xjiR43eTxc0bYlnsXNjzAe8uug2LK/OrHGBUY7ivkIpUNidSxIe1nefUhhYu1A2ddITdGv49K+ylJjjEbhughC3c6m42g7Vj5MEiO9p2U1nLy1w+7C8Vqd4M7XssKJnAvvCECDCFhr+4HrZUvppKEdXrE7H6QcA0Wl0ZALu4vlwTnNYYkLeZkI8eCROWpQHV963VKYgJxQhFYiVej/YAykao8= jeroen@bembox

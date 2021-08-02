@@ -31,7 +31,7 @@ RUN cd /opt/srlinux/models/srl_nokia/models/ && sudo sed -i.orig 's/4\[0-1\]\[0-
 # Add global authorized_keys file
 RUN sudo sed -i.orig 's|.ssh/authorized_keys|.ssh/authorized_keys /etc/ssh/authorized_keys|g' /etc/ssh/sshd_config
 # This file must be owned by root:root with 644 permissions
-COPY ./authorized_keys /etc/ssh/authorized_keys
+COPY --chmod=0644 ./authorized_keys /etc/ssh/authorized_keys
 
 # Using a build arg to set the release tag, set a default for running docker build manually
 ARG SRL_CUSTOMBASE_RELEASE="[custom build]"
