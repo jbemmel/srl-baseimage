@@ -179,10 +179,11 @@ class CommandLoop(object):
              self._output.print_warning_line( f'root={_root} leaf={_leaf} -> {_result} type={type(_result)}' )
           else:
              self._output.print_warning_line( f'Process ENV var={_path_parts[0]}' )
-             # If a value is defined, set it
-             if len(_expr_eval)>1:
-                 self._output.print_warning_line( f'Set ENV {_path_parts[0]}={_expr_eval[1]}' )
-                 self._env[ _path_parts[0] ] = _expr_eval[1]
+             # Check for assignment
+             _assign = _path_parts[0].split('=')
+             if len(_assign)>1:
+                 self._output.print_warning_line( f'Set ENV {_assign[0]}={_assign[1]}' )
+                 self._env[ _assign[0] ] = _assign[1]
                  return ""
              elif _path_parts[0] in self._env:
                  _result = self._env[ _path_parts[0] ]
