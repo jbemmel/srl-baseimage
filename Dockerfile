@@ -3,15 +3,6 @@ FROM ghcr.io/nokia/srlinux:$SR_LINUX_RELEASE
 
 RUN sudo curl -sL https://github.com/karimra/gnmic/releases/download/v0.17.1/gnmic_0.17.1_Linux_x86_64.rpm -o /tmp/gnmic.rpm && sudo yum localinstall -y /tmp/gnmic.rpm
 
-RUN printf '%s\n' \
-  '#!/bin/bash' \
-  '' \
-  'mkdir -p /etc/opt/srlinux/appmgr && cp /home/appmgr/* /etc/opt/srlinux/appmgr/' \
-  'exit $?' \
-  \
-> /tmp/42.sh && sudo mv /tmp/42.sh /opt/srlinux/bin/bootscript/42_sr_copy_custom_appmgr.sh && \
-  sudo chmod a+x /opt/srlinux/bin/bootscript/42_sr_copy_custom_appmgr.sh
-
 # Install pyGNMI to /usr/local/lib[64]/python3.6/site-packages
 # RUN sudo yum-config-manager --disable ipdcentos ipdrepo ius && sudo yum clean all
 RUN sudo yum install -y python3-pip gcc-c++ && \
