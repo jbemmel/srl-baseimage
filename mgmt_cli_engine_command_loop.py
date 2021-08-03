@@ -178,17 +178,20 @@ class CommandLoop(object):
                 _result = "" # For non-existent objects, resolve to empty string
              self._output.print_warning_line( f'root={_root} leaf={_leaf} -> {_result} type={type(_result)}' )
           else:
-             self._output.print_warning_line( f'Process ENV var={_path_parts[0]}' )
+             _var = _path_parts[0]
+             self._output.print_warning_line( f'Process ENV var={_var}' )
              # Check for assignment
-             _assign = _path_parts[0].split('=')
+             _assign = _var.split('=')
              if len(_assign)>1:
                  self._output.print_warning_line( f'Set ENV {_assign[0]}={_assign[1]}' )
                  self._env[ _assign[0] ] = _assign[1]
                  return ""
-             elif _path_parts[0] in self._env:
-                 _result = self._env[ _path_parts[0] ]
+             elif _var in self._env:
+                 _result = self._env[ _var ]
+             elif _var in os.environ:
+                 _result = os.environ[ _var ]
              else:
-                 _result = os.environ[ _path_parts[0] ]
+                 _result = ""
 
           if len(_expr_eval) > 1:
               # Make result available as '_' in locals, and ipaddress
