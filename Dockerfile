@@ -1,13 +1,18 @@
 ARG SR_LINUX_RELEASE
 FROM ghcr.io/nokia/srlinux:$SR_LINUX_RELEASE
 
+ARG P1="/usr/local/lib/python3.6/site-packages:/usr/local/lib64/python3.6/site-packages"
+ARG P2="/opt/rh/rh-python36/root/usr/lib/python3.6/site-packages/sdk_protos"
+ARG P3="/usr/lib/python3.6/site-packages/sdk_protos"
+ENV AGENT_PYTHONPATH="$P1:$P2:$P3"
+
 RUN sudo curl -sL https://github.com/karimra/gnmic/releases/download/v0.17.1/gnmic_0.17.1_Linux_x86_64.rpm -o /tmp/gnmic.rpm && sudo yum localinstall -y /tmp/gnmic.rpm
 
 # Install pyGNMI to /usr/local/lib[64]/python3.6/site-packages
 # RUN sudo yum-config-manager --disable ipdcentos ipdrepo ius && sudo yum clean all
-RUN sudo yum install -y python3-pip gcc-c++ && \
+RUN sudo yum install -y python3-pip gcc-c++ pylint && \
     sudo python3 -m pip install pip --upgrade && \
-    sudo python3 -m pip install pygnmi
+    sudo python3 -m pip install pygnmi pylint-protobuf
 
 # Add CLI enhancements
 COPY ./mgmt_cli_engine_command_loop.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli_engine/command_loop.py
