@@ -20,7 +20,7 @@ COPY ./mgmt_cli_engine_command_loop.py /opt/srlinux/python/virtual-env/lib/pytho
 # Define custom aliases for admin user
 RUN sudo mkdir -p /home/admin && printf '%s\n' \
   '[alias]' \
-  'containerlab save = "save file /etc/opt/srlinux/config.json /"' \
+  '"containerlab save" = "save file /etc/opt/srlinux/config.json /"' \
   \
 > /home/admin/.srlinuxrc
 
