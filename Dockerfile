@@ -17,6 +17,13 @@ RUN sudo yum install -y python3-pip gcc-c++ pylint && \
 # Add CLI enhancements
 COPY ./mgmt_cli_engine_command_loop.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli_engine/command_loop.py
 
+# Define custom aliases for admin user
+RUN sudo mkdir -p /home/admin && printf '%s\n' \
+  '[alias]' \
+  'containerlab save = "save file /etc/opt/srlinux/config.json /"' \
+  \
+> /home/admin/.srlinuxrc
+
 # Apply IPv6 column width fixes
 RUN sudo sed -i.orig 's/(ancestor_keys=False, print_on_data=True)/(ancestor_keys=False,print_on_data=True,widths=[28])/g' \
     /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_evpn*_routes_report.py
