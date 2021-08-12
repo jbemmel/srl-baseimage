@@ -184,6 +184,7 @@ class CommandLoop(object):
              _assign = _var.split('=')
              if len(_assign)>1:
                  self._output.print_warning_line( f'Set ENV {_assign[0]}={_assign[1]}' )
+                 # TODO could support lookup of state or config here, plus eval()
                  self._env[ _assign[0] ] = _assign[1]
                  return ""
              elif _var in self._env:
