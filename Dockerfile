@@ -15,7 +15,7 @@ RUN sudo yum install -y python3-pip gcc-c++ jq pylint && \
     sudo python3 -m pip install pygnmi pylint-protobuf
 
 # Fix gNMI path key order until patch is accepted
-RUN sudo sed -i.orig 's/path_elem.key.items()/sorted(path_elem.key.items())/g' /usr/local/lib/python3.6/site-packages/pygnmi/client.py
+# RUN sudo sed -i.orig 's/path_elem.key.items()/sorted(path_elem.key.items())/g' /usr/local/lib/python3.6/site-packages/pygnmi/client.py
 
 # Add CLI enhancements
 COPY ./mgmt_cli_engine_command_loop.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli_engine/command_loop.py
