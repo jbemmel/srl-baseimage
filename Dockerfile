@@ -35,7 +35,7 @@ RUN sudo sed -i.orig 's/(ancestor_keys=False, print_on_data=True)/(ancestor_keys
 # up to 4294967295
 # Preserve order of communities
 RUN cd /opt/srlinux/models/srl_nokia/models/ && \
-    sudo sed -i.orig 's/4\[0-1\]\[0-9\]{7}/42[0-8][0-9]{7}|4[0-1][0-9]{8}/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang &&
+    sudo sed -i.orig 's/4\[0-1\]\[0-9\]{7}/42[0-8][0-9]{7}|4[0-1][0-9]{8}/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang && \
     sudo sed -i.orig 's/leaf-list member {/leaf-list member { ordered-by user;/g' routing-policy/srl_nokia-routing-policy.yang
 
 
