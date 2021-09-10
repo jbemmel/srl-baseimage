@@ -33,8 +33,12 @@ RUN sudo sed -i.orig 's/(ancestor_keys=False, print_on_data=True)/(ancestor_keys
 
 # Fix 4-byte ASN private range to allow target:4200000000:12345
 # up to 4294967295
+# Preserve order of communities
 RUN cd /opt/srlinux/models/srl_nokia/models/ && \
-    sudo sed -i.orig 's/4\[0-1\]\[0-9\]{7}/42[0-8][0-9]{7}|4[0-1][0-9]{8}/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang
+    sudo sed -i.orig 's/4\[0-1\]\[0-9\]{7}/42[0-8][0-9]{7}|4[0-1][0-9]{8}/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang &&
+    sudo sed -i.orig 's/leaf-list member {/leaf-list member { ordered-by user;/g' routing-policy/srl_nokia-routing-policy.yang
+
+
 
 # Add global authorized_keys file
 RUN sudo sed -i.orig 's|.ssh/authorized_keys|.ssh/authorized_keys /etc/ssh/authorized_keys|g' /etc/ssh/sshd_config
