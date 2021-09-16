@@ -134,6 +134,19 @@ class CommandLoop(object):
 
         def _lookup(match): # match looks like ${/path/x}
           _m = match[2:-1]  # Strip '${' and '}'
+
+          # First check for NAME=VALUE env variable assignments
+          env_var = re.match( _m, "^([a-zA-Z0-9_]+)=(.*)$" )
+          if env_var:
+              _g = env_var.groups()
+              if len(_g) == 2:
+                self._output.print_warning_line( f'Set ENV {_g[0]}="{_g[1]}"' )
+                # TODO could support lookup of state or config here, plus eval()
+                self._env[ _g[0] ] = _g[1] # Could delete if empty
+              else:
+                self._output.print_warning_line( f'Group(s) mismatch? {_g}' )  
+              return ""
+
           _expr_eval = _m.split('|') # Support ${path|eval}, todo escaping
           _path_parts = _expr_eval[0].split('/')
 
@@ -180,14 +193,7 @@ class CommandLoop(object):
           else:
              _var = _path_parts[0]
              self._output.print_warning_line( f'Process ENV var={_var}' )
-             # Check for assignment
-             _assign = _var.split('=')
-             if len(_assign)>1:
-                 self._output.print_warning_line( f'Set ENV {_assign[0]}={_assign[1]}' )
-                 # TODO could support lookup of state or config here, plus eval()
-                 self._env[ _assign[0] ] = _assign[1]
-                 return ""
-             elif _var in self._env:
+             if _var in self._env:
                  _result = self._env[ _var ]
              elif _var in os.environ:
                  _result = os.environ[ _var ]
