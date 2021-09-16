@@ -136,7 +136,7 @@ class CommandLoop(object):
           _m = match[2:-1]  # Strip '${' and '}'
 
           # First check for NAME=VALUE env variable assignments
-          env_var = re.match( _m, "^([a-zA-Z0-9_]+)=(.*)$" )
+          env_var = re.match( "^([a-zA-Z0-9_]+)=(.*)$", _m )
           if env_var:
               _g = env_var.groups()
               if len(_g) == 2:
@@ -144,7 +144,7 @@ class CommandLoop(object):
                 # TODO could support lookup of state or config here, plus eval()
                 self._env[ _g[0] ] = _g[1] # Could delete if empty
               else:
-                self._output.print_warning_line( f'Group(s) mismatch? {_g}' )  
+                self._output.print_warning_line( f'Group(s) mismatch? {_g}' )
               return ""
 
           _expr_eval = _m.split('|') # Support ${path|eval}, todo escaping
