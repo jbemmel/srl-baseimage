@@ -208,7 +208,8 @@ class CommandLoop(object):
           else:
               return str( _result ) # leaf value, can be int or bool
 
-        return re.sub('\$\{(.*)\}', lambda m: _lookup(m.group()), line)
+        # Make match non-greedy such that "${VAR}....${VAR2}" works correctly
+        return re.sub('\$\{(.*?)\}', lambda m: _lookup(m.group()), line)
 
     def _process_line(self, line):
         get_global_state().operation_terminated = False
