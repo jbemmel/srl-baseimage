@@ -209,7 +209,10 @@ class CommandLoop(object):
               return str( _result ) # leaf value, can be int or bool
 
         # Make match non-greedy such that "${VAR}....${VAR2}" works correctly
-        return re.sub('\$\{(.*?)\}', lambda m: _lookup(m.group()), line)
+        # Support nested references ${v1=${v2}} using recursive while loop
+        while re.match( '\$\{([^$]*?)\}', line ):
+           line = re.sub('\$\{([^$]*?)\}', lambda m: _lookup(m.group()), line)
+        return line
 
     def _process_line(self, line):
         get_global_state().operation_terminated = False
