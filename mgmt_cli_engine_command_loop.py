@@ -210,7 +210,7 @@ class CommandLoop(object):
 
         # Make match non-greedy such that "${VAR}....${VAR2}" works correctly
         # Support nested references ${v1=${v2}} using recursive while loop
-        while re.match( '\$\{([^$]*?)\}', line ):
+        while re.search( '\$\{([^$]*?)\}', line ):
            line = re.sub('\$\{([^$]*?)\}', lambda m: _lookup(m.group()), line)
         return line
 
