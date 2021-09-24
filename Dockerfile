@@ -6,7 +6,7 @@ ARG P2="/opt/rh/rh-python36/root/usr/lib/python3.6/site-packages/sdk_protos"
 ARG P3="/usr/lib/python3.6/site-packages/sdk_protos"
 ENV AGENT_PYTHONPATH="$P1:$P2:$P3"
 
-RUN sudo curl -sL https://github.com/karimra/gnmic/releases/download/v0.17.1/gnmic_0.17.1_Linux_x86_64.rpm -o /tmp/gnmic.rpm && sudo yum localinstall -y /tmp/gnmic.rpm
+RUN sudo curl -sL https://github.com/karimra/gnmic/releases/download/v0.19.0/gnmic_0.19.0_Linux_x86_64.rpm -o /tmp/gnmic.rpm && sudo yum localinstall -y /tmp/gnmic.rpm
 
 # Install pyGNMI to /usr/local/lib[64]/python3.6/site-packages
 # RUN sudo yum-config-manager --disable ipdcentos ipdrepo ius && sudo yum clean all
@@ -37,8 +37,6 @@ RUN sudo sed -i.orig 's/(ancestor_keys=False, print_on_data=True)/(ancestor_keys
 RUN cd /opt/srlinux/models/srl_nokia/models/ && \
     sudo sed -i.orig 's/4\[0-1\]\[0-9\]{7}/42[0-8][0-9]{7}|4[0-1][0-9]{8}/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang && \
     sudo sed -i.orig 's/leaf-list member {/leaf-list member { ordered-by user;/g' routing-policy/srl_nokia-routing-policy.yang
-
-
 
 # Add global authorized_keys file
 RUN sudo sed -i.orig 's|.ssh/authorized_keys|.ssh/authorized_keys /etc/ssh/authorized_keys|g' /etc/ssh/sshd_config
