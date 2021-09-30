@@ -1,2 +1,2 @@
 # Put your public SSH keys here, e.g. 
-# cp ~/.ssh/id_rsa.pub >> authorized_keys
+# cat ~/.ssh/id_rsa.pub >> authorized_keys
