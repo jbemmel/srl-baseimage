@@ -4,7 +4,8 @@ FROM ghcr.io/nokia/srlinux:$SR_LINUX_RELEASE
 ARG P1="/usr/local/lib/python3.6/site-packages:/usr/local/lib64/python3.6/site-packages"
 ARG P2="/opt/rh/rh-python36/root/usr/lib/python3.6/site-packages/sdk_protos"
 ARG P3="/usr/lib/python3.6/site-packages/sdk_protos"
-ENV AGENT_PYTHONPATH="$P1:$P2:$P3"
+ARG P4="/opt/srlinux/python/virtual-env/lib/python3.6/site-packages"
+ENV AGENT_PYTHONPATH="$P1:$P2:$P3:$P4"
 
 RUN sudo curl -sL https://github.com/karimra/gnmic/releases/download/v0.19.0/gnmic_0.19.0_Linux_x86_64.rpm -o /tmp/gnmic.rpm && sudo yum localinstall -y /tmp/gnmic.rpm
 
