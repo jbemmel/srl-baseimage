@@ -11,7 +11,7 @@ override SR_LINUX_RELEASE="latest"
 endif
 
 build:
-	[[ -f ~/.ssh/id_rsa.pub && ! -f ./authorized_keys ]] && cat ~/.ssh/id_rsa.pub > authorized_keys
+	test -f ~/.ssh/id_rsa.pub && ! test -f ./authorized_keys && cat ~/.ssh/id_rsa.pub > authorized_keys
 	sudo DOCKER_BUILDKIT=1 docker build --build-arg SRL_CUSTOMBASE_RELEASE=${TAG} \
 	   --build-arg http_proxy=${HTTP_PROXY} --build-arg https_proxy=${HTTP_PROXY} \
 	   --build-arg SR_LINUX_RELEASE="${SR_LINUX_RELEASE}" \
