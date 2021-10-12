@@ -13,7 +13,7 @@ RUN sudo curl -sL https://github.com/karimra/gnmic/releases/download/v0.19.0/gnm
 # RUN sudo yum-config-manager --disable ipdcentos ipdrepo ius && sudo yum clean all
 RUN sudo yum install -y python3-pip gcc-c++ jq pylint && \
     sudo python3 -m pip install pip --upgrade && \
-    sudo python3 -m pip install pygnmi pylint-protobuf
+    sudo python3 -m pip install pygnmi pylint-protobuf sre_yield
 
 # Fix gNMI path key order until patch is accepted
 # RUN sudo sed -i.orig 's/path_elem.key.items()/sorted(path_elem.key.items())/g' /usr/local/lib/python3.6/site-packages/pygnmi/client.py
