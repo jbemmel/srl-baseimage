@@ -48,7 +48,10 @@ RUN sudo sed -i.orig 's|.ssh/authorized_keys|.ssh/authorized_keys /etc/ssh/autho
 COPY --chmod=0644 ./authorized_keys /etc/ssh/authorized_keys
 
 # Reduce per-client ICMP error rate limit from 1000ms to 100ms
-# RUN echo "net.ipv4.icmp_ratelimit=100" | sudo tee -a /etc/sysctl.d/95-net.ipv4.icmp_ratelimit_100ms.conf
+# RUN echo "net.ipv4.icmp_ratelimit=100" | sudo tee -a /etc/sysctl.conf
+
+# Exclude TTL=0 errors from ICMP rate limiting
+RUN echo "net.ipv4.icmp_ratemask=4120" | sudo tee -a /etc/sysctl.conf
 
 # Using a build arg to set the release tag, set a default for running docker build manually
 ARG SRL_CUSTOMBASE_RELEASE="[custom build]"
