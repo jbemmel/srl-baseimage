@@ -51,9 +51,6 @@ COPY --chmod=0644 ./authorized_keys /etc/ssh/authorized_keys
 # Does not work
 # RUN echo "net.ipv4.icmp_ratelimit=100" | sudo tee -a /etc/sysctl.conf
 
-# Exclude TTL=0 errors from ICMP rate limiting
-COPY 50_jvb_disable_icmp_ttl0_rate_limit.sh /opt/srlinux/bin/bootscript/
-
 # Using a build arg to set the release tag, set a default for running docker build manually
 ARG SRL_CUSTOMBASE_RELEASE="[custom build]"
 ENV SRL_CUSTOMBASE_RELEASE=$SRL_CUSTOMBASE_RELEASE
