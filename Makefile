@@ -30,5 +30,4 @@ Host *
 	UserKnownHostsFile /dev/null
 endef
 ssh_config:
-	test -f ~/.ssh/config || \
-	 (echo $(default_ssh_config) > ~/.ssh/config && chmod 400 ~/.ssh/config)
+	test -f ~/.ssh/config || (echo $(default_ssh_config) > ~/.ssh/config && chmod 400 ~/.ssh/config)
