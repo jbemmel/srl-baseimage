@@ -1,3 +1,5 @@
+SHELL = bash
+
 NAME        := srl/custombase
 LAST_COMMIT := $(shell sh -c "git log -1 --pretty=%h")
 TODAY       := $(shell sh -c "date +%Y%m%d_%H%M")
@@ -10,7 +12,7 @@ ifndef SR_LINUX_RELEASE
 override SR_LINUX_RELEASE="latest"
 endif
 
-build: authorized_keys
+build: authorized_keys ssh_config
 	sudo DOCKER_BUILDKIT=1 docker build --build-arg SRL_CUSTOMBASE_RELEASE=${TAG} \
 	   --build-arg http_proxy=${HTTP_PROXY} --build-arg https_proxy=${HTTP_PROXY} \
 	   --build-arg SR_LINUX_RELEASE="${SR_LINUX_RELEASE}" \
@@ -21,3 +23,12 @@ authorized_keys:
 	# Generate new SSH host key if not existing
 	test -f ~/.ssh/id_rsa || ssh-keygen -h -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
 	cat ~/.ssh/id_rsa.pub > authorized_keys
+
+.ONESHELL:  # To make heredoc work
+ssh_config:
+	test -f ~/.ssh/config || cat <<- EOF > ~/.ssh/config
+	Host *
+		StrictHostKeyChecking no
+		UserKnownHostsFile /dev/null
+	EOF
+	chmod 400 ~/.ssh/config
