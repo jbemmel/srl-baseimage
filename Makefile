@@ -28,7 +28,7 @@ authorized_keys:
 ssh_config:
 	test -f ~/.ssh/config || cat <<- EOF > ~/.ssh/config
 	Host *
-		StrictHostKeyChecking no
-		UserKnownHostsFile /dev/null
+	  StrictHostKeyChecking no
+	  UserKnownHostsFile /dev/null
 	EOF
 	chmod 400 ~/.ssh/config
