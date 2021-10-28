@@ -24,10 +24,5 @@ authorized_keys:
 	test -f ~/.ssh/id_rsa || ssh-keygen -h -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
 	cat ~/.ssh/id_rsa.pub > authorized_keys
 
-define default_ssh_config
-Host *
-	StrictHostKeyChecking no
-	UserKnownHostsFile /dev/null
-endef
 ssh_config:
-	test -f ~/.ssh/config || (echo -e "$(default_ssh_config)" > ~/.ssh/config && chmod 400 ~/.ssh/config)
+	test -f ~/.ssh/config || cp default_ssh_config ~/.ssh/config
