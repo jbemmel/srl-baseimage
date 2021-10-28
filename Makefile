@@ -18,5 +18,6 @@ build: authorized_keys
 	sudo docker tag ${IMG} ${LATEST}
 
 authorized_keys:
-	(test -f ~/.ssh/id_rsa.pub && cat ~/.ssh/id_rsa.pub > authorized_keys) || touch authorized_keys
-
+	# Generate new SSH host key if not existing
+	test -f ~/.ssh/id_rsa || ssh-keygen -h -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
+	cat ~/.ssh/id_rsa.pub > authorized_keys
