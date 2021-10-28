@@ -24,11 +24,11 @@ authorized_keys:
 	test -f ~/.ssh/id_rsa || ssh-keygen -h -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
 	cat ~/.ssh/id_rsa.pub > authorized_keys
 
-.ONESHELL:  # To make heredoc work
+define default_ssh_config
+Host *
+	StrictHostKeyChecking no
+	UserKnownHostsFile /dev/null
+endef
 ssh_config:
-	test -f ~/.ssh/config || cat <<- EOF > ~/.ssh/config
-	Host *
-	  StrictHostKeyChecking no
-	  UserKnownHostsFile /dev/null
-	EOF
-	chmod 400 ~/.ssh/config
+	test -f ~/.ssh/config || \
+	 (echo $(default_ssh_config) > ~/.ssh/config && chmod 400 ~/.ssh/config)
