@@ -21,10 +21,11 @@ RUN sudo yum install -y python3-pip gcc-c++ jq pylint && \
 # Add CLI enhancements
 COPY ./mgmt_cli_engine_command_loop.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli_engine/command_loop.py
 
-# Define custom aliases for admin user
+# Define custom aliases for admin user, including Cisco style show CLI
 RUN sudo mkdir -p /home/admin && printf '%s\n' \
   '[alias]' \
   '"containerlab save" = "save file /etc/opt/srlinux/config.json /"' \
+  '"sh int {int}" = "show /interface"' \
   \
 > /home/admin/.srlinuxrc
 
