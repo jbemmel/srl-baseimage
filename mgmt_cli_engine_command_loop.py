@@ -25,8 +25,8 @@ import traceback
 import re
 import os
 from srlinux.location import build_path
-from srlinux.data import utilities
 from srlinux.schema.data_store import DataStore
+from srlinux.strings import sanitize_name # Moved here in 21.6.3
 
 # For use with eval
 import ipaddress
@@ -186,7 +186,7 @@ class CommandLoop(object):
                             _result = _kv[1]
                             break
              elif _node is not None:
-                _result = getattr(_node,utilities.sanitize_name( _leaf ))
+                _result = getattr(_node,sanitize_name( _leaf ))
              else:
                 _result = "" # For non-existent objects, resolve to empty string
              self._output.print_warning_line( f'root={_root} leaf={_leaf} -> {_result} type={type(_result)}' )
