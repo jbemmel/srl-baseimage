@@ -17,7 +17,7 @@ build: authorized_keys ssh_config
 	   --build-arg http_proxy=${HTTP_PROXY} --build-arg https_proxy=${HTTP_PROXY} \
 	   --build-arg SR_LINUX_RELEASE="${SR_LINUX_RELEASE}" \
 	   -f ./Dockerfile -t ${IMG} .
-	sudo docker tag ${IMG} ${LATEST}
+	sudo docker tag ${IMG} ${LATEST} ${NAME}:${SR_LINUX_RELEASE}
 
 authorized_keys:
 	# Generate new SSH host key if not existing
