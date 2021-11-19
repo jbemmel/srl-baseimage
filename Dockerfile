@@ -11,7 +11,7 @@ RUN sudo curl -sL https://github.com/karimra/gnmic/releases/download/v0.20.4/gnm
 
 # Install pyGNMI to /usr/local/lib[64]/python3.6/site-packages
 # RUN sudo yum-config-manager --disable ipdcentos ipdrepo ius && sudo yum clean all
-RUN sudo yum install -y python3-pip gcc-c++ jq pylint && \
+RUN sudo yum install -y python3-pip gcc-c++ jq pylint diffutils && \
     sudo python3 -m pip install pip --upgrade && \
     sudo python3 -m pip install --force-reinstall --no-deps grpcio && \
     sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install pygnmi pylint-protobuf sre_yield
