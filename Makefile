@@ -8,7 +8,7 @@ IMG         := ${NAME}:${TAG}
 # HTTP_PROXY  := "http://proxy.server.com:8000"
 
 ifndef SR_LINUX_RELEASE
-override SR_LINUX_RELEASE="latest"
+override SR_LINUX_RELEASE=latest
 endif
 
 build: authorized_keys ssh_config
