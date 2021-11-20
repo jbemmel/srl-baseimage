@@ -38,6 +38,11 @@ RUN sudo sed -i.orig 's/(ancestor_keys=False, print_on_data=True)/(ancestor_keys
 RUN sudo sed -i.orig 's/borders=None/borders=None,widths={"Ip Address":15}/g' \
     /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/isis_adjacency_report.py
 
+# Reduce route summary column widths to have more for IP addresses
+RUN sudo sed -i.orig "s/'Tag ID' : 10,/'Tag ID' : 10,'VNI':8,'neighbor':10,/g" \
+    /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_evpn_reports.py
+
+
 # Fix 4-byte ASN private range to allow target:4200000000:12345
 # up to 4294967295
 # Preserve order of communities
