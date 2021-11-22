@@ -8,7 +8,7 @@ ARG P4="/opt/srlinux/python/virtual-env/lib/python3.6/site-packages"
 ENV AGENT_PYTHONPATH="$P1:$P2:$P3:$P4"
 
 RUN sudo curl -sL https://github.com/karimra/gnmic/releases/download/v0.20.4/gnmic_0.20.4_Linux_x86_64.rpm -o /tmp/gnmic.rpm && \
-    sudo yum localinstall -y /tmp/gnmic.rpm && rm -f /tmp/gnmic.rpm
+    sudo yum localinstall -y /tmp/gnmic.rpm && sudo rm -f /tmp/gnmic.rpm
 
 # Install pyGNMI to /usr/local/lib[64]/python3.6/site-packages
 # RUN sudo yum-config-manager --disable ipdcentos ipdrepo ius && sudo yum clean all
