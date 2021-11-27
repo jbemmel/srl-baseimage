@@ -26,7 +26,12 @@ import re
 import os
 from srlinux.location import build_path
 from srlinux.schema.data_store import DataStore
-from srlinux.strings import sanitize_name # Moved here in 21.6.3
+
+try:
+   from srlinux.strings import sanitize_name # Moved here in 21.6.3
+except ImportError:
+   from srlinux.data import utilities
+   sanitize_name = utilities.sanitize_name
 
 # For use with eval
 import ipaddress
