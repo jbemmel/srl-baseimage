@@ -12,10 +12,19 @@ RUN sudo curl -sL https://github.com/karimra/gnmic/releases/download/v0.20.4/gnm
 
 # Install pyGNMI to /usr/local/lib[64]/python3.6/site-packages
 # RUN sudo yum-config-manager --disable ipdcentos ipdrepo ius && sudo yum clean all
-RUN sudo yum install -y python3-pip gcc-c++ jq pylint diffutils && \
-    sudo python3 -m pip install pip --upgrade && \
-    sudo python3 -m pip install --force-reinstall --no-deps grpcio && \
-    sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install pygnmi pylint-protobuf sre_yield
+# RUN sudo yum install -y python3-pip gcc-c++ jq pylint diffutils && \
+#     sudo python3 -m pip install pip --upgrade && \
+#     sudo python3 -m pip install --force-reinstall --no-deps grpcio && \
+#     sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install pygnmi pylint-protobuf sre_yield
+
+# Install (only) some custom tools
+RUN sudo yum install -y jq pylint diffutils
+
+# Copy custom built pygnmi and dependencies, install into /usr/local. Need to upgrade pip
+COPY --from=pygnmi /tmp/wheels /tmp/wheels
+RUN sudo python3 -m pip install --upgrade pip && \
+    sudo python3 -m pip install --no-cache --no-index /tmp/wheels/* && \
+    sudo rm -rf /tmp/wheels
 
 # Fix gNMI path key order until patch is accepted
 # RUN sudo sed -i.orig 's/path_elem.key.items()/sorted(path_elem.key.items())/g' /usr/local/lib/python3.6/site-packages/pygnmi/client.py
