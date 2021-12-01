@@ -26,6 +26,9 @@ RUN sudo python3 -m pip install --upgrade pip && \
     sudo python3 -m pip install --no-cache --no-index /tmp/wheels/* && \
     sudo rm -rf /tmp/wheels
 
+# Add pylint and sre_yield as before
+RUN sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install pygnmi pylint-protobuf sre_yield
+
 # Fix gNMI path key order until patch is accepted
 # RUN sudo sed -i.orig 's/path_elem.key.items()/sorted(path_elem.key.items())/g' /usr/local/lib/python3.6/site-packages/pygnmi/client.py
 
