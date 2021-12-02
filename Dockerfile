@@ -63,6 +63,10 @@ RUN cd /opt/srlinux/models/srl_nokia/models/ && \
     sudo sed -i.orig 's/4\[0-1\]\[0-9\]{7}/42[0-8][0-9]{7}|4[0-1][0-9]{8}/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang && \
     sudo sed -i.orig 's/leaf-list member {/leaf-list member { ordered-by user;/g' routing-policy/srl_nokia-routing-policy.yang
 
+# Fix ESI sensitivity to capitalization
+RUN sudo sed -i.orig 's/esi=ethseg.esi/esi=ethseg.esi.lower()/g' \
+    /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/system_network_instance_reports.py
+
 # Make 'type' also a key for network instances? Doesn't work
 # sudo sed -i.orig 's/key "name";/key "name type";/' network-instance/srl_nokia-network-instance.yang
 
