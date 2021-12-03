@@ -55,6 +55,10 @@ RUN sudo sed -i.orig 's/borders=None/borders=None,widths={"Ip Address":15}/g' \
 RUN sudo sed -i.orig "s/'Tag ID' : 10,/'Tag ID':10,'Route-distinguisher':15,'VNI':8,'neighbor':10,'IP-address':39,/g" \
     /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_evpn_reports.py
 
+# Fix index column for MAC address all
+RUN sudo sed -i.orig 's/10,/11, # JvB increased/g' \
+    /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bridge_table_mac_table_report.py
+
 
 # Fix 4-byte ASN private range to allow target:4200000000:12345
 # up to 4294967295
