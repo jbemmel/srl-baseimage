@@ -62,10 +62,11 @@ RUN sudo sed -i.orig 's/10,/11, # JvB increased/g' \
 
 # Fix 4-byte ASN private range to allow target:4200000000:12345
 # up to 4294967295
-# Preserve order of communities
+# Preserve order of communities, disallow RD <ip>:0
 RUN cd /opt/srlinux/models/srl_nokia/models/ && \
     sudo sed -i.orig 's/4\[0-1\]\[0-9\]{7}/42[0-8][0-9]{7}|4[0-1][0-9]{8}/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang && \
-    sudo sed -i.orig 's/leaf-list member {/leaf-list member { ordered-by user;/g' routing-policy/srl_nokia-routing-policy.yang
+    sudo sed -i.orig 's/leaf-list member {/leaf-list member { ordered-by user;/g' routing-policy/srl_nokia-routing-policy.yang && \
+    sudo sed -i '0,/{1,3}|\[0-9\]);/s//{1,3}|\[1-9\]);/' common/srl_nokia-common.yang
 
 # Fix ESI sensitivity to capitalization
 RUN sudo sed -i.orig 's/esi=ethseg.esi/esi=ethseg.esi.lower()/g' \
