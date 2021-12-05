@@ -66,7 +66,7 @@ RUN sudo sed -i.orig 's/10,/11, # JvB increased/g' \
 RUN cd /opt/srlinux/models/srl_nokia/models/ && \
     sudo sed -i.orig 's/4\[0-1\]\[0-9\]{7}/42[0-8][0-9]{7}|4[0-1][0-9]{8}/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang && \
     sudo sed -i.orig 's/leaf-list member {/leaf-list member { ordered-by user;/g' routing-policy/srl_nokia-routing-policy.yang && \
-    sudo sed -i '0,/{1,3}|\[0-9\]);/s//{1,3}|\[1-9\]);/' common/srl_nokia-common.yang
+    sudo sed -i "0,/3}|\[0-9])';/s//3}|\[1-9\])'; \/\/ JvB disallow ip:0 RD/" common/srl_nokia-common.yang
 
 # Fix ESI sensitivity to capitalization
 RUN sudo sed -i.orig 's/esi=ethseg.esi/esi=ethseg.esi.lower()/g' \
