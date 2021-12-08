@@ -11,12 +11,16 @@ ifndef SR_LINUX_RELEASE
 override SR_LINUX_RELEASE=latest
 endif
 
-build: authorized_keys ssh_config
+build: authorized_keys ssh_config pygnmi
 	sudo DOCKER_BUILDKIT=1 docker build --build-arg SRL_CUSTOMBASE_RELEASE=${TAG} \
 	   --build-arg http_proxy=${HTTP_PROXY} --build-arg https_proxy=${HTTP_PROXY} \
 	   --build-arg SR_LINUX_RELEASE="${SR_LINUX_RELEASE}" \
 	   -f ./Dockerfile -t ${IMG} .
 	sudo docker tag ${IMG} ${NAME}:${SR_LINUX_RELEASE}
+
+pygnmi:
+	git clone https://github.com/jbemmel/pygnmi.git
+	cd pygnmi && sudo DOCKER_BUILDKIT=1 docker build -t pygnmi .
 
 authorized_keys:
 	# Generate new SSH host key if not existing
