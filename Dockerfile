@@ -74,6 +74,10 @@ RUN cd /opt/srlinux/models/srl_nokia/models/ && \
 RUN sudo sed -i.orig 's/esi=ethseg.esi/esi=ethseg.esi.lower()/g' \
     /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/system_network_instance_reports.py
 
+# Fix bgp route nexthop displayed in CLI, 2 instances
+RUN sudo sed -i.orig 's/routes.prefix, nexthop/routes.prefix, attr.next_hop/g' \
+    /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_neigh_advertised_routes_report.py
+
 # Make 'type' also a key for network instances? Doesn't work
 # sudo sed -i.orig 's/key "name";/key "name type";/' network-instance/srl_nokia-network-instance.yang
 
