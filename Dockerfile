@@ -75,7 +75,7 @@ RUN sudo sed -i.orig 's/esi=ethseg.esi/esi=ethseg.esi.lower()/g' \
     /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/system_network_instance_reports.py
 
 # Fix bgp route nexthop displayed in CLI, 2 instances
-RUN sudo sed -i.orig 's/routes.prefix, nexthop/routes.prefix, attr.next_hop/g' \
+RUN sudo sed -i.orig 's/routes.prefix, nexthop/routes.prefix, attr.next_hop if attr.next_hop!="0.0.0.0" else nexthop/g' \
     /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_neigh_advertised_routes_report.py
 
 # Make 'type' also a key for network instances? Doesn't work
