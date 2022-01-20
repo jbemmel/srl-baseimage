@@ -19,6 +19,7 @@ build: authorized_keys ssh_config pygnmi
 	sudo docker tag ${IMG} ${NAME}:${SR_LINUX_RELEASE}
 
 pygnmi:
+	rm -rf pygnmi
 	git clone https://github.com/jbemmel/pygnmi.git
 	cd pygnmi && sudo DOCKER_BUILDKIT=1 docker build -t pygnmi .
 
