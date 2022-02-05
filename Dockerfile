@@ -7,7 +7,9 @@ ARG P3="/usr/lib/python3.6/site-packages/sdk_protos"
 ARG P4="/opt/srlinux/python/virtual-env/lib/python3.6/site-packages"
 ENV AGENT_PYTHONPATH="$P1:$P2:$P3:$P4"
 
-RUN sudo curl -sL https://github.com/karimra/gnmic/releases/download/v0.20.4/gnmic_0.20.4_Linux_x86_64.rpm -o /tmp/gnmic.rpm && \
+RUN sudo rm -rf /etc/yum.repos.d/epel* /etc/yum.repos.d/elrepo* && \
+    sudo yum clean all && \
+    sudo curl -sL https://github.com/karimra/gnmic/releases/download/v0.20.4/gnmic_0.20.4_Linux_x86_64.rpm -o /tmp/gnmic.rpm && \
     sudo yum localinstall -y /tmp/gnmic.rpm && sudo rm -f /tmp/gnmic.rpm
 
 # Install pyGNMI to /usr/local/lib[64]/python3.6/site-packages
@@ -18,7 +20,7 @@ RUN sudo curl -sL https://github.com/karimra/gnmic/releases/download/v0.20.4/gnm
 #     sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install pygnmi pylint-protobuf sre_yield
 
 # Install (only) some custom tools
-RUN sudo yum install -y jq pylint diffutils
+RUN sudo yum install -y jq diffutils && sudo pip3 install pylint
 
 # Copy custom built pygnmi and dependencies, install into /usr/local. Need to upgrade pip
 COPY --from=pygnmi /tmp/wheels /tmp/wheels
