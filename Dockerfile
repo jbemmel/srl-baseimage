@@ -36,6 +36,7 @@ RUN sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install pygnmi pylint-proto
 
 # Add CLI enhancements
 COPY ./mgmt_cli_engine_command_loop.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli_engine/command_loop.py
+COPY ./traceroute.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/traceroute.py
 
 # Define custom aliases for admin user, including Cisco style show CLI
 RUN sudo mkdir -p /home/admin && printf '%s\n' \
