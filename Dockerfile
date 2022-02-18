@@ -38,6 +38,11 @@ RUN sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install pygnmi pylint-proto
 COPY ./mgmt_cli_engine_command_loop.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli_engine/command_loop.py
 COPY ./traceroute.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/traceroute.py
 
+# Integrate custom vxlan-traceroute CLI commands
+COPY ./vxlan_traceroute.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/
+RUN sudo sh -c ' echo -e "vxlan_traceroute = srlinux.mgmt.cli.plugins.vxlan_traceroute:Plugin" \
+  >> /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux-0.1-py3.6.egg-info/entry_points.txt'
+
 # Define custom aliases for admin user, including Cisco style show CLI
 RUN sudo mkdir -p /home/admin && printf '%s\n' \
   '[alias]' \
