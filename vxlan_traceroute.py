@@ -17,7 +17,7 @@ from srlinux.location import build_path
 from srlinux import child_process
 from srlinux.schema import DataStore
 
-import sys, logging
+import sys, logging, time
 
 #
 # Standard traceroute in the context of EVPN VXLAN fabrics
@@ -107,3 +107,4 @@ def do_vxlan_traceroute(state, input, output, arguments, **_kwargs):
       cmd = f"ip netns exec srbase-default /usr/bin/traceroute -n --sendwait=100 -s {local_vtep} {ip}"
       logging.info( f"vxlan-traceroute: bash {cmd}" )
       exit_code = child_process.run( cmd.split(), output=output )
+      time.sleep(1) # Wait 1s between runs
