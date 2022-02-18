@@ -56,7 +56,7 @@ class Plugin(ToolsPlugin):
              tun = ['*','*']
           return build_path(f'/tunnel-interface[name={tun[0]}]/vxlan-interface[index={tun[1]}]/bridge-table/multicast-destinations/destination[vtep=*][vni=*]')
 
-        syntax.add_named_argument('vtep', default='*',
+        syntax.add_named_argument('vtep', default='*', help='Optional VTEP IP, default=all',
            suggestions=KeyCompleter(path='/tunnel-interface[name=*]/vxlan-interface[index=*]/bridge-table/multicast-destinations/destination[vtep=*]') )
 
         # syntax.add_boolean_argument('debug', help="Enable additional debug output")
@@ -103,6 +103,7 @@ def do_vxlan_traceroute(state, input, output, arguments, **_kwargs):
 
     for ip in dest_vteps:
       # Don't need sudo, hardcoded namespace name 'default'
-      cmd = f"ip netns exec srbase-default /usr/bin/traceroute -n -s {local_vtep} {ip}"
+      # Wait 100ms between probes, to avoid packet drops due to rate limits
+      cmd = f"ip netns exec srbase-default /usr/bin/traceroute -n --sendwait=100 -s {local_vtep} {ip}"
       logging.info( f"vxlan-traceroute: bash {cmd}" )
       exit_code = child_process.run( cmd.split(), output=output )
