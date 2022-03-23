@@ -145,7 +145,7 @@ class Plugin(CliPlugin):
 
     def _populate_cap_data(self, data, server_data):
         data.synchronizer.flush_fields(data)
-        for e in server_data.platform.linecard[0].forwarding_complex[0].datapath.xdp.resource.items():
+        for e in server_data.platform.get().linecard.items()[0].forwarding_complex.items()[0].datapath.get().xdp.get().resource.items():
             self._used_percent = e.used_percent
             self._used_entries = e.used_entries
             self._free_entries = e.free_entries
