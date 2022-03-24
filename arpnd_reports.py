@@ -149,7 +149,8 @@ class Plugin(CliPlugin):
          for c in i.forwarding_complex.items():
           for x in c.datapath.get().xdp.get().resource.items():
             # TODO average or collect all
-            self._used_percent = x.get_field('used_percent') or '-'
+            # XXX doesn't actually work, unclear why. Complains about field mismatch
+            self._used_percent = x.get_field('used_percentage') or '-'
             self._used_entries = x.get_field('used_entries') or '-'
             self._free_entries = x.get_field('free_entries') or '-'
 

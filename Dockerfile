@@ -49,6 +49,7 @@ RUN sudo mkdir -p /home/admin && printf '%s\n' \
   '[alias]' \
   '"containerlab save" = "save file /etc/opt/srlinux/config.json /"' \
   '"sh int {int}" = "show /interface"' \
+  '"arp-nd-entries" = "info from state /platform linecard 1 forwarding-complex 0 datapath xdp resource arp-nd-entries"' \
   \
 > /home/admin/.srlinuxrc
 
