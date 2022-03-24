@@ -149,9 +149,9 @@ class Plugin(CliPlugin):
          for c in i.forwarding_complex.items():
           for x in c.datapath.get().xdp.get().resource.items():
             # TODO average or collect all
-            self._used_percent = x.used_percent if x.used_percent is not None else '-'
-            self._used_entries = x.used_entries if x.used_entries is not None else '-'
-            self._free_entries = x.free_entries if x.free_entries is not None else '-'
+            self._used_percent = x.get_field('used_percent') or '-'
+            self._used_entries = x.get_field('used_entries') or '-'
+            self._free_entries = x.get_field('free_entries') or '-'
 
         cap = data.capacity.create()
         cap.used_percent = self._used_percent
