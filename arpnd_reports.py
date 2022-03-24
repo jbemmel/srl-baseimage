@@ -149,7 +149,7 @@ class Plugin(CliPlugin):
          for c in i.forwarding_complex.items():
           for x in c.datapath.get().xdp.get().resource.items():
             # TODO average or collect all
-            self._used_percent = x.used_percentage
+            self._used_percent = x.used_percent
             self._used_entries = x.used_entries
             self._free_entries = x.free_entries
 
