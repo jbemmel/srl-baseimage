@@ -149,13 +149,12 @@ class Plugin(CliPlugin):
          for c in i.forwarding_complex.items():
           for x in c.datapath.get().xdp.get().resource.items():
             # TODO average or collect all
-            # XXX doesn't actually work, unclear why. Complains about field mismatch
-            self._used_percent = x.get_field('used_percentage') or '-'
-            self._used_entries = x.get_field('used_entries') or '-'
-            self._free_entries = x.get_field('free_entries') or '-'
+            self._used_percent = x.used_percent if x.used_percent is not None else '-'
+            self._used_entries = x.used_entries if x.used_entries is not None else '-'
+            self._free_entries = x.free_entries if x.free_entries is not None else '-'
 
         cap = data.capacity.create()
-        cap.used_percent = self._used_percent
+        cap.used_percentage = self._used_percent
         cap.used_entries = self._used_entries
         cap.free_entries = self._free_entries
         cap.synchronizer.flush_fields(cap)
@@ -262,4 +261,4 @@ class CapacityFormatter(Formatter):
         yield print_line(max_width, '-')
 
     def _format_entry(self, entry, max_width):
-        yield f'  Used entries : {entry.used_entries}({entry.used_percent}%) Free entries : {entry.free_entries}'
+        yield f'  Used entries : {entry.used_entries}({entry.used_percentage}%) Free entries : {entry.free_entries}'
