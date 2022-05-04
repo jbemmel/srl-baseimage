@@ -58,7 +58,7 @@ class Plugin(CliPlugin):
     def _get_my_schema(self, v4, summaryOnly=False):
         root = FixedSchemaRoot()
 
-        # Put totals at top
+        # Put totals at top too
         root.add_child('summary', fields=['Total entries', 'Static entries', 'Dynamic entries'])
 
         if summaryOnly:
@@ -76,6 +76,8 @@ class Plugin(CliPlugin):
                                'Next state change',
                                'Is Router']
                           )
+            root.add_child('bottom_summary', fields=['Total entries', 'Static entries', 'Dynamic entries'])
+
         return root
 
     def _interface_path(self, arguments):
@@ -220,6 +222,7 @@ class Plugin(CliPlugin):
                                            )
                            )
         data.set_formatter('/summary', SummaryFormatter())
+        data.set_formatter('/bottom_summary', SummaryFormatter())
 
     def _ipv4_variant(self, arguments):
         return arguments.node.name == 'arp-entries'
