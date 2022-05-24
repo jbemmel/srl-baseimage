@@ -73,9 +73,12 @@ RUN sudo sed -i.orig 's/10,/11, # JvB increased/g' \
 # Fix 4-byte ASN private range to allow target:4200000000:12345
 # up to 4294967295
 # Preserve order of communities
+# Remove 'mandatory' for TLS on gNMI? Does not work
 RUN cd /opt/srlinux/models/srl_nokia/models/ && \
     sudo sed -i.orig 's/4\[0-1\]\[0-9\]{7}/42[0-8][0-9]{7}|4[0-1][0-9]{8}/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang && \
     sudo sed -i.orig 's/leaf-list member {/leaf-list member { ordered-by user;/g' routing-policy/srl_nokia-routing-policy.yang
+
+# sudo sed -i.orig 's/mandatory true/mandatory false/g' system/srl_nokia-gnmi-server.yang
 
 # Disallow RD:0 - doesn't work
 # sudo sed -i "0,/3}|\[0-9])';/s//3}|\[1-9\])'; \/\/ JvB disallow ip:0 RD/" common/srl_nokia-common.yang
