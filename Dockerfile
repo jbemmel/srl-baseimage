@@ -91,6 +91,10 @@ RUN sudo sed -i.orig 's/esi=ethseg.esi/esi=ethseg.esi.lower()/g' \
 RUN sudo sed -i.orig 's/routes.prefix, nexthop/routes.prefix, attr.next_hop if attr.next_hop!="0.0.0.0" else nexthop/g' \
     /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_neigh_advertised_routes_report.py
 
+# Fix boot script errors
+RUN sudo sed -i.orig 's/!srl/! srl/g' /opt/srlinux/bin/bootscript/05_sr_createuser.sh && \
+    sudo sed -i.orig 's/python/python3/g' /opt/srlinux/bin/bootscript/05_sr_createuser.sh
+
 # Make 'type' also a key for network instances? Doesn't work
 # sudo sed -i.orig 's/key "name";/key "name type";/' network-instance/srl_nokia-network-instance.yang
 
