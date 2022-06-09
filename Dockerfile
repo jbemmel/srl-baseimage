@@ -76,7 +76,8 @@ RUN sudo sed -i.orig 's/10,/11, # JvB increased/g' \
 # Remove 'mandatory' for TLS on gNMI? Does not work
 RUN cd /opt/srlinux/models/srl_nokia/models/ && \
     sudo sed -i.orig 's/4\[0-1\]\[0-9\]{7}/42[0-8][0-9]{7}|4[0-1][0-9]{8}/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang && \
-    sudo sed -i.orig 's/leaf-list member {/leaf-list member { ordered-by user;/g' routing-policy/srl_nokia-routing-policy.yang
+    sudo sed -i.orig 's/leaf-list member {/leaf-list member { ordered-by user;/g' routing-policy/srl_nokia-routing-policy.yang && \
+    sudo sed -i.orig 's|false() or (/srl_nokia-lldp:system/lldp/interface\[srl_nokia-lldp:name=current()/../../../srl_nokia|true() or (/srl_nokia-lldp:system/lldp/interface\[srl_nokia-lldp:name=current()/../../../srl_nokia|g' interfaces/srl_nokia-interfaces-l2cp.yang
 
 # sudo sed -i.orig 's/mandatory true/mandatory false/g' system/srl_nokia-gnmi-server.yang
 
