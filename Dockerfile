@@ -1,5 +1,7 @@
 ARG SR_LINUX_RELEASE
 FROM ghcr.io/nokia/srlinux:$SR_LINUX_RELEASE
+# FROM registry.srlinux.dev/pub/srlinux:22.6.1
+# FROM registry.srlinux.dev/pub/test:0.0.0-37967
 
 ARG P1="/usr/local/lib/python3.6/site-packages:/usr/local/lib64/python3.6/site-packages"
 ARG P2="/opt/rh/rh-python36/root/usr/lib/python3.6/site-packages/sdk_protos"
@@ -27,6 +29,9 @@ COPY --from=pygnmi /tmp/wheels /tmp/wheels
 RUN sudo python3 -m pip install --upgrade pip && \
     sudo python3 -m pip install --no-cache --no-index /tmp/wheels/* && \
     sudo rm -rf /tmp/wheels
+
+# Upgrade ancient version of virtualenv installed on baseimage virtualenv-15.1.0 > virtualenv-20.16.3
+RUN sudo pip3 install virtualenv --upgrade
 
 # Add pylint and sre_yield as before
 RUN sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install pygnmi pylint-protobuf sre_yield
