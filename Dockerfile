@@ -11,7 +11,7 @@ ENV AGENT_PYTHONPATH="$P1:$P2:$P3:$P4"
 
 RUN sudo rm -rf /etc/yum.repos.d/epel* /etc/yum.repos.d/elrepo* && \
     sudo yum clean all && \
-    sudo curl -sL https://github.com/karimra/gnmic/releases/download/v0.24.4/gnmic_0.24.4_Linux_x86_64.rpm -o /tmp/gnmic.rpm && \
+    sudo curl -sL https://github.com/karimra/gnmic/releases/download/v0.26.0/gnmic_0.26.0_Linux_x86_64.rpm -o /tmp/gnmic.rpm && \
     sudo yum localinstall -y /tmp/gnmic.rpm && sudo rm -f /tmp/gnmic.rpm
 
 # Install pyGNMI to /usr/local/lib[64]/python3.6/site-packages
@@ -78,10 +78,12 @@ RUN sudo sed -i.orig 's/10,/11, # JvB increased/g' \
 # Fix 4-byte ASN private range to allow target:4200000000:12345
 # up to 4294967295
 # Preserve order of communities
+# Fix leafref path for bgp groups under dynamic-neighbors
 # Remove 'mandatory' for TLS on gNMI? Does not work
 RUN cd /opt/srlinux/models/srl_nokia/models/ && \
     sudo sed -i.orig 's/4\[0-1\]\[0-9\]{7}/42[0-8][0-9]{7}|4[0-1][0-9]{8}/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang && \
-    sudo sed -i.orig 's/leaf-list member {/leaf-list member { ordered-by user;/g' routing-policy/srl_nokia-routing-policy.yang
+    sudo sed -i.orig 's/leaf-list member {/leaf-list member { ordered-by user;/g' routing-policy/srl_nokia-routing-policy.yang && \
+    sudo sed -i.orig 's|path "../../../../group/group-name";|path "../../group/group-name";|g' network-instance/srl_nokia-bgp.yang
 #    sudo sed -i.orig 's|false() or (/srl_nokia-lldp:system/lldp/interface\[srl_nokia-lldp:name=current()/../../../srl_nokia|true() or (/srl_nokia-lldp:system/lldp/interface\[srl_nokia-lldp:name=current()/../../../srl_nokia|g' interfaces/srl_nokia-interfaces-l2cp.yang
 
 RUN sudo yum install -y lldpad
