@@ -104,7 +104,8 @@ def do_vxlan_traceroute(state, input, output, arguments, **_kwargs):
     for ip in dest_vteps:
       # Don't need sudo, hardcoded namespace name 'default'
       # Wait 100ms between probes, to avoid packet drops due to rate limits
-      cmd = f"ip netns exec srbase-default /usr/bin/traceroute -n --sendwait=100 -s {local_vtep} {ip}"
-      logging.info( f"vxlan-traceroute: bash {cmd}" )
+      # Discover MTU (implies don't fragment) - could send large size probes by adding length at end
+      cmd = f"ip netns exec srbase-default /usr/bin/traceroute -n --sendwait=100 --mtu -s {local_vtep} {ip}"
+      logging.info( f"vxlan-traceroute (including MTU discovery): bash {cmd}" )
       exit_code = child_process.run( cmd.split(), output=output )
       time.sleep(1) # Wait 1s between runs
