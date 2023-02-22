@@ -75,7 +75,7 @@ RUN sudo sed -i.orig 's/10,/11, # JvB increased/g' \
     /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bridge_table_mac_table_report.py
 
 
-# Fix 4-byte ASN private range to allow target:4200000000:12345
+# Fix 4-byte ASN private range to allow target:4200000000:12345 and color:00:4000000000
 # up to 4294967295
 # Preserve order of communities
 # Fix leafref path for bgp groups under dynamic-neighbors? TODO
@@ -95,11 +95,11 @@ RUN sudo yum install -y lldpad
 
 # Fix ESI sensitivity to capitalization
 RUN sudo sed -i.orig 's/esi=ethseg.esi/esi=ethseg.esi.lower()/g' \
-    /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/system_network_instance_reports.py
+  /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/system_network_instance_reports.py
 
-# Fix bgp route nexthop displayed in CLI, 2 instances
-RUN sudo sed -i.orig 's/routes.prefix, nexthop/routes.prefix, attr.next_hop if attr.next_hop!="0.0.0.0" else nexthop/g' \
-    /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_neigh_advertised_routes_report.py
+# Fix bgp route nexthop displayed in CLI, 2 instances, 2023-2-22 now part of release
+# RUN sudo sed -i.orig 's/routes.prefix, nexthop/routes.prefix, attr.next_hop if attr.next_hop!="0.0.0.0" else nexthop/g' \
+#    /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_neigh_advertised_routes_report.py
 
 # Fix boot script errors
 RUN sudo sed -i.orig 's/!srl/! srl/g' /opt/srlinux/bin/bootscript/05_sr_createuser.sh && \
