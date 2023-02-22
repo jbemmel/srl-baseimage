@@ -15,3 +15,23 @@ The code contains a [sample custom tools command](https://github.com/jbemmel/srl
 
 ![image](https://user-images.githubusercontent.com/2031627/154775401-1148692f-f671-4aa2-922f-d32355d91da1.png)
 
+# gRPC Network Operations Interface (gNOI)
+
+Some notes and quick start on gNOI:
+* [SR Linux documentation for R22.11](https://documentation.nokia.com/srlinux/22-11/SR_Linux_Book_Files/SysMgmt_Guide/gnoi-interface.html)
+* Install [gnoic client](https://github.com/karimra/gnoic): 
+```bash
+bash -c "$(curl -sL https://get-gnoic.kmrd.dev)"
+```
+* Sample command:
+```bash
+gnoic system time -a clab-spine-leaf-evpn-leaf1 --skip-verify -u admin -p NokiaSrl1!
+```
+Output:
+```
++----------------------------------+-----------------------------------------+---------------------+
+|           Target Name            |                  Time                   |      Timestamp      |
++----------------------------------+-----------------------------------------+---------------------+
+| clab-spine-leaf-evpn-leaf1:57400 | 2023-02-22 09:11:25.600358126 -0600 CST | 1677078685600358126 |
++----------------------------------+-----------------------------------------+---------------------+
+```
