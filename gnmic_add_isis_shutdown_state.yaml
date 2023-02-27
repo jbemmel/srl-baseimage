@@ -1,0 +1,63 @@
+username: admin
+password: admin
+skip-verify: true
+targets:
+  # clab-IXP-Peering-GlobalConnect: # SROS
+  clab-NextLevel-c1: # SROS
+    insecure: true
+    subscriptions:
+    - sros
+  
+#   clab-IXP-Peering-DE-CIX:        # SRL
+#     subscriptions:
+#     - srl
+
+#  clab-ixp-peering-de-cix:        # SRL
+#    subscriptions:
+#    - srl
+
+subscriptions:
+  sros:
+    paths:
+      - /state/router[router-name=*]/isis/interface/oper-state
+      - /configure/router[router-name=*]/isis/interface/admin-state
+    stream-mode: on-change
+    encoding: bytes
+
+processors:
+  # processor name
+  add-state:
+    # processor type
+    event-starlark:
+      debug: true
+      # the source of the starlark program.
+      source: |
+        cache = {}
+        
+        if_admin_state = "/configure/router/isis/interface/admin-state"
+        if_oper_state = "/state/router/isis/interface/oper-state"
+        
+        def apply(*events):
+         # add admin-state to oper-state and vice versa
+         for e in events:
+           if e.values.get(if_admin_state):
+             _i = index(e)
+             cache[_i+"_a"] = e.values[if_admin_state]
+             e.values[if_oper_state] = cache.get(_i+"_o") or "?"
+           elif e.values.get(if_oper_state):
+             _i = index(e)
+             cache[_i+"_o"] = e.values[if_oper_state]
+             e.values[if_admin_state] = cache.get(_i+"_a") or "?"
+         return events
+        
+        def index(e):
+         return e.tags["source"] + "_" + e.tags["router_router-name"] + "_" + e.tags["interface_interface-name"]
+
+# Print log events on stdout
+outputs:
+  output1:
+    type: file 
+    file-type: stdout
+    format: event
+    event-processors:
+    - add-state
