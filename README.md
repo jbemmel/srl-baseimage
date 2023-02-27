@@ -19,7 +19,7 @@ The code contains a [sample custom tools command](https://github.com/jbemmel/srl
 
 Some notes and quick start on gNOI:
 * [SR Linux documentation for R22.11](https://documentation.nokia.com/srlinux/22-11/SR_Linux_Book_Files/SysMgmt_Guide/gnoi-interface.html)
-* Install [gnoic client](https://github.com/karimra/gnoic): 
+* Install [gnoic client](https://github.com/karimra/gnoic):
 ```bash
 bash -c "$(curl -sL https://get-gnoic.kmrd.dev)"
 ```
@@ -34,4 +34,12 @@ Output:
 +----------------------------------+-----------------------------------------+---------------------+
 | clab-spine-leaf-evpn-leaf1:57400 | 2023-02-22 09:11:25.600358126 -0600 CST | 1677078685600358126 |
 +----------------------------------+-----------------------------------------+---------------------+
+```
+
+# gNMIc customizations
+
+The repo contains a sample config file for gnmic, to add the BGP peer description to session state change events for SR OS.
+To use:
+```
+gnmic --config gnmic_add_peer_description.yaml subscribe
 ```

@@ -1,0 +1,73 @@
+username: admin
+password: admin
+skip-verify: true
+targets:
+  # clab-IXP-Peering-GlobalConnect: # SROS
+  clab-ixp-peering-globalconnect: # SROS
+    insecure: true
+    subscriptions:
+    - sros
+  
+#   clab-IXP-Peering-DE-CIX:        # SRL
+#     subscriptions:
+#     - srl
+
+#  clab-ixp-peering-de-cix:        # SRL
+#    subscriptions:
+#    - srl
+
+subscriptions:
+  srl:
+    paths:
+      - /network-instance/protocols/bgp/peer/description
+      - /interface/oper-state
+      - /interface/ifindex
+      - /system/name/host-name
+    stream-mode: on-change
+    encoding: ascii
+
+  sros:
+    paths:
+      - /state/router[router-name=*]/bgp/neighbor[ip-address=*]/statistics/session-state
+      - /configure/router[router-name=*]/bgp/neighbor/description
+    stream-mode: on-change
+    encoding: bytes
+
+processors:
+  # processor name
+  add-description:
+    # processor type
+    event-starlark:
+      debug: true
+      # the source of the starlark program.
+      source: |
+        cache = {}
+        def apply(*events):
+         evs = []
+         # check if on the event messages contains a peer description
+         # and store in the cache dict
+         for e in events:
+           if e.values.get("/configure/router/bgp/neighbor/description"):
+             cache[index(e)] = e.values["/configure/router/bgp/neighbor/description"]
+         # for each event get the 'source' and 'interface_name', check
+         # if a corresponding cache entry exists and set it as a 
+         # 'description' tag
+         for e in events:
+           if e.tags.get("source") and e.values.get("/state/router/bgp/neighbor/statistics/session-state"):
+             target_peer = index(e)
+             if cache.get(target_peer):
+               e.values["description"] = cache[target_peer]
+               evs.append(e)
+         return evs
+        
+        def index(e):
+         return e.tags["source"] + "_" + e.tags["router_router-name"] + "_" + e.tags["neighbor_ip-address"]
+
+# Print log events on stdout
+outputs:
+  output1:
+    type: file 
+    file-type: stdout
+    format: event
+    event-processors:
+    - add-description
