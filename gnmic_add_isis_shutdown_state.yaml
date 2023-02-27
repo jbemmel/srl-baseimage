@@ -19,8 +19,9 @@ targets:
 subscriptions:
   sros:
     paths:
+      # Change events are received in the order of oper-state -> admin-state
       - /state/router[router-name=*]/isis/interface/oper-state
-      - /configure/router[router-name=*]/isis/interface/admin-state
+      - /configure/router[router-name=*]/isis/interface/admin-state   
     stream-mode: on-change
     encoding: bytes
 
@@ -43,11 +44,15 @@ processors:
            if e.values.get(if_admin_state):
              _i = index(e)
              cache[_i+"_a"] = e.values[if_admin_state]
-             e.values[if_oper_state] = cache.get(_i+"_o") or "?"
+             _o = cache.get(_i+"_o")
+             e.values[if_oper_state] = "shutdown" if _o=="down" else (_o or "?")
            elif e.values.get(if_oper_state):
              _i = index(e)
              cache[_i+"_o"] = e.values[if_oper_state]
-             e.values[if_admin_state] = cache.get(_i+"_a") or "?"
+             _a = cache.get(_i+"_a")
+             e.values[if_admin_state] = _a or "?"
+             if _a == "disable":
+               e.values[if_oper_state] = "shutdown"
          return events
         
         def index(e):
