@@ -33,7 +33,7 @@ RUN sudo python3 -m pip install --upgrade pip && \
 # Upgrade ancient version of virtualenv installed on baseimage virtualenv-15.1.0 > virtualenv-20.16.3
 RUN sudo pip3 install virtualenv --upgrade
 
-# Add pylint and sre_yield as before
+# Add pylint and sre_yield as before, this ends up under /usr/local/lib
 RUN sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install pygnmi pylint-protobuf sre_yield
 
 # Fix gNMI path key order until patch is accepted
@@ -112,6 +112,12 @@ RUN sudo sed -i.orig 's/!srl/! srl/g' /opt/srlinux/bin/bootscript/05_sr_createus
 RUN sudo sed -i.orig 's|.ssh/authorized_keys|.ssh/authorized_keys /etc/ssh/authorized_keys|g' /etc/ssh/sshd_config
 # This file must be owned by root:root with 644 permissions
 COPY --chmod=0644 ./authorized_keys /etc/ssh/authorized_keys
+
+# Add sample EH script(s)? Doesn't work
+# COPY eh_splunk_notify.py /etc/opt/srlinux/eventmgr/eh_splunk_notify.py
+
+# Install Slack SDK into the virtual env? Gets lost
+# RUN sudo sh -c ". /opt/srlinux/python/virtual-env/bin/activate ; pip3 install slack_sdk"
 
 # Reduce per-client ICMP error rate limit from 1000ms to 100ms
 # Does not work

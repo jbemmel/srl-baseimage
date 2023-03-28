@@ -7,12 +7,18 @@ topology:
       type: ixrd2 # See https://www.nokia.com/networks/products/7250-interconnect-router/
       image: srl/custombase:latest
 
+      binds:
+      - eh_proxy2python.py:/etc/opt/srlinux/eventmgr/eh_proxy2python.py
+      - run-python-script.sh:/opt/run-python-script.sh
+      - splunk_notify.py:/opt/splunk_notify/splunk_notify.py
+
+      startup-config: startup-config.cmd # Same for all leaves/spines
+
   nodes:
+    spine1: { kind: srl, type: ixrd3 }
     leaf1:  { kind: srl }
     leaf2:  { kind: srl }
-    spine1: { kind: srl }
 
   links:
-    - endpoints: ["leaf1:e1-1","spine1:e1-1"]
-    - endpoints: ["leaf2:e1-1","spine1:e1-2"]
-
+    - endpoints: ["leaf1:e1-49","spine1:e1-1"]
+    - endpoints: ["leaf2:e1-49","spine1:e1-2"]
