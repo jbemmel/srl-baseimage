@@ -25,6 +25,7 @@ module srl_nokia-interfaces-ip-dhcp {
 
   grouping subinterface-dhcpv4 {
     container dhcp-client {
+      config true;
       presence "The subinterface attempts to obtain its IPv4 address and prefix using DHCP";
       description
         "Container for options related to DHCP";
