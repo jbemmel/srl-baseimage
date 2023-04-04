@@ -76,12 +76,13 @@ module srl_nokia-interfaces-ip-dhcp {
   }
 
   augment "/srl_nokia-if:interface/srl_nokia-if:subinterface/srl_nokia-if:ipv4" {
-    when "(../../srl_nokia-if:name = 'mgmt0' and ../srl_nokia-if:index = 0) or starts-with(../../srl_nokia-if:name, 'ethernet')";
+    // only supported on mgmt0
+    when "(../../srl_nokia-if:name = 'mgmt0' and ../srl_nokia-if:index = 0)";
     uses subinterface-dhcpv4;
   }
 
   augment "/srl_nokia-if:interface/srl_nokia-if:subinterface/srl_nokia-if:ipv6" {
-    when "(../../srl_nokia-if:name = 'mgmt0' and ../srl_nokia-if:index = 0) or starts-with(../../srl_nokia-if:name, 'ethernet')";
+    when "(../../srl_nokia-if:name = 'mgmt0' and ../srl_nokia-if:index = 0)";
     uses subinterface-dhcpv6;
   }
 }
