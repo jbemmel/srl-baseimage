@@ -49,6 +49,9 @@ COPY ./vxlan_traceroute.py /opt/srlinux/python/virtual-env/lib/python3.6/site-pa
 RUN sudo sh -c ' echo -e "vxlan_traceroute = srlinux.mgmt.cli.plugins.vxlan_traceroute:Plugin" \
   >> /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux-0.1-py3.6.egg-info/entry_points.txt'
 
+# Test enhanced DHCP YANG model with augment when clause
+COPY srl_nokia-interfaces-ip-dhcp.yang /opt/srlinux/models/srl_nokia/models/interfaces/
+
 # Define custom aliases for admin user, including Cisco style show CLI
 RUN sudo mkdir -p /home/admin && printf '%s\n' \
   '[alias]' \
