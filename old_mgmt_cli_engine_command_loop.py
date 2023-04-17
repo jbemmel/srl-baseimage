@@ -3,28 +3,23 @@
 #
 # Copyright (c) 2018 Nokia
 ###########################################################################
-import functools
-import traceback
-from typing import Optional, Union
-
-from srlinux.mgmt.cli.cli_output import CliOutput
-from srlinux.mgmt.cli.cli_state import CliState
-from srlinux.mgmt.cli.command_node_with_arguments import CommandNodeWithArguments
-from srlinux.mgmt.cli_engine.array_reader import ArrayReader
-from srlinux.mgmt.cli_engine.command_executor import CommandsExecutor
-from srlinux.mgmt.cli_engine.commands_reader import CommandsReader
-from srlinux.mgmt.cli_engine.line_parser_auto_completer import LineParserAutoCompleter
-from srlinux.mgmt.cli_engine.line_parser_auto_suggester import LineParserAutoSuggester
-from srlinux.mgmt.cli_engine.line_parser import LineParser
-from srlinux.mgmt.cli_engine.multiline_string_reader import MultilineStringReader
-from srlinux.mgmt.cli_engine.space_auto_complete_decorator import SpaceAutoCompleteDecorator
-from srlinux.mgmt.cli.execute_error import ExecuteError
+from .array_reader import ArrayReader
+from .command_executor import CommandsExecutor
+from .line_parser import LineParser
+from .line_parser_auto_completer import LineParserAutoCompleter
+from .line_parser_auto_suggester import LineParserAutoSuggester
+from .multiline_string_reader import MultilineStringReader
+from .space_auto_complete_decorator import SpaceAutoCompleteDecorator
+from srlinux.asserts import assert_is_instance_of
+from srlinux.mgmt.cli import CliState, ExecuteError, SessionTerminate, ParseError, Observer
 from srlinux.mgmt.cli.global_state import get_global_state
 from srlinux.mgmt.cli.idle_timer import get_idle_task
-from srlinux.mgmt.cli.observer import ObserverGroup
-from srlinux.mgmt.cli.parse_error import ParseError
-from srlinux.mgmt.cli.session_termination import SessionTermination
+from srlinux.mgmt.cli.cli_mode import CliMode
+from srlinux.mgmt.cli.configuration_session_type import ConfigurationSessionType
 from srlinux.mgmt.server.server_error import ServerError
+from srlinux.output import Output
+import functools
+import traceback
 
 # JvB added
 import re
@@ -59,13 +54,17 @@ class CommandLoop(object):
     '''
 
     def __init__(self,
-                 commands_reader: CommandsReader,
-                 line_parser: LineParser,
-                 command_executor: CommandsExecutor,
-                 output: CliOutput,
-                 state: CliState,
-                 observer: Optional[ObserverGroup] = None,
-                 stop_on_error: bool = False):
+                 commands_reader,
+                 line_parser,
+                 command_executor,
+                 output,
+                 state,
+                 observer=None,
+                 stop_on_error=False):
+        assert_is_instance_of(line_parser, LineParser)
+        assert_is_instance_of(command_executor, CommandsExecutor)
+        assert_is_instance_of(output, Output)
+        assert_is_instance_of(state, CliState)
         self._commands_reader = commands_reader
         self._input_reader = _add_decorators(commands_reader)
         self._line_parser = line_parser
@@ -74,9 +73,10 @@ class CommandLoop(object):
         self._output = output
         self._stop_on_error = stop_on_error
         self._error_count = 0
-        self._observer = observer or ObserverGroup()
+        self._observer = observer or Observer()
+        self._env = {} # JvB added
 
-    def loop(self) -> None:
+    def loop(self):
         try:
             self._try_to_loop()
             if not self._state.is_switch_to_new_cli_engine_requested:
@@ -86,28 +86,25 @@ class CommandLoop(object):
                 if hasattr(self._commands_reader, '_advance_to_next_reader'):
                     self._state._is_terminate_requested = False
                     try:
-                        self._commands_reader._advance_to_next_reader()  # type: ignore[attr-defined]
+                        self._commands_reader._advance_to_next_reader()
                         self._try_to_loop()
                     finally:
                         self._state._is_terminate_requested = True
         except EOFError:
             # No more input lines
             self._observer.on_exit('Received EOF')
-        except BrokenPipeError:
-            # for example: sr_cli -- "show network-instance summary" | head
-            self._observer.on_exit('Broken pipe')
-            raise
+            return
         except Exception as e:
             # Catch unexpected exceptions, log them and reraise
             self._observer.on_exit(f'Uncaught exception {e}: {traceback.format_exc()}')
             raise
 
-    def _try_to_loop(self) -> None:
+    def _try_to_loop(self):
         while not self._must_stop():
             self._process_line(self._next_input_line())
             get_idle_task().reset_idle_state()
 
-    def _next_input_line(self) -> str:
+    def _next_input_line(self):
         return self._input_reader.read_command(
             state=self._state,
             output=self._output,
@@ -115,7 +112,29 @@ class CommandLoop(object):
             auto_suggester=LineParserAutoSuggester(self._line_parser),
         )
 
-    # JvB: added
+    #  def _are_optional_objects_equal(self, left, right):
+    #      if left is None:
+    #          return right is None
+    #      if right is None:
+    #          return False
+    #      return left == right
+
+    def _check_for_configuration_session_termination(self):
+        #  if not self._are_optional_objects_equal(self._state.server.configuration_session,
+        #                                          self._state.configuration_session):
+        if self._state.server.configuration_session != self._state.configuration_session:
+            # discrepancy between 'enter candidate' local session type and server's session type
+            # session must have been terminated from the server (e.g. tools system configuration session clear command)
+            if self._state.server.configuration_session_type == ConfigurationSessionType.None_ and \
+                    self._state.configuration_session_type != ConfigurationSessionType.None_:
+                # if there is no configuration session on the server, we must drop to the running mode
+                # double check if the configuration session is not created on the server
+                if not self._state.server.query_session():
+                    self._state.mode = CliMode.Running
+                    self._state.server.update_session(configuration_session=self._state.configuration_session,
+                                                      create=False)
+                    self._output.print_warning_line('Your configuration session was terminated.')
+
     def _process_vars(self, line):
 
         def _lookup(match): # match looks like ${/path/x}
@@ -200,15 +219,18 @@ class CommandLoop(object):
            line = re.sub('\$\{([^$]*?)\}', lambda m: _lookup(m.group()), line)
         return line
 
-    def _process_line(self, line: str) -> None:
+    def _process_line(self, line):
         get_global_state().operation_terminated = False
         try:
             if self._state.is_session_terminated:
-                raise SessionTermination('')
+                raise SessionTerminate('')
 
-            self._state.check_for_remote_configuration_session_termination(self._output)
+            self._check_for_configuration_session_termination()
             line = self._process_vars(line) # JvB added
             self._observe_pre_parsing(line)
+
+            # TODO:
+            # line = self._observe_pre_parsing(line) or line
 
             self._state.parser_recursion_level = 0
             commands = self._line_parser.parse(line)
@@ -230,52 +252,51 @@ class CommandLoop(object):
         except KeyboardInterrupt:
             # Catches ctrl-c
             self._register_info("Command execution aborted : '{}'".format(line))
-        except SessionTermination as e:
+        except SessionTerminate as e:
             self._register_error(e.format())
         except EOFError:
             # Catches ctrl-d
             # We silently ignore this.
             pass
-        finally:
-            # needed mainly for parsing failures
-            self._state.perform_cleanup_routines(self._output)
+        except Exception as e: # JvB added, includes PathParseError
+            self._register_error( str(e) )
 
-    def _execute_commands(self, commands: CommandNodeWithArguments, line: str) -> Optional[Union[bool, int]]:
+    def _execute_commands(self, commands, line):
         try:
             return self._command_executor.execute(commands)
         finally:
             # The observer is always called, even if execution fails
             self._observe_after_executing(line, commands)
 
-    def _register_error(self, error: str) -> None:
+    def _register_error(self, error):
         self._error_count = self._error_count + 1
         self._output.print_error_line(error)
         self._observer.on_error(error)
 
-    def _register_info(self, msg: str) -> None:
+    def _register_info(self, msg):
         self._output.print_info_line(msg)
 
-    def _observe_after_parsing(self, line: str, commands: CommandNodeWithArguments) -> None:
+    def _observe_after_parsing(self, line, commands):
         self._observer.after_parsing(state=self._state, input_line=line, commands=commands)
 
-    def _observe_pre_parsing(self, line: str) -> None:
+    def _observe_pre_parsing(self, line):
         self._observer.pre_parsing(state=self._state, input_line=line)
 
-    def _observe_after_executing(self, line: str, commands: CommandNodeWithArguments) -> None:
+    def _observe_after_executing(self, line, commands):
         self._observer.after_executing(state=self._state, input_line=line, commands=commands)
 
     @property
-    def error_count(self) -> int:
+    def error_count(self):
         ''' Number of parsing or execution errors encountered .'''
         return self._error_count
 
-    def _must_stop(self) -> bool:
+    def _must_stop(self):
         if self.error_count and self._stop_on_error:
             return True
         return self._state.is_session_terminated
 
 
-def _add_decorators(command_reader: CommandsReader) -> CommandsReader:
+def _add_decorators(command_reader):
     '''
         Add the decorators that are allowed to transform the input lines before parsing it.
 
@@ -302,6 +323,6 @@ def _add_decorators(command_reader: CommandsReader) -> CommandsReader:
     ]
 
     return functools.reduce(
-        lambda result, decorator: decorator(result),  # type: ignore[abstract]
+        lambda result, decorator: decorator(result),
         decorators,
         command_reader)
