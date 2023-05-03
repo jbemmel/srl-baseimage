@@ -21,8 +21,8 @@ RUN sudo rm -rf /etc/yum.repos.d/epel* /etc/yum.repos.d/elrepo* && \
 #     sudo python3 -m pip install --force-reinstall --no-deps grpcio && \
 #     sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install pygnmi pylint-protobuf sre_yield
 
-# Install (only) some custom tools
-RUN sudo yum install -y jq diffutils && sudo pip3 install pylint
+# Install (only) some custom tools, including Python 3.8 to replace outdated 3.6.8
+RUN sudo yum install -y jq diffutils python3.8 && sudo pip3 install pylint
 
 # Copy custom built pygnmi and dependencies, install into /usr/local. Need to upgrade pip
 COPY --from=pygnmi /tmp/wheels /tmp/wheels
