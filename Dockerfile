@@ -1,5 +1,7 @@
+ARG ENHANCE_CLI="1"
+
 ARG SR_LINUX_RELEASE
-FROM ghcr.io/nokia/srlinux:$SR_LINUX_RELEASE
+FROM ghcr.io/nokia/srlinux:$SR_LINUX_RELEASE as base
 # FROM registry.srlinux.dev/pub/srlinux:22.6.1
 # FROM registry.srlinux.dev/pub/test:0.0.0-37967
 
@@ -39,15 +41,21 @@ RUN sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install pygnmi pylint-proto
 # Fix gNMI path key order until patch is accepted
 # RUN sudo sed -i.orig 's/path_elem.key.items()/sorted(path_elem.key.items())/g' /usr/local/lib/python3.6/site-packages/pygnmi/client.py
 
-# Add CLI enhancements
-COPY ./mgmt_cli_engine_command_loop.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli_engine/command_loop.py
-COPY ./traceroute.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/traceroute.py
-COPY ./arpnd_reports.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/arpnd_reports.py
+# Conditionally add CLI enhancements
+FROM base as base_enhance_cli_1
+ONBUILD COPY ./mgmt_cli_engine_command_loop.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli_engine/command_loop.py
+ONBUILD COPY ./traceroute.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/traceroute.py
+ONBUILD COPY ./arpnd_reports.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/arpnd_reports.py
 
 # Integrate custom vxlan-traceroute CLI commands
-COPY ./vxlan_traceroute.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/
-RUN sudo sh -c ' echo -e "vxlan_traceroute = srlinux.mgmt.cli.plugins.vxlan_traceroute:Plugin" \
+ONBUILD COPY ./vxlan_traceroute.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/
+ONBUILD RUN sudo sh -c ' echo -e "vxlan_traceroute = srlinux.mgmt.cli.plugins.vxlan_traceroute:Plugin" \
   >> /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux-0.1-py3.6.egg-info/entry_points.txt'
+
+FROM base as base_enhance_cli_0
+ONBUILD RUN echo "Omitting CLI enhancements"
+
+FROM base_enhance_cli_${ENHANCE_CLI}
 
 # Test enhanced DHCP YANG model with augment when clause
 COPY srl_nokia-interfaces-ip-dhcp.yang /opt/srlinux/models/srl_nokia/models/interfaces/

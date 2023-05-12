@@ -15,6 +15,7 @@ build: authorized_keys ssh_config pygnmi
 	sudo DOCKER_BUILDKIT=1 docker build --build-arg SRL_CUSTOMBASE_RELEASE=${TAG} \
 	   --build-arg http_proxy=${HTTP_PROXY} --build-arg https_proxy=${HTTP_PROXY} \
 	   --build-arg SR_LINUX_RELEASE="${SR_LINUX_RELEASE}" \
+	   --build-arg ENHANCE_CLI="${ENHANCE_CLI}" \
 	   -f ./Dockerfile -t ${IMG} .
 	sudo docker tag ${IMG} ${NAME}:${SR_LINUX_RELEASE}
 
