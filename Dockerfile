@@ -13,7 +13,7 @@ ENV AGENT_PYTHONPATH="$P1:$P2:$P3:$P4"
 
 RUN sudo rm -rf /etc/yum.repos.d/epel* /etc/yum.repos.d/elrepo* && \
     sudo yum clean all && \
-    sudo curl -sL https://github.com/openconfig/gnmic/releases/download/v0.28.0/gnmic_0.28.0_Linux_x86_64.rpm -o /tmp/gnmic.rpm && \
+    sudo curl -sL https://github.com/openconfig/gnmic/releases/download/v0.31.0/gnmic_0.31.0_Linux_x86_64.rpm -o /tmp/gnmic.rpm && \
     sudo yum localinstall -y /tmp/gnmic.rpm && sudo rm -f /tmp/gnmic.rpm
 
 # Install pyGNMI to /usr/local/lib[64]/python3.6/site-packages
@@ -27,10 +27,10 @@ RUN sudo rm -rf /etc/yum.repos.d/epel* /etc/yum.repos.d/elrepo* && \
 RUN sudo yum install -y jq diffutils python3.8 && sudo pip3 install pylint
 
 # Copy custom built pygnmi and dependencies, install into /usr/local. Need to upgrade pip
-COPY --from=pygnmi /tmp/wheels /tmp/wheels
-RUN sudo python3 -m pip install --upgrade pip && \
-    sudo python3 -m pip install --no-cache --no-index /tmp/wheels/* && \
-    sudo rm -rf /tmp/wheels
+# COPY --from=pygnmi /tmp/wheels /tmp/wheels
+# RUN sudo python3 -m pip install --upgrade pip && \
+#     sudo python3 -m pip install --no-cache --no-index /tmp/wheels/* && \
+#     sudo rm -rf /tmp/wheels
 
 # Upgrade ancient version of virtualenv installed on baseimage virtualenv-15.1.0 > virtualenv-20.16.3
 RUN sudo pip3 install virtualenv --upgrade
@@ -65,6 +65,7 @@ RUN sudo mkdir -p /home/admin && printf '%s\n' \
   '[alias]' \
   '"containerlab save" = "save file /etc/opt/srlinux/config.json /"' \
   '"sh int {int}" = "show /interface"' \
+  '"show ntp" = "bash chronyd sources -v"' \
   '"arp-nd-entries" = "info from state /platform linecard 1 forwarding-complex 0 datapath xdp resource arp-nd-entries"' \
   \
 > /home/admin/.srlinuxrc

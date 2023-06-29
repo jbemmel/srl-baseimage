@@ -1,0 +1,23 @@
+name: basic-lab
+
+topology:
+  kinds:
+    srl:
+      # Need IXR D2 or D3 for EVPN/VXLAN support
+      type: ixrd2 # See https://www.nokia.com/networks/products/7250-interconnect-router/
+      image: srl/custombase:latest
+
+      startup-config: | # Same for all leaves/spines for now
+        set /system dns network-instance mgmt server-list [ 1.1.1.1 8.8.8.8 8.8.4.4 ]
+        set /system ntp network-instance mgmt admin-state enable
+        set /system ntp server 162.159.200.123 iburst true  !!! time.cloudflare.com
+        set /system ntp server 216.239.35.12 iburst true    !!! time.google.com
+
+  nodes:
+    spine1: { kind: srl, type: ixrd3 }
+    leaf1:  { kind: srl }
+    leaf2:  { kind: srl }
+
+  links:
+    - endpoints: ["leaf1:e1-49","spine1:e1-1"]
+    - endpoints: ["leaf2:e1-49","spine1:e1-2"]

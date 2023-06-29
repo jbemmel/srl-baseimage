@@ -7,12 +7,14 @@ TAG         := ${TODAY}.${LAST_COMMIT}
 IMG         := ${NAME}:${TAG}
 # HTTP_PROXY  := "http://proxy.server.com:8000"
 
+ENHANCE_CLI ?= 1
+
 ifndef SR_LINUX_RELEASE
 override SR_LINUX_RELEASE=latest
 endif
 
-build: authorized_keys ssh_config pygnmi
-	sudo DOCKER_BUILDKIT=1 docker build --build-arg SRL_CUSTOMBASE_RELEASE=${TAG} \
+build: authorized_keys ssh_config # pygnmi
+	DOCKER_BUILDKIT=1 docker build --build-arg SRL_CUSTOMBASE_RELEASE=${TAG} \
 	   --build-arg http_proxy=${HTTP_PROXY} --build-arg https_proxy=${HTTP_PROXY} \
 	   --build-arg SR_LINUX_RELEASE="${SR_LINUX_RELEASE}" \
 	   --build-arg ENHANCE_CLI="${ENHANCE_CLI}" \
@@ -22,7 +24,7 @@ build: authorized_keys ssh_config pygnmi
 pygnmi:
 	rm -rf pygnmi
 	git clone https://github.com/jbemmel/pygnmi.git
-	cd pygnmi && sudo DOCKER_BUILDKIT=1 docker build -t pygnmi .
+	cd pygnmi && DOCKER_BUILDKIT=1 docker build -t pygnmi .
 
 authorized_keys:
 	# Generate new SSH host key if not existing
