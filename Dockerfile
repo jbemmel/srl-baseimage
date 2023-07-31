@@ -11,10 +11,12 @@ ARG P3="/usr/lib/python3.6/site-packages/sdk_protos"
 ARG P4="/opt/srlinux/python/virtual-env/lib/python3.6/site-packages"
 ENV AGENT_PYTHONPATH="$P1:$P2:$P3:$P4"
 
+# ARG GNMIC_V=0.31.5
 RUN sudo rm -rf /etc/yum.repos.d/epel* /etc/yum.repos.d/elrepo* && \
     sudo yum clean all && \
-    sudo curl -sL https://github.com/openconfig/gnmic/releases/download/v0.31.0/gnmic_0.31.0_Linux_x86_64.rpm -o /tmp/gnmic.rpm && \
-    sudo yum localinstall -y /tmp/gnmic.rpm && sudo rm -f /tmp/gnmic.rpm
+    sudo bash -c "$(curl -sL https://get-gnmic.openconfig.net)"
+    # sudo curl -sL https://github.com/openconfig/gnmic/releases/download/v${GNMIC_V}/gnmic_${GNMIC_V}_Linux_x86_64.rpm -o /tmp/gnmic.rpm && \
+    # sudo yum localinstall -y /tmp/gnmic.rpm && sudo rm -f /tmp/gnmic.rpm
 
 # Install pyGNMI to /usr/local/lib[64]/python3.6/site-packages
 # RUN sudo yum-config-manager --disable ipdcentos ipdrepo ius && sudo yum clean all
