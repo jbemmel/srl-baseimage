@@ -50,6 +50,10 @@ ONBUILD COPY ./mgmt_cli_engine_command_loop.py /opt/srlinux/python/virtual-env/l
 ONBUILD COPY ./traceroute.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/traceroute.py
 ONBUILD COPY ./arpnd_reports.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/arpnd_reports.py
 
+# show bgp community
+ONBUILD COPY ./bgp_reports_detail.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/
+ONBUILD COPY ./bgp_ipv4_community_route_report.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/
+
 # Integrate custom vxlan-traceroute CLI commands
 ONBUILD COPY ./vxlan_traceroute.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/
 ONBUILD RUN sudo sh -c ' echo -e "vxlan_traceroute = srlinux.mgmt.cli.plugins.vxlan_traceroute:Plugin" \
