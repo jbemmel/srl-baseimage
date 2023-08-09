@@ -56,13 +56,17 @@ Matching Paths: 2
         )
 
     def get_syntax(self):
-        return Syntax('community').add_unnamed_argument('community',
+        return (Syntax('community').add_unnamed_argument('community',
           # array_type=ArgumentArrayType.leaflist,
           # Doesn't work, empty suggestions
           # suggestions=SchemaCompleter(path=self._get_ipv4_community_path,limit=5))
           # Doesn't work, exception 'not a node'
           # suggestions=KeyCompleter(path=self._get_ipv4_community_path,limit=5)
-          )
+          ).add_boolean_argument('best',help='List only BEST routes')
+           .add_boolean_argument('used',help='List only USED routes')
+           .add_boolean_argument('valid',help='List only VALID routes')
+           .add_boolean_argument('stale',help='List only STALE routes')
+           )
 
     def get_data_schema(self):
         '''
@@ -110,6 +114,11 @@ Matching Paths: 2
 
     def _populate_route(self, state, data_root):
         netinst_name = self._arguments.get('network-instance', 'name')
+        valid = self._arguments.get_or('valid', False)
+        best = self._arguments.get_or('best', False)
+        used = self._arguments.get_or('used', False)
+        stale = self._arguments.get_or('stale', False)
+
         count = 0
 
         attr_sets = self._getAttrSets_(state)
@@ -127,6 +136,15 @@ Matching Paths: 2
 
             if int(rib_route.attr_id) not in matching_attrset_ids:
                 logging.info(f'{rib_route.attr_id} not in {matching_attrset_ids}')
+                continue
+
+            if valid and not rib_route.valid_route:
+                continue
+            if best and not rib_route.best_route:
+                continue
+            if used and not rib_route.used_route:
+                continue
+            if stale and not rib_route.stale_route:
                 continue
 
             result = result_header.routes.create(rib_route.prefix, rib_route.neighbor, rib_route.path_id)
