@@ -7,20 +7,15 @@
 from enum import Enum, auto
 from srlinux import data
 from srlinux.data import Data, Formatter, TagValuePrinter, Indent
-from srlinux.mgmt.cli.schema_completer import SchemaCompleter
+from srlinux.mgmt.cli.key_completer import KeyCompleter
 from srlinux.location import build_path
 from srlinux.mgmt.cli import ParseError, ExecuteError
 from srlinux.schema import FixedSchemaRoot
 from srlinux.strings import split_before
 from srlinux.syntax import Syntax
-import ipaddress
+from srlinux.syntax.argument import ArgumentArrayType
+
 import logging
-
-
-class BgpFilterCriteria(Enum):
-    Exact = auto()
-    OrLonger = auto()
-
 
 class BgpIpv4CommunityFilter(object):
     '''
@@ -28,27 +23,24 @@ class BgpIpv4CommunityFilter(object):
 
         Example output:
 
-        # show network-instance default protocols bgp routes ipv4 community 65001:1
-          +------------------------------------------------------------------------------+
-           Show report for the BGP routes to network 121.1.11.0/24
-          +------------------------------------------------------------------------------+
-          Network: 121.1.11.0/24
-          Received Paths: 2
-          Path 1: <Best, Valid, Used>
-          Route source : External BGP neighbor 192.168.31.3 (00h:00m:02s ago)
-          Route preference : No MED, LocalPref is 100, RoutePref is 20
-          BGP next-hop : 192.168.31.3
-          Path : i 64521
-          Communities : [ 64521:100 ]
-          Path 2: <Valid, Used>
-          Route source : External BGP neighbor 192.168.31.1 (01h:34m:17s ago)
-          Route preference : No MED, LocalPref is 100, RoutePref is 20
-          BGP next-hop : 192.168.31.1
-          Path : i 64521
-          Communities : None
-          Path1 was advertised to:
-          [ 192.168.31.4, 192.168.31.5, 192.168.31.6 ]
-          -------------------------------------------------------------------------------'''
+        A:s1# show network-instance default protocols bgp routes ipv4 community 65001:1 
+---------------------------------------------------------------------------------------------
+Show report for the BGP routes with target community "65001:1" in network-instance "default"
+---------------------------------------------------------------------------------------------
+Matching Paths: 2
+  Path 1: 1.1.1.1/32 <Best,Valid,Used,>
+    Route source    : neighbor 10.0.0.2
+    Route Preference: MED is -, LocalPref is 100
+    BGP next-hop    : 10.0.0.2
+    Path            :  ? [65001]
+    Communities     : 65001:1
+  Path 2: 10.0.0.0/24 <Valid,>
+    Route source    : neighbor 10.0.0.2
+    Route Preference: MED is -, LocalPref is 100
+    BGP next-hop    : 10.0.0.2
+    Path            :  i [65001]
+    Communities     : 65001:1
+    '''
 
     __slots__ = (
         '_arguments',
@@ -57,15 +49,20 @@ class BgpIpv4CommunityFilter(object):
     )
 
     def _get_ipv4_community_path(self, arguments):
+        # Only 4-byte community values
         return build_path(
-            '/network-instance[name={name}]/bgp-rib/attr-sets/attr-set[index=*]/communities/community:',
+            '/network-instance[name={name}]/bgp-rib/attr-sets/attr-set[index=*]/communities/community',
             name=arguments.get('network-instance', 'name')
         )
 
     def get_syntax(self):
         return Syntax('community').add_unnamed_argument('community',
+          # array_type=ArgumentArrayType.leaflist,
           # Doesn't work, empty suggestions
-          suggestions=SchemaCompleter(path=self._get_ipv4_community_path,limit=500))
+          # suggestions=SchemaCompleter(path=self._get_ipv4_community_path,limit=5))
+          # Doesn't work, exception 'not a node'
+          # suggestions=KeyCompleter(path=self._get_ipv4_community_path,limit=5)
+          )
 
     def get_data_schema(self):
         '''
@@ -76,7 +73,7 @@ class BgpIpv4CommunityFilter(object):
 
         route = root.add_child(
             'header',
-            keys=['network-instance', 'prefix'],
+            keys=['network-instance', 'community'],
             fields=['total path'],
         )
         route.add_child(
@@ -114,9 +111,6 @@ class BgpIpv4CommunityFilter(object):
     def _populate_route(self, state, data_root):
         netinst_name = self._arguments.get('network-instance', 'name')
         count = 0
-        advertised_path = 0
-        current_route_prefix = None
-        prev_route_prefix = None
 
         attr_sets = self._getAttrSets_(state)
         matching_attrset_ids = []
@@ -124,6 +118,8 @@ class BgpIpv4CommunityFilter(object):
             if self._matches_community(attr_set):
                 logging.debug(f'Found matching attr_set: {attr_set.index}')
                 matching_attrset_ids.append( int(attr_set.index) )
+
+        result_header = data_root.header.create(netinst_name, self._requested_community)
 
         local_rib = self._getLocalRib_(state)
         for rib_route in local_rib.get_descendants('/network-instance/bgp-rib/afi-safi/ipv4-unicast/rib-in-out/rib-in-post/routes'):
@@ -133,7 +129,6 @@ class BgpIpv4CommunityFilter(object):
                 logging.info(f'{rib_route.attr_id} not in {matching_attrset_ids}')
                 continue
 
-            result_header = data_root.header.create(netinst_name, rib_route.prefix)
             result = result_header.routes.create(rib_route.prefix, rib_route.neighbor, rib_route.path_id)
 
             count += 1
@@ -240,10 +235,10 @@ class StatisticsFormatter_header(Formatter):
 
     def iter_format(self, entry, max_width):
         yield from self._format_header_line(max_width)
-        yield f'Show report for the BGP routes with target community in network-instance  "{entry.network_instance}"'
+        yield f'Show report for the BGP routes with target community "{entry.community}" in network-instance "{entry.network_instance}"'
         yield from self._format_header(entry, max_width)
-        yield f'Network: {entry.prefix}'
-        yield f'Received Paths: {entry.total_path}'
+        # yield f'Network: {entry.prefix}'
+        yield f'Matching Paths: {entry.total_path}'
         yield from entry.routes.iter_format(max_width)
         # yield from entry.advertised.iter_format(max_width)
         yield from self._format_header_line(max_width)
@@ -268,7 +263,7 @@ class StatisticsFormatter_footer(Formatter):
 
 class StatisticsFormatter_data(Formatter):
     def iter_format(self, entry, max_width):
-        yield f'Path {entry.path_count}: {entry.status}'
+        yield f'Path {entry.path_count}: {entry.network} {entry.status}'
 
         printer = TagValuePrinter(['Route source',
                                    'Route Preference',
@@ -294,7 +289,7 @@ class StatisticsFormatter_data(Formatter):
             self._get_invalid_reason(entry),
             self._get_tie_break_reason(entry)
         )
-        values = (v for v in values)
+        # values = (v for v in values)
 
         yield from data.indent(printer.iter_format(values), '  ')
 
