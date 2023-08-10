@@ -1,0 +1,91 @@
+#
+# Demo lab to test a custom CLI plugin for IP BGP routes with communities
+#
+
+name: bgp-community-cli-lab
+
+topology:
+  kinds:
+    srl:
+      image: srl/custombase:latest
+
+      binds:
+      - bgp_ipv4_community_route_report.py:/opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_ipv4_community_route_report.py
+
+  nodes:
+    s1:
+     kind: srl
+     startup-config: |
+        /routing-policy {
+          community-set ANYCAST-VIP member [ 65000:1 ]
+          policy add-community default-action policy-result accept bgp communities add ANYCAST-VIP
+        }
+        /interface ethernet-1/1
+        admin-state enable
+        subinterface 0 {
+         ipv4 {
+            admin-state enable
+            address 10.0.0.1/24 primary
+        /network-instance default
+        type default
+        admin-state enable
+        interface ethernet-1/1.0 { }
+        protocols {
+         bgp {
+            autonomous-system 65000
+            router-id 10.0.0.1
+            ebgp-default-policy export-reject-all false import-reject-all false
+            export-policy add-community
+            afi-safi ipv4-unicast {
+                admin-state enable
+            }
+            group ebgp {
+            }
+            neighbor 10.0.0.2 {
+                peer-as 65001
+                peer-group ebgp
+            }
+         }
+        }
+        next-hop-groups group blackhole blackhole generate-icmp true
+        static-routes route 8.8.8.8/32 next-hop-group blackhole
+
+    s2:
+     kind: srl
+     startup-config: |
+        /routing-policy {
+          community-set ANYCAST-VIP member [ 65001:1 ]
+          policy add-community default-action policy-result accept bgp communities add ANYCAST-VIP
+        }
+        /interface ethernet-1/1
+        admin-state enable
+        subinterface 0 {
+         ipv4 {
+            admin-state enable
+            address 10.0.0.2/24 primary
+        /network-instance default
+        type default
+        admin-state enable
+        interface ethernet-1/1.0 { }
+        protocols {
+         bgp {
+            autonomous-system 65001
+            router-id 10.0.0.2
+            ebgp-default-policy export-reject-all false import-reject-all false
+            export-policy add-community
+            afi-safi ipv4-unicast {
+                admin-state enable
+            }
+            group ebgp {
+            }
+            neighbor 10.0.0.1 {
+                peer-as 65000
+                peer-group ebgp
+            }
+         }
+        }
+        next-hop-groups group blackhole blackhole generate-icmp true
+        static-routes route 1.1.1.1/32 next-hop-group blackhole
+
+  links:
+    - endpoints: ["s1:e1-1","s2:e1-1"]

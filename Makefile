@@ -33,3 +33,10 @@ authorized_keys:
 
 ssh_config:
 	test -f ~/.ssh/config || cp default_ssh_config ~/.ssh/config
+
+rpm:
+	docker run --rm -v $$(pwd):/tmp -w /tmp goreleaser/nfpm package \
+	--config /tmp/nfpm.yml \
+	--target /tmp/route-community-filter.rpm \
+	--packager rpm
+
