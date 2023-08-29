@@ -39,7 +39,8 @@ RUN sudo yum install -y -v jq diffutils python3.8 && sudo pip3 install pylint
 RUN sudo pip3 install virtualenv --upgrade
 
 # Add pylint and sre_yield as before, this ends up under /usr/local/lib
-RUN sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install pygnmi pylint-protobuf sre_yield
+RUN sudo rm -rf /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/grpcio-1.18.0+2.dist-info
+RUN sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install grpcio pygnmi pylint-protobuf sre_yield --upgrade
 
 # Fix gNMI path key order until patch is accepted
 # RUN sudo sed -i.orig 's/path_elem.key.items()/sorted(path_elem.key.items())/g' /usr/local/lib/python3.6/site-packages/pygnmi/client.py
