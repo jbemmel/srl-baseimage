@@ -14,7 +14,8 @@ ENV AGENT_PYTHONPATH="$P1:$P2:$P3:$P4"
 # ARG GNMIC_V=0.31.5
 RUN sudo rm -rf /etc/yum.repos.d/epel* /etc/yum.repos.d/elrepo* && \
     sudo yum clean all && \
-    sudo bash -c "$(curl -sL https://get-gnmic.openconfig.net)"
+    sudo bash -c "$(curl -sL https://get-gnmic.openconfig.net)" 
+    # Can add e.g. -- -v 0.31.7
     # sudo curl -sL https://github.com/openconfig/gnmic/releases/download/v${GNMIC_V}/gnmic_${GNMIC_V}_Linux_x86_64.rpm -o /tmp/gnmic.rpm && \
     # sudo yum localinstall -y /tmp/gnmic.rpm && sudo rm -f /tmp/gnmic.rpm
 
