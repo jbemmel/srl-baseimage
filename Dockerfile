@@ -43,7 +43,7 @@ RUN sudo rm -rf /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/grpc
 RUN sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install grpcio pylint-protobuf sre_yield --upgrade
 
 # Use custom branch for pygnmi, with better multi-threading support
-RUN sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install https://github.com/jbemmel/pygnmi/archive/master.zip
+RUN sudo   PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install https://github.com/jbemmel/pygnmi/archive/master.zip
 
 # Fix gNMI path key order until patch is accepted
 # RUN sudo sed -i.orig 's/path_elem.key.items()/sorted(path_elem.key.items())/g' /usr/local/lib/python3.6/site-packages/pygnmi/client.py
