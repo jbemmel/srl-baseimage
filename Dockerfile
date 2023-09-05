@@ -72,7 +72,7 @@ ONBUILD RUN echo "Omitting CLI enhancements"
 FROM base_enhance_cli_${ENHANCE_CLI}
 
 # Test enhanced DHCP YANG model with augment when clause
-COPY srl_nokia-interfaces-ip-dhcp.yang /opt/srlinux/models/srl_nokia/models/interfaces/
+# COPY srl_nokia-interfaces-ip-dhcp.yang /opt/srlinux/models/srl_nokia/models/interfaces/
 
 # Define custom aliases for admin user, including Cisco style show CLI
 RUN sudo mkdir -p /home/admin && printf '%s\n' \
@@ -106,10 +106,10 @@ RUN sudo sed -i.orig 's/10,/11, # JvB increased/g' \
 # Preserve order of communities
 # Fix leafref path for bgp groups under dynamic-neighbors? TODO
 # Remove 'mandatory' for TLS on gNMI? Does not work
-RUN cd /opt/srlinux/models/srl_nokia/models/ && \
-    sudo sed -i.orig 's/4\[0-1\]\[0-9\]{7}/42[0-8][0-9]{7}|4[0-1][0-9]{8}/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang && \
-    sudo sed -i.orig 's/leaf-list member {/leaf-list member { ordered-by user;/g' routing-policy/srl_nokia-routing-policy.yang && \
-    sudo sed -i.orig 's|/srl_nokia-netinst:network-instance/srl_nokia-netinst:protocols/srl_nokia-bgp:bgp/srl_nokia-bgp:group/srl_nokia-bgp:group-name|../../../group/group-name|g' network-instance/srl_nokia-bgp.yang
+# RUN cd /opt/srlinux/models/srl_nokia/models/ && \
+#    sudo sed -i.orig 's/4\[0-1\]\[0-9\]{7}/42[0-8][0-9]{7}|4[0-1][0-9]{8}/g' routing-policy/srl_nokia-policy-types.yang common/srl_nokia-common.yang && \
+#    sudo sed -i.orig 's/leaf-list member {/leaf-list member { ordered-by user;/g' routing-policy/srl_nokia-routing-policy.yang && \
+#    sudo sed -i.orig 's|/srl_nokia-netinst:network-instance/srl_nokia-netinst:protocols/srl_nokia-bgp:bgp/srl_nokia-bgp:group/srl_nokia-bgp:group-name|../../../group/group-name|g' network-instance/srl_nokia-bgp.yang
 #    sudo sed -i.orig 's|false() or (/srl_nokia-lldp:system/lldp/interface\[srl_nokia-lldp:name=current()/../../../srl_nokia|true() or (/srl_nokia-lldp:system/lldp/interface\[srl_nokia-lldp:name=current()/../../../srl_nokia|g' interfaces/srl_nokia-interfaces-l2cp.yang
 
 RUN sudo yum install -y lldpad
@@ -120,16 +120,16 @@ RUN sudo yum install -y lldpad
 # sudo sed -i "0,/3}|\[0-9])';/s//3}|\[1-9\])'; \/\/ JvB disallow ip:0 RD/" common/srl_nokia-common.yang
 
 # Fix ESI sensitivity to capitalization
-RUN sudo sed -i.orig 's/esi=ethseg.esi/esi=ethseg.esi.lower()/g' \
-  /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/system_network_instance_reports.py
+# RUN sudo sed -i.orig 's/esi=ethseg.esi/esi=ethseg.esi.lower()/g' \
+#  /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/system_network_instance_reports.py
 
 # Fix bgp route nexthop displayed in CLI, 2 instances, 2023-2-22 now part of release
 # RUN sudo sed -i.orig 's/routes.prefix, nexthop/routes.prefix, attr.next_hop if attr.next_hop!="0.0.0.0" else nexthop/g' \
 #    /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_neigh_advertised_routes_report.py
 
 # Fix boot script errors
-RUN sudo sed -i.orig 's/!srl/! srl/g' /opt/srlinux/bin/bootscript/05_sr_createuser.sh && \
-    sudo sed -i.orig 's/python/python3/g' /opt/srlinux/bin/bootscript/05_sr_createuser.sh
+RUN sudo sed -i.orig 's/!srl/! srl/g' /opt/srlinux/bin/bootscript/05_sr_createuser.sh
+#    sudo sed -i.orig 's/python /python3 /g' /opt/srlinux/bin/bootscript/05_sr_createuser.sh
 
 # Make 'type' also a key for network instances? Doesn't work
 # sudo sed -i.orig 's/key "name";/key "name type";/' network-instance/srl_nokia-network-instance.yang
