@@ -1,0 +1,269 @@
+name: vlan-lab
+
+topology:
+  kinds:
+    srl:
+      # Need IXR D2 or D3 for EVPN/VXLAN support
+      type: ixrd2 # See https://www.nokia.com/networks/products/7250-interconnect-router/
+      image: srl/custombase:latest
+
+    linux:
+      image: frr-with-lldp:latest # Custom built image with lldpad and daemons included
+
+  nodes:
+    spine1: 
+     kind: srl
+     type: ixrd3
+     startup-config: |
+      set / routing-policy prefix-set loopbacks prefix 0.0.0.0/0 mask-length-range 32..32
+      set / routing-policy prefix-set loopbacks prefix ::/0 mask-length-range 128..128
+      set / routing-policy policy accept-all default-action policy-result accept
+      set / routing-policy policy export-loopbacks default-action policy-result reject
+      set / routing-policy policy export-loopbacks statement 10 match prefix-set loopbacks
+      set / routing-policy policy export-loopbacks statement 10 action policy-result accept
+      set / routing-policy policy import-loopbacks default-action policy-result reject
+      set / routing-policy policy import-loopbacks statement 10 match prefix-set loopbacks
+      set / routing-policy policy import-loopbacks statement 10 action policy-result accept
+      set / interface ethernet-1/1 description "to leaf1"
+      set / interface ethernet-1/1 admin-state enable
+      set / interface ethernet-1/1 subinterface 0 type routed
+      set / interface ethernet-1/1 subinterface 0 admin-state enable
+      set / interface ethernet-1/1 subinterface 0 ipv6 admin-state enable
+      set / interface ethernet-1/1 subinterface 0 ipv6 router-advertisement router-role admin-state enable
+      set / interface ethernet-1/2 description "to leaf2"
+      set / interface ethernet-1/2 admin-state enable
+      set / interface ethernet-1/2 subinterface 0 type routed
+      set / interface ethernet-1/2 subinterface 0 admin-state enable
+      set / interface ethernet-1/2 subinterface 0 ipv6 admin-state enable
+      set / interface ethernet-1/2 subinterface 0 ipv6 router-advertisement router-role admin-state enable
+      set / interface lo0 admin-state enable
+      set / interface lo0 subinterface 0 admin-state enable
+      set / interface lo0 subinterface 0 ipv4 admin-state enable
+      set / interface lo0 subinterface 0 ipv4 address 1.1.1.1/32 primary
+      set / interface system0 admin-state enable
+      set / interface system0 subinterface 0 admin-state enable
+      set / interface system0 subinterface 0 ipv4 admin-state enable
+      set / interface system0 subinterface 0 ipv4 address 1.1.1.1/32
+      set / interface system0 subinterface 0 ipv6 admin-state enable
+      set / interface system0 subinterface 0 ipv6 address 2001::1:1:1:1/128
+      set / network-instance default ip-forwarding receive-ipv4-check false
+      set / network-instance default interface ethernet-1/1.0
+      set / network-instance default interface ethernet-1/2.0
+      set / network-instance default interface system0.0
+      set / network-instance default protocols bgp admin-state enable
+      set / network-instance default protocols bgp autonomous-system 65534 !!! Overlay AS
+      set / network-instance default protocols bgp router-id 1.1.1.1
+      set / network-instance default protocols bgp dynamic-neighbors accept match 1.1.0.0/16 peer-group evpn-rr-clients
+      set / network-instance default protocols bgp dynamic-neighbors accept match 1.1.0.0/16 allowed-peer-as [ 65534 ]
+      set / network-instance default protocols bgp dynamic-neighbors interface ethernet-1/1.0 peer-group bgp-unnumbered-peers
+      set / network-instance default protocols bgp dynamic-neighbors interface ethernet-1/1.0 allowed-peer-as [ 4200000002..4200000018 ]
+      set / network-instance default protocols bgp dynamic-neighbors interface ethernet-1/2.0 peer-group bgp-unnumbered-peers
+      set / network-instance default protocols bgp dynamic-neighbors interface ethernet-1/2.0 allowed-peer-as [ 4200000002..4200000018 ]
+      set / network-instance default protocols bgp afi-safi evpn evpn advertise-ipv6-next-hops true
+      set / network-instance default protocols bgp afi-safi ipv4-unicast admin-state enable
+      set / network-instance default protocols bgp afi-safi ipv4-unicast multipath max-paths-level-1 8
+      set / network-instance default protocols bgp afi-safi ipv4-unicast multipath max-paths-level-2 8
+      set / network-instance default protocols bgp afi-safi ipv6-unicast multipath max-paths-level-1 8
+      set / network-instance default protocols bgp afi-safi ipv6-unicast multipath max-paths-level-2 8
+      set / network-instance default protocols bgp route-advertisement rapid-withdrawal true
+      set / network-instance default protocols bgp group bgp-unnumbered-peers export-policy export-loopbacks
+      set / network-instance default protocols bgp group bgp-unnumbered-peers import-policy import-loopbacks
+      set / network-instance default protocols bgp group bgp-unnumbered-peers afi-safi evpn admin-state disable
+      set / network-instance default protocols bgp group bgp-unnumbered-peers afi-safi ipv4-unicast admin-state enable
+      set / network-instance default protocols bgp group bgp-unnumbered-peers local-as as-number 4200000001
+      set / network-instance default protocols bgp group bgp-unnumbered-peers local-as prepend-global-as false
+      set / network-instance default protocols bgp group ebgp-peers admin-state enable
+      set / network-instance default protocols bgp group ebgp-peers export-policy export-loopbacks
+      set / network-instance default protocols bgp group ebgp-peers import-policy import-loopbacks
+      set / network-instance default protocols bgp group ebgp-peers failure-detection enable-bfd true
+      set / network-instance default protocols bgp group ebgp-peers failure-detection fast-failover true
+      set / network-instance default protocols bgp group ebgp-peers afi-safi ipv4-unicast admin-state enable
+      set / network-instance default protocols bgp group ebgp-peers afi-safi ipv6-unicast admin-state enable
+      set / network-instance default protocols bgp group ebgp-peers local-as as-number 4200000001
+      set / network-instance default protocols bgp group ebgp-peers local-as prepend-global-as false
+      set / network-instance default protocols bgp group ebgp-peers timers connect-retry 10
+      set / network-instance default protocols bgp group evpn-rr-clients admin-state enable
+      set / network-instance default protocols bgp group evpn-rr-clients export-policy accept-all
+      set / network-instance default protocols bgp group evpn-rr-clients import-policy accept-all
+      set / network-instance default protocols bgp group evpn-rr-clients peer-as 65534
+      set / network-instance default protocols bgp group evpn-rr-clients afi-safi evpn admin-state enable
+      set / network-instance default protocols bgp group evpn-rr-clients afi-safi evpn evpn advertise-ipv6-next-hops false
+      set / network-instance default protocols bgp group evpn-rr-clients afi-safi ipv4-unicast admin-state disable
+      set / network-instance default protocols bgp group evpn-rr-clients local-as as-number 65534
+      set / network-instance default protocols bgp group evpn-rr-clients route-reflector client true
+      set / network-instance default protocols bgp group evpn-rr-clients route-reflector cluster-id 1.1.1.1
+      set / network-instance default protocols bgp group evpn-rr-clients timers connect-retry 10
+      set / network-instance default protocols bgp group evpn-rr-clients transport local-address 1.1.1.1
+
+    leaf1:
+     kind: srl
+     startup-config: |
+      set / routing-policy prefix-set loopbacks prefix 0.0.0.0/0 mask-length-range 32..32
+      set / routing-policy prefix-set loopbacks prefix ::/0 mask-length-range 128..128
+      set / routing-policy policy accept-all default-action policy-result accept
+      set / routing-policy policy export-loopbacks default-action policy-result reject
+      set / routing-policy policy export-loopbacks statement 10 match prefix-set loopbacks
+      set / routing-policy policy export-loopbacks statement 10 action policy-result accept
+      set / routing-policy policy import-loopbacks default-action policy-result reject
+      set / routing-policy policy import-loopbacks statement 10 match prefix-set loopbacks
+      set / routing-policy policy import-loopbacks statement 10 action policy-result accept
+      set / interface ethernet-1/1 admin-state enable
+      set / interface ethernet-1/49 description "to spine"
+      set / interface ethernet-1/49 admin-state enable
+      set / interface ethernet-1/49 subinterface 0 type routed
+      set / interface ethernet-1/49 subinterface 0 admin-state enable
+      set / interface ethernet-1/49 subinterface 0 ipv6 admin-state enable
+      set / interface ethernet-1/49 subinterface 0 ipv6 router-advertisement router-role admin-state enable
+      set / interface ethernet-1/50 description "to leaf2"
+      set / interface ethernet-1/50 admin-state enable
+      set / interface ethernet-1/50 subinterface 0 type routed
+      set / interface ethernet-1/50 subinterface 0 admin-state enable
+      set / interface ethernet-1/50 subinterface 0 ipv6 admin-state enable
+      set / interface ethernet-1/50 subinterface 0 ipv6 router-advertisement router-role admin-state enable
+      set / interface lo0 admin-state enable
+      set / interface lo0 subinterface 0 admin-state enable
+      set / interface lo0 subinterface 0 ipv4 admin-state enable
+      set / interface lo0 subinterface 0 ipv4 address 1.1.0.1/32 primary
+      set / interface system0 admin-state enable
+      set / interface system0 subinterface 0 admin-state enable
+      set / interface system0 subinterface 0 ipv4 admin-state enable
+      set / interface system0 subinterface 0 ipv4 address 1.1.0.1/32
+      set / interface system0 subinterface 0 ipv6 admin-state enable
+      set / interface system0 subinterface 0 ipv6 address 2001::1:1:0:1/128
+      set / network-instance default ip-forwarding receive-ipv4-check false
+      set / network-instance default interface ethernet-1/49.0
+      set / network-instance default interface ethernet-1/50.0
+      set / network-instance default interface system0.0
+      set / network-instance default protocols bgp admin-state enable
+      set / network-instance default protocols bgp autonomous-system 65534
+      set / network-instance default protocols bgp router-id 1.1.0.1
+      set / network-instance default protocols bgp dynamic-neighbors interface ethernet-1/49.0 peer-group bgp-unnumbered-peers
+      set / network-instance default protocols bgp dynamic-neighbors interface ethernet-1/49.0 allowed-peer-as [ 4200000001 ]
+      set / network-instance default protocols bgp dynamic-neighbors interface ethernet-1/50.0 peer-group bgp-unnumbered-peers
+      set / network-instance default protocols bgp dynamic-neighbors interface ethernet-1/50.0 allowed-peer-as [ 4200000003 ]
+      set / network-instance default protocols bgp afi-safi evpn evpn advertise-ipv6-next-hops true
+      set / network-instance default protocols bgp afi-safi ipv4-unicast admin-state enable
+      set / network-instance default protocols bgp afi-safi ipv4-unicast multipath max-paths-level-1 8
+      set / network-instance default protocols bgp afi-safi ipv4-unicast multipath max-paths-level-2 8
+      set / network-instance default protocols bgp afi-safi ipv6-unicast multipath max-paths-level-1 8
+      set / network-instance default protocols bgp afi-safi ipv6-unicast multipath max-paths-level-2 8
+      set / network-instance default protocols bgp route-advertisement rapid-withdrawal true
+      set / network-instance default protocols bgp group bgp-unnumbered-peers export-policy export-loopbacks
+      set / network-instance default protocols bgp group bgp-unnumbered-peers import-policy import-loopbacks
+      set / network-instance default protocols bgp group bgp-unnumbered-peers afi-safi evpn admin-state disable
+      set / network-instance default protocols bgp group bgp-unnumbered-peers afi-safi ipv4-unicast admin-state enable
+      set / network-instance default protocols bgp group bgp-unnumbered-peers local-as as-number 4200000002
+      set / network-instance default protocols bgp group bgp-unnumbered-peers local-as prepend-global-as false
+      set / network-instance default protocols bgp group ebgp-peers admin-state enable
+      set / network-instance default protocols bgp group ebgp-peers export-policy export-loopbacks
+      set / network-instance default protocols bgp group ebgp-peers import-policy import-loopbacks
+      set / network-instance default protocols bgp group ebgp-peers afi-safi ipv4-unicast admin-state enable
+      set / network-instance default protocols bgp group ebgp-peers afi-safi ipv6-unicast admin-state enable
+      set / network-instance default protocols bgp group ebgp-peers local-as as-number 4200000002
+      set / network-instance default protocols bgp group ebgp-peers local-as prepend-global-as false
+      set / network-instance default protocols bgp group ebgp-peers timers connect-retry 10
+      set / network-instance default protocols bgp group evpn-rr admin-state enable
+      set / network-instance default protocols bgp group evpn-rr export-policy accept-all
+      set / network-instance default protocols bgp group evpn-rr import-policy accept-all
+      set / network-instance default protocols bgp group evpn-rr peer-as 65534
+      set / network-instance default protocols bgp group evpn-rr afi-safi evpn admin-state enable
+      set / network-instance default protocols bgp group evpn-rr afi-safi evpn evpn advertise-ipv6-next-hops false
+      set / network-instance default protocols bgp group evpn-rr afi-safi ipv4-unicast admin-state disable
+      set / network-instance default protocols bgp group evpn-rr local-as as-number 65534
+      set / network-instance default protocols bgp group evpn-rr timers connect-retry 10
+      set / network-instance default protocols bgp group evpn-rr transport local-address 1.1.0.1
+      set / network-instance default protocols bgp neighbor 1.1.1.1 admin-state enable
+      set / network-instance default protocols bgp neighbor 1.1.1.1 peer-group evpn-rr
+
+    leaf2:  
+     kind: srl
+     startup-config: |
+      set / routing-policy prefix-set loopbacks prefix 0.0.0.0/0 mask-length-range 32..32
+      set / routing-policy prefix-set loopbacks prefix ::/0 mask-length-range 128..128
+      set / routing-policy policy accept-all default-action policy-result accept
+      set / routing-policy policy export-loopbacks default-action policy-result reject
+      set / routing-policy policy export-loopbacks statement 10 match prefix-set loopbacks
+      set / routing-policy policy export-loopbacks statement 10 action policy-result accept
+      set / routing-policy policy import-loopbacks default-action policy-result reject
+      set / routing-policy policy import-loopbacks statement 10 match prefix-set loopbacks
+      set / routing-policy policy import-loopbacks statement 10 action policy-result accept
+      set / interface ethernet-1/1 admin-state enable
+      set / interface ethernet-1/49 description "to spine"
+      set / interface ethernet-1/49 admin-state enable
+      set / interface ethernet-1/49 subinterface 0 type routed
+      set / interface ethernet-1/49 subinterface 0 admin-state enable
+      set / interface ethernet-1/49 subinterface 0 ipv6 admin-state enable
+      set / interface ethernet-1/49 subinterface 0 ipv6 router-advertisement router-role admin-state enable
+      set / interface ethernet-1/50 description "to leaf1"
+      set / interface ethernet-1/50 admin-state enable
+      set / interface ethernet-1/50 subinterface 0 type routed
+      set / interface ethernet-1/50 subinterface 0 admin-state enable
+      set / interface ethernet-1/50 subinterface 0 ipv6 admin-state enable
+      set / interface ethernet-1/50 subinterface 0 ipv6 router-advertisement router-role admin-state enable
+      set / interface lo0 admin-state enable
+      set / interface lo0 subinterface 0 admin-state enable
+      set / interface lo0 subinterface 0 ipv4 admin-state enable
+      set / interface lo0 subinterface 0 ipv4 address 1.1.0.2/32 primary
+      set / interface system0 admin-state enable
+      set / interface system0 subinterface 0 admin-state enable
+      set / interface system0 subinterface 0 ipv4 admin-state enable
+      set / interface system0 subinterface 0 ipv4 address 1.1.0.2/32
+      set / interface system0 subinterface 0 ipv6 admin-state enable
+      set / interface system0 subinterface 0 ipv6 address 2001::1:1:0:2/128
+      set / network-instance default ip-forwarding receive-ipv4-check false
+      set / network-instance default interface ethernet-1/49.0
+      set / network-instance default interface ethernet-1/50.0
+      set / network-instance default interface system0.0
+      set / network-instance default protocols bgp admin-state enable
+      set / network-instance default protocols bgp autonomous-system 65534
+      set / network-instance default protocols bgp router-id 1.1.0.2
+      set / network-instance default protocols bgp dynamic-neighbors interface ethernet-1/49.0 peer-group bgp-unnumbered-peers
+      set / network-instance default protocols bgp dynamic-neighbors interface ethernet-1/49.0 allowed-peer-as [ 4200000001 ]
+      set / network-instance default protocols bgp dynamic-neighbors interface ethernet-1/50.0 peer-group bgp-unnumbered-peers
+      set / network-instance default protocols bgp dynamic-neighbors interface ethernet-1/50.0 allowed-peer-as [ 4200000002 ]
+      set / network-instance default protocols bgp afi-safi evpn evpn advertise-ipv6-next-hops true
+      set / network-instance default protocols bgp afi-safi ipv4-unicast admin-state enable
+      set / network-instance default protocols bgp afi-safi ipv4-unicast multipath max-paths-level-1 8
+      set / network-instance default protocols bgp afi-safi ipv4-unicast multipath max-paths-level-2 8
+      set / network-instance default protocols bgp afi-safi ipv6-unicast multipath max-paths-level-1 8
+      set / network-instance default protocols bgp afi-safi ipv6-unicast multipath max-paths-level-2 8
+      set / network-instance default protocols bgp route-advertisement rapid-withdrawal true
+      set / network-instance default protocols bgp group bgp-unnumbered-peers export-policy export-loopbacks
+      set / network-instance default protocols bgp group bgp-unnumbered-peers import-policy import-loopbacks
+      set / network-instance default protocols bgp group bgp-unnumbered-peers afi-safi evpn admin-state disable
+      set / network-instance default protocols bgp group bgp-unnumbered-peers afi-safi ipv4-unicast admin-state enable
+      set / network-instance default protocols bgp group bgp-unnumbered-peers local-as as-number 4200000003
+      set / network-instance default protocols bgp group bgp-unnumbered-peers local-as prepend-global-as false
+      set / network-instance default protocols bgp group ebgp-peers admin-state enable
+      set / network-instance default protocols bgp group ebgp-peers export-policy export-loopbacks
+      set / network-instance default protocols bgp group ebgp-peers import-policy import-loopbacks
+      set / network-instance default protocols bgp group ebgp-peers afi-safi ipv4-unicast admin-state enable
+      set / network-instance default protocols bgp group ebgp-peers afi-safi ipv6-unicast admin-state enable
+      set / network-instance default protocols bgp group ebgp-peers local-as as-number 4200000003
+      set / network-instance default protocols bgp group ebgp-peers local-as prepend-global-as false
+      set / network-instance default protocols bgp group ebgp-peers timers connect-retry 10
+      set / network-instance default protocols bgp group evpn-rr admin-state enable
+      set / network-instance default protocols bgp group evpn-rr export-policy accept-all
+      set / network-instance default protocols bgp group evpn-rr import-policy accept-all
+      set / network-instance default protocols bgp group evpn-rr peer-as 65534
+      set / network-instance default protocols bgp group evpn-rr afi-safi evpn admin-state enable
+      set / network-instance default protocols bgp group evpn-rr afi-safi evpn evpn advertise-ipv6-next-hops false
+      set / network-instance default protocols bgp group evpn-rr afi-safi ipv4-unicast admin-state disable
+      set / network-instance default protocols bgp group evpn-rr local-as as-number 65534
+      set / network-instance default protocols bgp group evpn-rr timers connect-retry 10
+      set / network-instance default protocols bgp group evpn-rr transport local-address 1.1.0.2
+      set / network-instance default protocols bgp neighbor 1.1.1.1 admin-state enable
+      set / network-instance default protocols bgp neighbor 1.1.1.1 peer-group evpn-rr
+
+    h1: { kind: linux } # Single connected Leaf1
+    h2: { kind: linux } # Single connected Leaf2
+    h3: { kind: linux } # Dual connected leaf1/2
+
+  links:
+    - endpoints: ["leaf1:e1-49","spine1:e1-1"]
+    - endpoints: ["leaf2:e1-49","spine1:e1-2"]
+    - endpoints: ["leaf1:e1-50","leaf2:e1-50"] # Link between leaves for plain VLAN forwarding
+    - endpoints: ["h1:eth1","leaf1:e1-1"]
+    - endpoints: ["h2:eth1","leaf2:e1-1"]
+    - endpoints: ["h3:eth1","leaf1:e1-2"]
+    - endpoints: ["h3:eth2","leaf2:e1-2"]
