@@ -1,0 +1,92 @@
+#
+# A realistic advanced Internet connected fabric with IPv4 NAT and v4/v6 VRRP servers
+#
+
+name: route-leaking
+
+mgmt:
+  network: netlab_mgmt # To connect Netbox to this network
+
+topology:
+  kinds:
+    vr-nokia_sros:
+      image: vrnetlab/vr-sros:latest
+      license: /Projects/SR_OS_VSR-SIM_license.txt
+
+    srl:
+      image: ghcr.io/nokia/srlinux:latest
+
+    linux:
+      image: alpine-with-lldp:latest # Custom built image with lldpad and keepalived
+  
+  nodes:
+    gw:
+      kind: vr-nokia_sros
+      startup-config: gw_config.txt
+
+    spine1:
+      kind: srl
+      group: spines
+      type: ixrd3
+      startup-config: spine1.json
+
+    spine2:
+      kind: srl
+      group: spines
+      type: ixrd3
+      startup-config: spine2.json
+
+    leaf1:
+      kind: srl
+      group: leaves
+      type: ixrd2
+      startup-config: leaf1.json
+
+    leaf2:
+      kind: srl
+      group: leaves
+      type: ixrd2
+      startup-config: leaf2.json
+
+    client:
+      kind: linux
+      group: hosts
+      binds:
+      - /lib/modules:/lib/modules:ro # for bonding module
+      - interfaces.client1:/etc/network/interfaces
+
+    vrrp1:
+      kind: linux
+      group: vrrp
+      binds:
+      - /lib/modules:/lib/modules:ro
+      - interfaces.client2:/etc/network/interfaces
+      - keepalived.master:/etc/keepalived/keepalived.conf
+      - keepalived-tweaks.sh:/etc/keepalived/keepalived-tweaks.sh
+    vrrp2:
+      kind: linux
+      group: vrrp
+      binds:
+      - /lib/modules:/lib/modules:ro
+      - interfaces.client3:/etc/network/interfaces
+      - keepalived.backup:/etc/keepalived/keepalived.conf
+      - keepalived-tweaks.sh:/etc/keepalived/keepalived-tweaks.sh
+
+  links:
+    - endpoints: ["gw:eth1", "spine1:e1-1"]
+    - endpoints: ["gw:eth2", "spine2:e1-1"]
+
+    - endpoints: ["leaf1:e1-49", "spine1:e1-2"]
+    - endpoints: ["leaf1:e1-50", "spine2:e1-2"]
+    - endpoints: ["leaf2:e1-49", "spine1:e1-3"]
+    - endpoints: ["leaf2:e1-50", "spine2:e1-3"]
+
+    # LAG to pair of leaves
+    - endpoints: ["client:eth1", "leaf1:e1-1"]
+    - endpoints: ["client:eth2", "leaf2:e1-1"]
+
+    - endpoints: ["vrrp1:eth1", "leaf1:e1-2"]
+    # - endpoints: ["client2:eth2", "leaf4:e1-3"]
+
+    - endpoints: ["vrrp2:eth1", "leaf2:e1-3"]
+    # - endpoints: ["client3:eth2", "leaf4:e1-4"]
