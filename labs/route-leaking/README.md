@@ -1,8 +1,15 @@
-![image](https://github.com/jbemmel/srl-self-organizing/assets/2031627/aec938ba-b185-4cc7-8932-e19b4efe6ef3)
+# Multi-tenant Internet services using an EVPN VXLAN fabric
 
-# Run this lab
+This lab illustrates an advanced, realistic deployment of Internet facing services for multiple tenants. Each tenant is using one or more separate IP-VRF instances, and *Route Leaking* is used to aggregate all these services towards the public Internet
+
+Key feature highlights:
+* IPv4/v6 route leaking
+* EVPN VXLAN fabric with Route Reflectors and multi-homed LAGs
+* VRRP v4/v6 tenant servers
+
+## Run this lab
 ```
-sudo clab deploy -t spine-leaf-evpn.clab.yml --reconfigure
+sudo clab deploy --reconfigure
 ```
 
 # Ping test to VRRP VIP

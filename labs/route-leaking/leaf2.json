@@ -1,4 +1,1028 @@
 {
+  "_preamble": {
+    "header": {
+      "generated-by": "SRLINUX",
+      "name": "",
+      "comment": "",
+      "created": "2023-10-06T20:58:17.548Z",
+      "release": "v23.7.2",
+      "enabled-yang-features": ["srl_nokia-features:acl-policer-resource-utilization", "srl_nokia-features:admin-user-roles", "srl_nokia-features:anycast-gw", "srl_nokia-features:arp-nd-datapath-programming", "srl_nokia-features:bgp-add-paths", "srl_nokia-features:bgp-auth-password", "srl_nokia-features:bgp-cfg-afi-safi-list", "srl_nokia-features:bgp-graceful-restart-gaps", "srl_nokia-features:bgp-ipv6-next-hop-tunnel-resolution", "srl_nokia-features:bgp-local-as-container-iso-list", "srl_nokia-features:bgp-max-ecmp-hash-buckets", "srl_nokia-features:bgp-mtu-discovery", "srl_nokia-features:bgp-prefix-limit", "srl_nokia-features:bgp-restart-max-wait", "srl_nokia-features:bgp-rib-afi-safi-list", "srl_nokia-features:bgp-rib-afi-safi-route", "srl_nokia-features:bgp-single-hop-connected-check", "srl_nokia-features:bgp-unnumbered-peers", "srl_nokia-features:bridged", "srl_nokia-features:bt-evpn-vlan-aware-bundle-interop", "srl_nokia-features:cli-plugin-authorization", "srl_nokia-features:dac-link-training", "srl_nokia-features:dhcp-relay-fqdn", "srl_nokia-features:dot1p-classifier-rewrite", "srl_nokia-features:dot1q-vlan-ranges", "srl_nokia-features:dynamic-tcam", "srl_nokia-features:event-handler", "srl_nokia-features:evpn", "srl_nokia-features:evpn-advertise-arp-nd-only-with-mac-table-entry", "srl_nokia-features:evpn-ifl-unequal-ecmp", "srl_nokia-features:evpn-mac-ip-adv-arp-nd-ext-comm", "srl_nokia-features:evpn-mh-ip-aliasing", "srl_nokia-features:evpn-mh-manual-alg", "srl_nokia-features:evpn-mh-pref-alg", "srl_nokia-features:evpn-mh-single-active", "srl_nokia-features:evpn-mh-virtual-es", "srl_nokia-features:fixed", "srl_nokia-features:ingress-subif-policing", "srl_nokia-features:interface-references", "srl_nokia-features:ip-acl-dscp-set", "srl_nokia-features:ip-qos-multifield", "srl_nokia-features:isis-level-database", "srl_nokia-features:isis-lsdb", "srl_nokia-features:isis-nsf", "srl_nokia-features:l2-proxy-arp", "srl_nokia-features:l2-proxy-arp-nd-control-flood-on-evpn", "srl_nokia-features:l2-proxy-nd", "srl_nokia-features:l2cp-transparency", "srl_nokia-features:l3-proxy-arp", "srl_nokia-features:l3-proxy-nd", "srl_nokia-features:lacp-fallback", "srl_nokia-features:lag", "srl_nokia-features:license", "srl_nokia-features:mirroring", "srl_nokia-features:mirroring-intf-stats", "srl_nokia-features:named-queues-and-named-fcs", "srl_nokia-features:packet-tracer", "srl_nokia-features:platform-7220-d2", "srl_nokia-features:ra-guard", "srl_nokia-features:reload-delay", "srl_nokia-features:route-leaking", "srl_nokia-features:routing-policy-bgp-med", "srl_nokia-features:routing-policy-named-statements", "srl_nokia-features:segment-routing-adjacency-sid", "srl_nokia-features:segment-routing-shared-sid", "srl_nokia-features:ssh-host-key-preserve", "srl_nokia-features:storm-control", "srl_nokia-features:subif-policer", "srl_nokia-features:trident3", "srl_nokia-features:unequal-ecmp", "srl_nokia-features:unified-forwarding-tables", "srl_nokia-features:virtual-ip-discovery", "srl_nokia-features:vlan-id-any", "srl_nokia-features:vlan-tpid", "srl_nokia-features:vxlan", "srl_nokia-features:vxlan-stats", "srl_nokia-features:warm-reboot"],
+      "checksum": "36e850608617a447$956cd6d4055c305ec6eb9f2f792c21bdee8c0c94"
+    },
+    "build": {
+      "git-branch": "SRL_23_7_B1",
+      "git-tag": "v23.7.2-84-gc9339db085",
+      "git-sha": "c9339db08532df2e43a4b33454bec9624b0d52a4"
+    },
+    "application": [
+      {
+        "name": "aaa_mgr",
+        "path": "/opt/srlinux/bin/sr_aaa_mgr",
+        "version": "2023-09-28T16:08:20.000Z"
+      },
+      {
+        "name": "acl_mgr",
+        "path": "/opt/srlinux/bin/sr_acl_mgr",
+        "version": "2023-09-28T16:07:41.000Z"
+      },
+      {
+        "name": "app_mgr",
+        "path": "/opt/srlinux/bin/sr_app_mgr",
+        "version": "2023-09-28T16:06:46.000Z"
+      },
+      {
+        "name": "arp_nd_mgr",
+        "path": "/opt/srlinux/bin/sr_arp_nd_mgr",
+        "version": "2023-09-28T16:08:18.000Z"
+      },
+      {
+        "name": "bfd_mgr",
+        "path": "/opt/srlinux/bin/sr_bfd_mgr",
+        "version": "2023-09-28T16:06:48.000Z"
+      },
+      {
+        "name": "bgp_mgr",
+        "path": "/opt/srlinux/bin/sr_bgp_mgr",
+        "version": "2023-09-28T16:08:52.000Z"
+      },
+      {
+        "name": "chassis_mgr",
+        "path": "/opt/srlinux/bin/sr_chassis_mgr",
+        "version": "2023-09-28T16:06:33.000Z"
+      },
+      {
+        "name": "dev_mgr",
+        "path": "/opt/srlinux/bin/sr_device_mgr",
+        "version": "2023-09-28T16:09:03.000Z"
+      },
+      {
+        "name": "dhcp_client_mgr",
+        "path": "/opt/srlinux/bin/sr_dhcp_client_mgr",
+        "version": "2023-09-28T16:07:00.000Z"
+      },
+      {
+        "name": "dhcp_relay_mgr",
+        "path": "/opt/srlinux/bin/sr_dhcp_relay_mgr",
+        "version": "2023-09-28T16:08:18.000Z"
+      },
+      {
+        "name": "dhcp_server_mgr",
+        "path": "/opt/srlinux/bin/sr_dhcp_server_mgr",
+        "version": "2023-09-28T16:07:56.000Z"
+      },
+      {
+        "name": "ethcfm_mgr",
+        "path": "/opt/srlinux/bin/sr_ethcfm_mgr",
+        "version": "2023-09-28T16:06:29.000Z"
+      },
+      {
+        "name": "event_mgr",
+        "path": "/opt/srlinux/bin/sr_event_mgr",
+        "version": "2023-09-28T16:06:48.000Z"
+      },
+      {
+        "name": "evpn_mgr",
+        "path": "/opt/srlinux/bin/sr_evpn_mgr",
+        "version": "2023-09-28T16:08:21.000Z"
+      },
+      {
+        "name": "fhs_mgr",
+        "path": "/opt/srlinux/bin/sr_fhs_mgr",
+        "version": "2023-09-28T16:06:28.000Z"
+      },
+      {
+        "name": "fib_mgr",
+        "path": "/opt/srlinux/bin/sr_fib_mgr",
+        "version": "2023-09-28T16:08:30.000Z"
+      },
+      {
+        "name": "gnmi_server",
+        "path": "/opt/srlinux/bin/sr_gnmi_server",
+        "version": "2023-09-28T16:06:54.000Z"
+      },
+      {
+        "name": "gribi_server",
+        "path": "/opt/srlinux/bin/sr_gribi_server",
+        "version": "2023-09-28T16:06:56.000Z"
+      },
+      {
+        "name": "idb_server",
+        "path": "/opt/srlinux/bin/sr_idb_server",
+        "version": "2023-09-28T15:54:17.000Z"
+      },
+      {
+        "name": "isis_mgr",
+        "path": "/opt/srlinux/bin/sr_isis_mgr",
+        "version": "2023-09-28T16:08:39.000Z"
+      },
+      {
+        "name": "json_rpc",
+        "path": "/opt/srlinux/bin/sr_json_rpc",
+        "version": "2023-09-28T16:06:34.000Z"
+      },
+      {
+        "name": "l2_mac_learn_mgr",
+        "path": "/opt/srlinux/bin/sr_l2_mac_learn_mgr",
+        "version": "2023-09-28T16:06:30.000Z"
+      },
+      {
+        "name": "l2_mac_mgr",
+        "path": "/opt/srlinux/bin/sr_l2_mac_mgr",
+        "version": "2023-09-28T16:06:33.000Z"
+      },
+      {
+        "name": "l2_proxy_arp_nd_mgr",
+        "path": "/opt/srlinux/bin/sr_l2_proxy_arp_nd_mgr",
+        "version": "2023-09-28T16:08:27.000Z"
+      },
+      {
+        "name": "l2_static_mac_mgr",
+        "path": "/opt/srlinux/bin/sr_l2_static_mac_mgr",
+        "version": "2023-09-28T16:06:30.000Z"
+      },
+      {
+        "name": "label_mgr",
+        "path": "/opt/srlinux/bin/sr_label_mgr",
+        "version": "2023-09-28T16:07:48.000Z"
+      },
+      {
+        "name": "lag_mgr",
+        "path": "/opt/srlinux/bin/sr_lag_mgr",
+        "version": "2023-09-28T16:06:31.000Z"
+      },
+      {
+        "name": "ldp_mgr",
+        "path": "/opt/srlinux/bin/sr_ldp_mgr",
+        "version": "2023-09-28T16:08:26.000Z"
+      },
+      {
+        "name": "license_mgr",
+        "path": "/opt/srlinux/bin/sr_license_mgr",
+        "version": "2023-09-28T16:06:25.000Z"
+      },
+      {
+        "name": "linux_mgr",
+        "path": "/opt/srlinux/bin/sr_linux_mgr",
+        "version": "2023-09-28T16:08:08.000Z"
+      },
+      {
+        "name": "dnsmasq",
+        "path": "/usr/sbin/dnsmasq",
+        "version": "2023-02-18T01:33:55.000Z"
+      },
+      {
+        "name": "sshd",
+        "path": "/usr/sbin/sshd",
+        "version": "2023-01-10T09:10:11.000Z"
+      },
+      {
+        "name": "ntpd",
+        "path": "/usr/sbin/chronyd",
+        "version": "2022-07-15T15:07:12.000Z"
+      },
+      {
+        "name": "vsftpd",
+        "path": "/usr/sbin/vsftpd",
+        "version": "2023-04-06T20:53:25.000Z"
+      },
+      {
+        "name": "snmp_server",
+        "path": "/opt/srlinux/bin/sr_snmp_server",
+        "version": "2023-09-28T15:54:15.000Z"
+      },
+      {
+        "name": "timesrv",
+        "path": "/usr/sbin/chronyd",
+        "version": "2022-07-15T15:07:12.000Z"
+      },
+      {
+        "name": "lldp_mgr",
+        "path": "/opt/srlinux/bin/sr_lldp_mgr",
+        "version": "2023-09-28T16:06:31.000Z"
+      },
+      {
+        "name": "log_mgr",
+        "path": "/opt/srlinux/bin/sr_log_mgr",
+        "version": "2023-09-28T16:06:28.000Z"
+      },
+      {
+        "name": "macsec_mgr",
+        "path": "/opt/srlinux/bin/sr_macsec_mgr",
+        "version": "2023-09-28T16:06:25.000Z"
+      },
+      {
+        "name": "mcid_mgr",
+        "path": "/opt/srlinux/bin/sr_mcid_mgr",
+        "version": "2023-09-28T16:06:31.000Z"
+      },
+      {
+        "name": "mgmt_server",
+        "path": "/opt/srlinux/bin/sr_mgmt_server",
+        "version": "2023-09-28T16:08:08.000Z"
+      },
+      {
+        "name": "common",
+        "path": "n/a",
+        "version": "n/a"
+      },
+      {
+        "name": "mirror_mgr",
+        "path": "/opt/srlinux/bin/sr_mirror_mgr",
+        "version": "2023-09-28T16:06:25.000Z"
+      },
+      {
+        "name": "mpls_mgr",
+        "path": "/opt/srlinux/bin/sr_mpls_mgr",
+        "version": "2023-09-28T16:06:52.000Z"
+      },
+      {
+        "name": "mplsoam_mgr",
+        "path": "/opt/srlinux/bin/sr_mplsoam_mgr",
+        "version": "2023-09-28T16:08:22.000Z"
+      },
+      {
+        "name": "net_inst_mgr",
+        "path": "/opt/srlinux/bin/sr_net_inst_mgr",
+        "version": "2023-09-28T16:06:58.000Z"
+      },
+      {
+        "name": "oam_mgr",
+        "path": "/opt/srlinux/bin/sr_oam_mgr",
+        "version": "2023-09-28T16:06:26.000Z"
+      },
+      {
+        "name": "oc_mgmt_server",
+        "path": "/opt/srlinux/bin/sr_oc_mgmt_server",
+        "version": "2023-09-28T16:08:08.000Z"
+      },
+      {
+        "name": "oc_common",
+        "path": "n/a",
+        "version": "n/a"
+      },
+      {
+        "name": "ospf_mgr",
+        "path": "/opt/srlinux/bin/sr_ospf_mgr",
+        "version": "2023-09-28T16:08:30.000Z"
+      },
+      {
+        "name": "p4rt_server",
+        "path": "/opt/srlinux/bin/sr_p4rt_server",
+        "version": "2023-09-28T16:06:35.000Z"
+      },
+      {
+        "name": "plcy_mgr",
+        "path": "/opt/srlinux/bin/sr_plcy_mgr",
+        "version": "2023-09-28T16:08:28.000Z"
+      },
+      {
+        "name": "maint_mode_mgr",
+        "path": "n/a",
+        "version": "n/a"
+      },
+      {
+        "name": "qos_mgr",
+        "path": "/opt/srlinux/bin/sr_qos_mgr",
+        "version": "2023-09-28T16:06:37.000Z"
+      },
+      {
+        "name": "radius_mgr",
+        "path": "/opt/srlinux/bin/sr_radius_mgr",
+        "version": "2023-09-28T16:08:00.000Z"
+      },
+      {
+        "name": "sdk_mgr",
+        "path": "/opt/srlinux/bin/sr_sdk_mgr",
+        "version": "2023-09-28T16:06:34.000Z"
+      },
+      {
+        "name": "segrt_mgr",
+        "path": "/opt/srlinux/bin/sr_segrt_mgr",
+        "version": "2023-09-28T16:08:06.000Z"
+      },
+      {
+        "name": "sflow_sample_mgr",
+        "path": "/opt/srlinux/bin/sr_sflow_sample_mgr",
+        "version": "2023-09-28T16:06:29.000Z"
+      },
+      {
+        "name": "static_route_mgr",
+        "path": "/opt/srlinux/bin/sr_static_route_mgr",
+        "version": "2023-09-28T16:08:27.000Z"
+      },
+      {
+        "name": "supportd",
+        "path": "/opt/srlinux/bin/sr_supportd",
+        "version": "2023-09-28T15:54:32.000Z"
+      },
+      {
+        "name": "te_mgr",
+        "path": "/opt/srlinux/bin/sr_te_mgr",
+        "version": "2023-09-28T16:08:20.000Z"
+      },
+      {
+        "name": "tepolicy_mgr",
+        "path": "/opt/srlinux/bin/sr_tepolicy_mgr",
+        "version": "2023-09-28T16:07:38.000Z"
+      },
+      {
+        "name": "timing_stack",
+        "path": "/opt/srlinux/bin/sr_timing_stack",
+        "version": "2023-09-28T16:08:33.000Z"
+      },
+      {
+        "name": "twamp_mgr",
+        "path": "/opt/srlinux/bin/sr_twamp_mgr",
+        "version": "2023-09-28T16:08:25.000Z"
+      },
+      {
+        "name": "vrrp_mgr",
+        "path": "/opt/srlinux/bin/sr_vrrp_mgr",
+        "version": "2023-09-28T16:08:20.000Z"
+      },
+      {
+        "name": "vxlan_mgr",
+        "path": "/opt/srlinux/bin/sr_vxlan_mgr",
+        "version": "2023-09-28T16:06:35.000Z"
+      },
+      {
+        "name": "xdp_cpm",
+        "path": "/opt/srlinux/bin/sr_xdp_cpm",
+        "version": "2023-09-28T15:54:28.000Z"
+      },
+      {
+        "name": "xdp_lc",
+        "path": "/opt/srlinux/bin/sr_xdp_lc",
+        "version": "2023-09-28T15:54:52.000Z"
+      }
+    ],
+    "yang-module": [
+      {
+        "name": "srl_nokia-aaa",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-aaa-password",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-aaa-types",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-acl",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-acl-policers",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-acl-qos",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-aggregate-routes",
+        "revision": "2021-03-31"
+      },
+      {
+        "name": "srl_nokia-app-mgmt",
+        "revision": "2022-03-31"
+      },
+      {
+        "name": "srl_nokia-bfd",
+        "revision": "2022-11-30"
+      },
+      {
+        "name": "srl_nokia-bgp",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-bgp-evpn",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-bgp-evpn-bgp-instance-mpls-bridge-table-multicast-destinations",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-bgp-evpn-bgp-instance-mpls-bridge-table-statistics",
+        "revision": "2022-03-31"
+      },
+      {
+        "name": "srl_nokia-bgp-evpn-bgp-instance-mpls-bridge-table-unicast-destinations",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-bgp-evpn-bgp-instance-mpls-vpws-destinations",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-bgp-ipvpn",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-bgp-vpn",
+        "revision": "2022-06-30"
+      },
+      {
+        "name": "srl_nokia-boot",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-bridge-table",
+        "revision": "2021-03-31"
+      },
+      {
+        "name": "srl_nokia-bridge-table-mac-duplication",
+        "revision": "2021-03-31"
+      },
+      {
+        "name": "srl_nokia-bridge-table-mac-duplication-entries",
+        "revision": "2021-03-31"
+      },
+      {
+        "name": "srl_nokia-bridge-table-mac-learning",
+        "revision": "2020-06-30"
+      },
+      {
+        "name": "srl_nokia-bridge-table-mac-learning-entries",
+        "revision": "2021-03-31"
+      },
+      {
+        "name": "srl_nokia-bridge-table-mac-limit",
+        "revision": "2020-06-30"
+      },
+      {
+        "name": "srl_nokia-bridge-table-mac-table",
+        "revision": "2021-11-30"
+      },
+      {
+        "name": "srl_nokia-bridge-table-proxy-arp-nd",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-bridge-table-reserved-macs",
+        "revision": "2021-11-30"
+      },
+      {
+        "name": "srl_nokia-bridge-table-shg",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-bridge-table-static-mac",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-configuration",
+        "revision": "2021-11-30"
+      },
+      {
+        "name": "srl_nokia-configuration-role",
+        "revision": "2021-03-31"
+      },
+      {
+        "name": "srl_nokia-connection-point",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-dhcp-server",
+        "revision": "2022-03-31"
+      },
+      {
+        "name": "srl_nokia-dns",
+        "revision": "2022-11-30"
+      },
+      {
+        "name": "srl_nokia-ethcfm",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-ethcfm-pm",
+        "revision": "2022-03-31"
+      },
+      {
+        "name": "srl_nokia-event-handler",
+        "revision": "2022-11-30"
+      },
+      {
+        "name": "srl_nokia-ftp",
+        "revision": "2020-06-30"
+      },
+      {
+        "name": "srl_nokia-gnmi-server",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-gnsi-authz",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-gribi-server",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-icmp",
+        "revision": "2021-11-30"
+      },
+      {
+        "name": "srl_nokia-if-ip",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-if-mpls",
+        "revision": "2021-06-30"
+      },
+      {
+        "name": "srl_nokia-interfaces",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-interfaces-bridge-table",
+        "revision": "2021-06-30"
+      },
+      {
+        "name": "srl_nokia-interfaces-bridge-table-mac-duplication-entries",
+        "revision": "2021-03-31"
+      },
+      {
+        "name": "srl_nokia-interfaces-bridge-table-mac-learning-entries",
+        "revision": "2020-06-30"
+      },
+      {
+        "name": "srl_nokia-interfaces-bridge-table-mac-table",
+        "revision": "2021-11-30"
+      },
+      {
+        "name": "srl_nokia-interfaces-bridge-table-statistics",
+        "revision": "2020-06-30"
+      },
+      {
+        "name": "srl_nokia-interfaces-ethernet-segment-association",
+        "revision": "2022-03-31"
+      },
+      {
+        "name": "srl_nokia-interfaces-ip-dhcp",
+        "revision": "2022-03-31"
+      },
+      {
+        "name": "srl_nokia-interfaces-ip-dhcp-relay",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-interfaces-ip-dhcp-server",
+        "revision": "2022-03-31"
+      },
+      {
+        "name": "srl_nokia-interfaces-ip-vrrp",
+        "revision": "2022-11-30"
+      },
+      {
+        "name": "srl_nokia-interfaces-l2cp",
+        "revision": "2022-03-31"
+      },
+      {
+        "name": "srl_nokia-interfaces-lag",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-interfaces-local-mirror-destination",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-interfaces-nbr",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-interfaces-nbr-evpn",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-interfaces-nbr-virtual-ip-discovery",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-interfaces-p4rt",
+        "revision": "2022-06-30"
+      },
+      {
+        "name": "srl_nokia-interfaces-router-adv",
+        "revision": "2021-11-30"
+      },
+      {
+        "name": "srl_nokia-interfaces-vlans",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-interfaces-vxdp",
+        "revision": "2022-11-30"
+      },
+      {
+        "name": "srl_nokia-ip-route-tables",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-isis",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-isis-lsdb",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-isis-lsdb-types",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-json-rpc",
+        "revision": "2021-03-31"
+      },
+      {
+        "name": "srl_nokia-keychains",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-lacp",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-ldp",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-license",
+        "revision": "2022-11-30"
+      },
+      {
+        "name": "srl_nokia-linux",
+        "revision": "2019-11-30"
+      },
+      {
+        "name": "srl_nokia-lldp",
+        "revision": "2022-03-31"
+      },
+      {
+        "name": "srl_nokia-lldp-types",
+        "revision": "2019-11-30"
+      },
+      {
+        "name": "srl_nokia-load-balancing",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-logging",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-lsp-ping-trace",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-macsec",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-maintenance-mode",
+        "revision": "2022-03-31"
+      },
+      {
+        "name": "srl_nokia-maintenance-policies",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-micro-bfd",
+        "revision": "2022-11-30"
+      },
+      {
+        "name": "srl_nokia-mirroring",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-mpls",
+        "revision": "2021-11-30"
+      },
+      {
+        "name": "srl_nokia-mpls-label-management",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-mpls-route-tables",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-mpls-services-evpn-label-management",
+        "revision": "2022-03-31"
+      },
+      {
+        "name": "srl_nokia-mpls-services-network-instance-label-management",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-mtu",
+        "revision": "2022-11-30"
+      },
+      {
+        "name": "srl_nokia-network-instance",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-network-instance-mtu",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-next-hop-groups",
+        "revision": "2022-03-31"
+      },
+      {
+        "name": "srl_nokia-ntp",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-oam",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-oam-pm-ip",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-openconfig",
+        "revision": "2022-06-30"
+      },
+      {
+        "name": "srl_nokia-ospf",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-p4rt-server",
+        "revision": "2022-06-30"
+      },
+      {
+        "name": "srl_nokia-packet-link-qual",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-packet-match-types",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-platform",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-platform-acl",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-platform-cgroup",
+        "revision": "2022-03-31"
+      },
+      {
+        "name": "srl_nokia-platform-chassis",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-platform-control",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-platform-cpu",
+        "revision": "2021-11-30"
+      },
+      {
+        "name": "srl_nokia-platform-datapath-resources",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-platform-disk",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-platform-fabric",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-platform-fan",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-platform-healthz",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-platform-lc",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-platform-linecard-fib",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-platform-memory",
+        "revision": "2019-11-30"
+      },
+      {
+        "name": "srl_nokia-platform-mtu",
+        "revision": "2022-03-31"
+      },
+      {
+        "name": "srl_nokia-platform-p4rt",
+        "revision": "2022-06-30"
+      },
+      {
+        "name": "srl_nokia-platform-pipeline-counters",
+        "revision": "2022-11-30"
+      },
+      {
+        "name": "srl_nokia-platform-psu",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-platform-qos",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-platform-redundancy",
+        "revision": "2021-03-31"
+      },
+      {
+        "name": "srl_nokia-platform-resource-mgmt",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-platform-resource-monitoring",
+        "revision": "2019-11-30"
+      },
+      {
+        "name": "srl_nokia-platform-secure-boot",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-platform-tcam",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-platform-tpm",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-platform-vxdp",
+        "revision": "2022-11-30"
+      },
+      {
+        "name": "srl_nokia-policy-forwarding",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-qos",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-qos-policers",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-ra_guard",
+        "revision": "2021-11-30"
+      },
+      {
+        "name": "srl_nokia-rib-bgp",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-routing-policy",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-segment-routing",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-sflow",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-snmp",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-ssh",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-stamp",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-static-routes",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-system",
+        "revision": "2022-03-31"
+      },
+      {
+        "name": "srl_nokia-system-banner",
+        "revision": "2019-11-30"
+      },
+      {
+        "name": "srl_nokia-system-bridge-table",
+        "revision": "2020-06-30"
+      },
+      {
+        "name": "srl_nokia-system-bridge-table-proxy-arp",
+        "revision": "2022-11-30"
+      },
+      {
+        "name": "srl_nokia-system-info",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-system-multicast",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-system-name",
+        "revision": "2019-11-30"
+      },
+      {
+        "name": "srl_nokia-system-network-instance",
+        "revision": "2021-06-30"
+      },
+      {
+        "name": "srl_nokia-system-network-instance-bgp-evpn-ethernet-segments",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-system-network-instance-bgp-vpn",
+        "revision": "2022-06-30"
+      },
+      {
+        "name": "srl_nokia-system-protocols",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-tcp-udp",
+        "revision": "2019-11-30"
+      },
+      {
+        "name": "srl_nokia-te-policies",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-timezone",
+        "revision": "2020-06-30"
+      },
+      {
+        "name": "srl_nokia-tls",
+        "revision": "2022-11-30"
+      },
+      {
+        "name": "srl_nokia-traffic-engineering",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-transport-security",
+        "revision": "2023-03-31"
+      },
+      {
+        "name": "srl_nokia-tunnel",
+        "revision": "2021-03-31"
+      },
+      {
+        "name": "srl_nokia-tunnel-interfaces",
+        "revision": "2022-11-30"
+      },
+      {
+        "name": "srl_nokia-tunnel-interfaces-vxlan-interface-bridge-table",
+        "revision": "2021-06-30"
+      },
+      {
+        "name": "srl_nokia-tunnel-interfaces-vxlan-interface-bridge-table-multicast-destinations",
+        "revision": "2021-03-31"
+      },
+      {
+        "name": "srl_nokia-tunnel-interfaces-vxlan-interface-bridge-table-unicast-destinations",
+        "revision": "2021-11-30"
+      },
+      {
+        "name": "srl_nokia-tunnel-interfaces-vxlan-interface-bridge-table-unicast-es-destination-vteps",
+        "revision": "2021-03-31"
+      },
+      {
+        "name": "srl_nokia-tunnel-tables",
+        "revision": "2022-11-30"
+      },
+      {
+        "name": "srl_nokia-twamp",
+        "revision": "2023-07-31"
+      },
+      {
+        "name": "srl_nokia-vxlan-tunnel-vtep",
+        "revision": "2023-03-31"
+      }
+    ]
+  },
   "srl_nokia-acl:acl": {
     "cpm-filter": {
       "ipv4-filter": {
@@ -1388,16 +2412,15 @@
   "srl_nokia-interfaces:interface": [
     {
       "name": "ethernet-1/1",
-      "description": "auto-config to $PEER",
+      "description": "auto-config to host",
       "admin-state": "enable",
       "ethernet": {
-        "aggregate-id": "lag1",
-        "reload-delay": 20
+        "aggregate-id": "lag1"
       }
     },
     {
       "name": "ethernet-1/2",
-      "description": "auto-config to $PEER",
+      "description": "auto-config to host",
       "admin-state": "enable",
       "ethernet": {
         "aggregate-id": "lag2"
@@ -1405,25 +2428,23 @@
     },
     {
       "name": "ethernet-1/3",
-      "description": "auto-config to $PEER",
+      "description": "auto-config to host",
       "admin-state": "enable",
       "ethernet": {
-        "aggregate-id": "lag3",
-        "reload-delay": 20
+        "aggregate-id": "lag3"
       }
     },
     {
       "name": "ethernet-1/4",
-      "description": "auto-config to $PEER",
+      "description": "auto-config to host",
       "admin-state": "enable",
       "ethernet": {
-        "aggregate-id": "lag4",
-        "reload-delay": 20
+        "aggregate-id": "lag4"
       }
     },
     {
       "name": "ethernet-1/49",
-      "description": "auto-config to $PEER",
+      "description": "auto-config to SRLinux-v23.7.2-84-gc9339db085 spine1 5.15.0-84-generic #93-Ubuntu SMP Tue Sep 5 17:16:10 UTC 2023",
       "admin-state": "enable",
       "subinterface": [
         {
@@ -1443,7 +2464,7 @@
     },
     {
       "name": "ethernet-1/50",
-      "description": "auto-config to $PEER",
+      "description": "auto-config to SRLinux-v23.7.2-84-gc9339db085 spine-2-1.1.1.2L1N1 5.15.0-84-generic #93-Ubuntu SMP Tue Sep 5 17:16:10 UTC 2023",
       "admin-state": "enable",
       "subinterface": [
         {
@@ -1463,6 +2484,26 @@
     },
     {
       "name": "irb0",
+      "subinterface": [
+        {
+          "index": 25,
+          "ipv4": {
+            "srl_nokia-interfaces-ip-dhcp-relay:dhcp-relay": {
+              "admin-state": "enable",
+              "gi-address": "1.1.0.2",
+              "use-gi-addr-as-src-ip-addr": true,
+              "network-instance": "evpn-lag-discovery",
+              "server": [
+                "1.1.1.1",
+                "1.1.1.2"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "irb1",
       "admin-state": "enable",
       "subinterface": [
         {
@@ -1472,7 +2513,7 @@
             "admin-state": "enable",
             "address": [
               {
-                "ip-prefix": "10.0.0.1/24",
+                "ip-prefix": "10.1.0.1/24",
                 "anycast-gw": true
               },
               {
@@ -1482,20 +2523,12 @@
               {
                 "ip-prefix": "192.168.127.34/31",
                 "primary": [null]
-              },
-              {
-                "ip-prefix": "192.168.127.36/31",
-                "primary": [null]
-              },
-              {
-                "ip-prefix": "192.168.127.38/31",
-                "primary": [null]
               }
             ],
             "srl_nokia-interfaces-nbr:arp": {
               "timeout": 270,
+              "_annotate_timeout": "30 seconds lower than age-time in mac-vrf, to avoid transient packet loss when MAC address of ARP/ND entry is removed",
               "learn-unsolicited": true,
-              "_annotate_learn-unsolicited": "To support MC-LAG, see https://documentation.nokia.com/cgi-bin/dbaccessfilename.cgi/3HE16831AAAATQZZA01_V1_SR%20Linux%20R21.3%20EVPN-VXLAN%20User%20Guide.pdf p72",
               "host-route": {
                 "populate": [
                   {
@@ -1509,21 +2542,10 @@
                     "route-type": "static"
                   },
                   {
-                    "route-type": "dynamic",
-                    "_annotate": "for ARP synchronization across MH leaf nodes"
+                    "route-type": "dynamic"
                   }
                 ]
               }
-            },
-            "srl_nokia-interfaces-ip-dhcp-relay:dhcp-relay": {
-              "admin-state": "enable",
-              "gi-address": "1.1.0.2",
-              "use-gi-addr-as-src-ip-addr": true,
-              "network-instance": "evpn-lag-discovery",
-              "server": [
-                "1.1.1.1",
-                "1.1.1.2"
-              ]
             }
           },
           "ipv6": {
@@ -1560,13 +2582,36 @@
           "anycast-gw": {
             
           }
-        },
+        }
+      ]
+    },
+    {
+      "name": "irb2",
+      "admin-state": "enable",
+      "subinterface": [
         {
-          "index": 3,
+          "index": 2,
+          "admin-state": "enable",
           "ipv4": {
+            "admin-state": "enable",
+            "address": [
+              {
+                "ip-prefix": "10.2.0.1/24",
+                "anycast-gw": true
+              },
+              {
+                "ip-prefix": "192.168.127.36/31",
+                "primary": [null]
+              },
+              {
+                "ip-prefix": "192.168.127.38/31",
+                "primary": [null]
+              }
+            ],
             "srl_nokia-interfaces-nbr:arp": {
+              "timeout": 270,
+              "_annotate_timeout": "30 seconds lower than age-time in mac-vrf, to avoid transient packet loss when MAC address of ARP/ND entry is removed",
               "learn-unsolicited": true,
-              "_annotate_learn-unsolicited": "To support MC-LAG, see https://documentation.nokia.com/cgi-bin/dbaccessfilename.cgi/3HE16831AAAATQZZA01_V1_SR%20Linux%20R21.3%20EVPN-VXLAN%20User%20Guide.pdf p72",
               "host-route": {
                 "populate": [
                   {
@@ -1577,20 +2622,27 @@
               "srl_nokia-interfaces-nbr-evpn:evpn": {
                 "advertise": [
                   {
-                    "route-type": "dynamic",
-                    "_annotate": "for ARP synchronization across MH leaf nodes"
+                    "route-type": "static"
+                  },
+                  {
+                    "route-type": "dynamic"
                   }
                 ]
               }
             }
-          }
-        },
-        {
-          "index": 4,
-          "ipv4": {
-            "srl_nokia-interfaces-nbr:arp": {
-              "learn-unsolicited": true,
-              "_annotate_learn-unsolicited": "To support MC-LAG, see https://documentation.nokia.com/cgi-bin/dbaccessfilename.cgi/3HE16831AAAATQZZA01_V1_SR%20Linux%20R21.3%20EVPN-VXLAN%20User%20Guide.pdf p72",
+          },
+          "ipv6": {
+            "admin-state": "enable",
+            "address": [
+              {
+                "ip-prefix": "2001:2::1/64",
+                "anycast-gw": true
+              }
+            ],
+            "srl_nokia-interfaces-nbr:neighbor-discovery": {
+              "stale-time": 270,
+              "_annotate_stale-time": "30 seconds lower than age-time in mac-vrf, to avoid transient packet loss when MAC address of ARP/ND entry is removed",
+              "learn-unsolicited": "global",
               "host-route": {
                 "populate": [
                   {
@@ -1601,19 +2653,24 @@
               "srl_nokia-interfaces-nbr-evpn:evpn": {
                 "advertise": [
                   {
-                    "route-type": "dynamic",
-                    "_annotate": "for ARP synchronization across MH leaf nodes"
+                    "route-type": "static"
+                  },
+                  {
+                    "route-type": "dynamic"
                   }
                 ]
               }
             }
+          },
+          "anycast-gw": {
+            
           }
         }
       ]
     },
     {
       "name": "lag1",
-      "description": "Auto-discovered MC-LAG with ('1.1.0.1', 1)",
+      "description": "Single link ethernet-1/1",
       "admin-state": "enable",
       "srl_nokia-interfaces-vlans:vlan-tagging": false,
       "subinterface": [
@@ -1623,15 +2680,8 @@
         }
       ],
       "srl_nokia-interfaces-lag:lag": {
-        "lag-type": "lacp",
-        "member-speed": "100G",
-        "srl_nokia-lacp:lacp": {
-          "interval": "SLOW",
-          "lacp-mode": "ACTIVE",
-          "admin-key": 1,
-          "system-id-mac": "02:00:00:00:02:01",
-          "system-priority": 1
-        }
+        "lag-type": "static",
+        "member-speed": "100G"
       }
     },
     {
@@ -1652,7 +2702,7 @@
     },
     {
       "name": "lag3",
-      "description": "Auto-discovered MC-LAG with ('1.1.0.1', 3)",
+      "description": "Single link ethernet-1/3",
       "admin-state": "enable",
       "srl_nokia-interfaces-vlans:vlan-tagging": false,
       "subinterface": [
@@ -1662,20 +2712,13 @@
         }
       ],
       "srl_nokia-interfaces-lag:lag": {
-        "lag-type": "lacp",
-        "member-speed": "100G",
-        "srl_nokia-lacp:lacp": {
-          "interval": "SLOW",
-          "lacp-mode": "ACTIVE",
-          "admin-key": 3,
-          "system-id-mac": "02:00:00:00:02:03",
-          "system-priority": 3
-        }
+        "lag-type": "static",
+        "member-speed": "100G"
       }
     },
     {
       "name": "lag4",
-      "description": "Auto-discovered MC-LAG with ('1.1.0.1', 4)",
+      "description": "Single link ethernet-1/4",
       "admin-state": "enable",
       "srl_nokia-interfaces-vlans:vlan-tagging": false,
       "subinterface": [
@@ -1685,15 +2728,8 @@
         }
       ],
       "srl_nokia-interfaces-lag:lag": {
-        "lag-type": "lacp",
-        "member-speed": "100G",
-        "srl_nokia-lacp:lacp": {
-          "interval": "SLOW",
-          "lacp-mode": "ACTIVE",
-          "admin-key": 4,
-          "system-id-mac": "02:00:00:00:02:04",
-          "system-priority": 4
-        }
+        "lag-type": "static",
+        "member-speed": "100G"
       }
     },
     {
@@ -1716,35 +2752,35 @@
             "admin-state": "enable",
             "address": [
               {
-                "ip-prefix": "fda1:0:101:2:1:242:ac14:1409/128",
+                "ip-prefix": "fda1:0:101:2:1:242:ac14:140a/128",
                 "_annotate": "for EVPN auto-lag discovery on [1]"
               },
               {
-                "ip-prefix": "fda1:0:101:2:2:242:ac14:1403/128",
+                "ip-prefix": "fda1:0:101:2:2:242:ac14:1402/128",
                 "_annotate": "for EVPN auto-lag discovery on [2]"
               },
               {
-                "ip-prefix": "fda1:0:101:2:3:242:ac14:1405/128",
+                "ip-prefix": "fda1:0:101:2:3:242:ac14:1409/128",
                 "_annotate": "for EVPN auto-lag discovery on [3]"
               },
               {
-                "ip-prefix": "fda1:0:101:2:4:242:ac14:1406/128",
+                "ip-prefix": "fda1:0:101:2:4:242:ac14:1404/128",
                 "_annotate": "for EVPN auto-lag discovery on [4]"
               },
               {
-                "ip-prefix": "fdad:0:101:2:1:aac1:ab17:31/128",
+                "ip-prefix": "fdad:0:101:2:1:aac1:ab2d:c556/128",
                 "_annotate": "for DHCP on [1]"
               },
               {
-                "ip-prefix": "fdad:0:101:2:2:aac1:ab77:7866/128",
+                "ip-prefix": "fdad:0:101:2:2:aac1:ab02:27a4/128",
                 "_annotate": "for DHCP on [2]"
               },
               {
-                "ip-prefix": "fdad:0:101:2:3:aac1:ab25:62d8/128",
+                "ip-prefix": "fdad:0:101:2:3:aac1:ab9c:f303/128",
                 "_annotate": "for DHCP on [3]"
               },
               {
-                "ip-prefix": "fdad:0:101:2:4:aac1:ab7e:6ba6/128",
+                "ip-prefix": "fdad:0:101:2:4:aac1:abc6:5807/128",
                 "_annotate": "for DHCP on [4]"
               }
             ]
@@ -1762,6 +2798,53 @@
               }
             ]
           },
+          "ipv6": {
+            "admin-state": "enable",
+            "address": [
+              {
+                "ip-prefix": "2001::1:1:0:2/128"
+              }
+            ]
+          }
+        },
+        {
+          "index": 2,
+          "description": "Overlay loopback",
+          "admin-state": "enable",
+          "ipv4": {
+            "admin-state": "enable",
+            "address": [
+              {
+                "ip-prefix": "1.1.0.2/32"
+              }
+            ]
+          },
+          "ipv6": {
+            "admin-state": "enable",
+            "address": [
+              {
+                "ip-prefix": "2001::1:1:0:2/128"
+              }
+            ]
+          }
+        },
+        {
+          "index": 4,
+          "description": "Overlay loopback",
+          "admin-state": "enable",
+          "ipv4": {
+            "admin-state": "enable",
+            "address": [
+              {
+                "ip-prefix": "1.1.0.2/32"
+              }
+            ]
+          }
+        },
+        {
+          "index": 6,
+          "description": "Overlay loopback",
+          "admin-state": "enable",
           "ipv6": {
             "admin-state": "enable",
             "address": [
@@ -1870,8 +2953,8 @@
       "server-profile": [
         {
           "name": "clab-profile",
-          "key": "$aes1$ATC4BNzKLuuueG8=$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",
-          "certificate": "-----BEGIN CERTIFICATE-----\nMIID+DCCAuCgAwIBAgICBnowDQYJKoZIhvcNAQELBQAwWzELMAkGA1UEBhMCVVMx\nCTAHBgNVBAcTADEVMBMGA1UEChMMY29udGFpbmVybGFiMQkwBwYDVQQLEwAxHzAd\nBgNVBAMTFnNwaW5lLWxlYWYtZXZwbiBsYWIgQ0EwHhcNMjMxMDA0MjIyODIwWhcN\nMjQxMDA0MjIyODIwWjBdMQswCQYDVQQGEwJVUzEJMAcGA1UEBxMAMRUwEwYDVQQK\nEwxjb250YWluZXJsYWIxCTAHBgNVBAsTADEhMB8GA1UEAxMYbGVhZjIuc3BpbmUt\nbGVhZi1ldnBuLmlvMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAq0LM\nXHa5bjVrNY4+v6SLzykiEWemBVRdqX93KxiYHWp67jzYYD1XTFVVIe65Z9ieWQsW\n3KoAS7/b6vmgcM4oJjYJ90JLNRJBjp6XjsKM9BpfziGGn80UvLX2F6Le9NIK337n\notoZzl0htYzvcBF/zwxeNuUed8KPQ9noZ2vu0YV56gQgC1n02o8efHS5Oz6kMXFG\n2Jzf43hQ5+rKxNDguXDnzCAPdZJtd0hdb8XDPuxjNplYZDcS4gyHbYdWdc15k+nc\n8VxDTdgUALlfBSa2k6jBFfLJlVBM9mQz2MgOOyclAPd75OKEaYI8Lzdt0dd0KJew\n4tjM4tenxWvMFpCC5QIDAQABo4HDMIHAMA4GA1UdDwEB/wQEAwIHgDAdBgNVHSUE\nFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwDgYDVR0OBAcEBQECAwQGMB8GA1UdIwQY\nMBaAFDe59EE2qLmM1C+4Y10n3KcUMx2BMF4GA1UdEQRXMFWCBWxlYWYyghpjbGFi\nLXNwaW5lLWxlYWYtZXZwbi1sZWFmMoIYbGVhZjIuc3BpbmUtbGVhZi1ldnBuLmlv\nhwSsFBQLhxAgAQFyACAAIAAAAAAAAAALMA0GCSqGSIb3DQEBCwUAA4IBAQBA/Gau\nok8t6nt7SLPsoCIio+WbrABSjqhIG2HDBpbAmkMTyy/hgsYGT+j3cNpM74FRCpEF\ndR2EB7nyxH58A8gIA0vunvDDvtPmJ06wTnG+yOS2/lu6HlPGZbjArAoj6BEhnfu7\nmHo+dm+akqzXOT288Acqb+vuLJmKgwW09GTyi7io75z1y2fasTP7lvj11qfZduMw\nNaWfCuDLdGodcbwGKQ7053KPXjjxiG0rWghtNf3Lez5Nq5zltQ+LR4qXvcO5gFsG\n6MBFkrgNumS5xkk5AoQPvJJnkD8dr+KzY5bS+Frdk9rmJsTcft+ed+HDi6sCYpdT\ndfZLIeZ/UR1PBaxn\n-----END CERTIFICATE-----\n",
+          "key": "$aes1$ATRDM3nV/YUz/W8=$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",
+          "certificate": "-----BEGIN CERTIFICATE-----\nMIID+DCCAuCgAwIBAgICBnowDQYJKoZIhvcNAQELBQAwWzELMAkGA1UEBhMCVVMx\nCTAHBgNVBAcTADEVMBMGA1UEChMMY29udGFpbmVybGFiMQkwBwYDVQQLEwAxHzAd\nBgNVBAMTFnNwaW5lLWxlYWYtZXZwbiBsYWIgQ0EwHhcNMjMxMDA2MTk1NTMwWhcN\nMjQxMDA2MTk1NTMwWjBdMQswCQYDVQQGEwJVUzEJMAcGA1UEBxMAMRUwEwYDVQQK\nEwxjb250YWluZXJsYWIxCTAHBgNVBAsTADEhMB8GA1UEAxMYbGVhZjIuc3BpbmUt\nbGVhZi1ldnBuLmlvMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1TRG\n8ItjXwLZc+zRXZODxhiIpw2+H1aymWEweLF3lu97lBrKUSMRDa5YcDSuk19GV0kV\nJzeV9V7wv8TpKw+oUtue7rGhNNSOZnjfKttRh6OlQ/QYcpbx0qjnnH29Dix/O2oP\nQ7CR8QbfPbrFrlaFG9cB2jyAXKgVuY7vzHX00FeJiINQQq4lZojj/K8lqlhHbFRU\naHkhTrFHMQ+M8yrp8pkgj2kcQXVNi0j+3Lhtg9klw4m6eseFxRRGapuZ3uDVVri7\nXCr+qtQ2LgZfYcFxvTIX8fYQ8rpMmw4HvqXyJOI841EbXMiFWDaVJWrGWem7l/1T\n4ZneFIktEjaegbq1lwIDAQABo4HDMIHAMA4GA1UdDwEB/wQEAwIHgDAdBgNVHSUE\nFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwDgYDVR0OBAcEBQECAwQGMB8GA1UdIwQY\nMBaAFBTgCF05NbEGnT+WMDGwaCc7wCZwMF4GA1UdEQRXMFWCBWxlYWYyghpjbGFi\nLXNwaW5lLWxlYWYtZXZwbi1sZWFmMoIYbGVhZjIuc3BpbmUtbGVhZi1ldnBuLmlv\nhwSsFBQHhxAgAQFyACAAIAAAAAAAAAAHMA0GCSqGSIb3DQEBCwUAA4IBAQCOkZpi\n3W0qwaXb9XY6ujHzKBJsyX77tbNJgwy3hGhVXx9Hv24BnGkol9O7bSHh307hagE+\n6alUpOgg0ohBBZgjHhNU9KowNt5ryvlDK9EzkOHiGI0p2EGPljeMd2MY7bg/0KNa\nlYqx9VJxKHLaYRoFmD+9+OWmVcoNseePhLFX1d5Itrw5RYx8mEnpXO/Unsf7yuhU\nqpPoMgoCqyhHCj3IoRCnRBwcZjdnn2aibLLs5D1PQOAquPwyktgatydjJSQT4Alt\nAA/QdXedYMqFIRSGLOOtqKeV10d1+N+MmG0GBLTvR+Am/q9cvXj63XudM1OuYvF2\n53L5cv6q5wsX4p7m\n-----END CERTIFICATE-----\n",
           "authenticate-client": false
         }
       ]
@@ -1900,7 +2983,7 @@
       ]
     },
     "srl_nokia-snmp:snmp": {
-      "community": "$aes1$AWCUVXRbsYJk5G8=$pugsGVzhS7nIg533+lVXUA==",
+      "community": "$aes1$AWCdskxN7ZbdTm8=$o9m7B4rlJb8bYRzn4Lli1Q==",
       "network-instance": [
         {
           "name": "mgmt",
@@ -2055,64 +3138,6 @@
           ]
         }
       ]
-    },
-    "srl_nokia-system-network-instance:network-instance": {
-      "protocols": {
-        "evpn": {
-          "srl_nokia-system-network-instance-bgp-evpn-ethernet-segments:ethernet-segments": {
-            "bgp-instance": [
-              {
-                "id": 1,
-                "ethernet-segment": [
-                  {
-                    "name": "mc-lag1",
-                    "admin-state": "enable",
-                    "esi": "03:02:42:ac:14:14:09:00:00:01",
-                    "_annotate_esi": "EVPN MC-LAG with ('1.1.0.1', [1]), bytes 2-7 form auto-derived route target see RFC7432 7.6",
-                    "multi-homing-mode": "all-active",
-                    "interface": [
-                      {
-                        "ethernet-interface": "lag1"
-                      }
-                    ]
-                  },
-                  {
-                    "name": "mc-lag3",
-                    "admin-state": "enable",
-                    "esi": "03:02:42:ac:14:14:05:00:00:03",
-                    "_annotate_esi": "EVPN MC-LAG with ('1.1.0.1', [3]), bytes 2-7 form auto-derived route target see RFC7432 7.6",
-                    "multi-homing-mode": "all-active",
-                    "interface": [
-                      {
-                        "ethernet-interface": "lag3"
-                      }
-                    ]
-                  },
-                  {
-                    "name": "mc-lag4",
-                    "admin-state": "enable",
-                    "esi": "03:02:42:ac:14:14:06:00:00:04",
-                    "_annotate_esi": "EVPN MC-LAG with ('1.1.0.1', [4]), bytes 2-7 form auto-derived route target see RFC7432 7.6",
-                    "multi-homing-mode": "all-active",
-                    "interface": [
-                      {
-                        "ethernet-interface": "lag4"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        },
-        "srl_nokia-system-network-instance-bgp-vpn:bgp-vpn": {
-          "bgp-instance": [
-            {
-              "id": 1
-            }
-          ]
-        }
-      }
     }
   },
   "srl_nokia-network-instance:network-instance": [
@@ -2319,6 +3344,88 @@
       }
     },
     {
+      "name": "frontend-v4",
+      "type": "srl_nokia-network-instance:ip-vrf",
+      "admin-state": "enable",
+      "inter-instance-policies": {
+        "apply-policy": {
+          "import-policy": "leak-from-tenant-vrfs-v4",
+          "export-policy": "leak-v4-default"
+        }
+      },
+      "interface": [
+        {
+          "name": "lo0.4"
+        }
+      ],
+      "vxlan-interface": [
+        {
+          "name": "vxlan0.4"
+        }
+      ],
+      "protocols": {
+        "bgp-evpn": {
+          "srl_nokia-bgp-evpn:bgp-instance": [
+            {
+              "id": 1,
+              "admin-state": "enable",
+              "vxlan-interface": "vxlan0.4",
+              "evi": 4,
+              "ecmp": 2
+            }
+          ]
+        },
+        "srl_nokia-bgp-vpn:bgp-vpn": {
+          "bgp-instance": [
+            {
+              "id": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "frontend-v6",
+      "type": "srl_nokia-network-instance:ip-vrf",
+      "admin-state": "enable",
+      "inter-instance-policies": {
+        "apply-policy": {
+          "import-policy": "leak-from-tenant-vrfs-v6",
+          "export-policy": "leak-v6-default"
+        }
+      },
+      "interface": [
+        {
+          "name": "lo0.6"
+        }
+      ],
+      "vxlan-interface": [
+        {
+          "name": "vxlan0.6"
+        }
+      ],
+      "protocols": {
+        "bgp-evpn": {
+          "srl_nokia-bgp-evpn:bgp-instance": [
+            {
+              "id": 1,
+              "admin-state": "enable",
+              "vxlan-interface": "vxlan0.6",
+              "evi": 6,
+              "ecmp": 2
+            }
+          ]
+        },
+        "srl_nokia-bgp-vpn:bgp-vpn": {
+          "bgp-instance": [
+            {
+              "id": 1
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "mgmt",
       "type": "srl_nokia-network-instance:ip-vrf",
       "admin-state": "enable",
@@ -2340,9 +3447,15 @@
       "name": "overlay-1",
       "type": "srl_nokia-network-instance:ip-vrf",
       "admin-state": "enable",
+      "inter-instance-policies": {
+        "apply-policy": {
+          "import-policy": "import-default",
+          "export-policy": "leak-from-tenant-vrfs"
+        }
+      },
       "interface": [
         {
-          "name": "irb0.1"
+          "name": "irb1.1"
         },
         {
           "name": "lo0.1"
@@ -2350,7 +3463,7 @@
       ],
       "vxlan-interface": [
         {
-          "name": "vxlan0.10001",
+          "name": "vxlan1.10001",
           "_annotate": "This is symmetric IRB with a L3 VXLAN interface and EVPN RT5 routes"
         }
       ],
@@ -2360,7 +3473,7 @@
             {
               "id": 1,
               "admin-state": "enable",
-              "vxlan-interface": "vxlan0.10001",
+              "vxlan-interface": "vxlan1.10001",
               "evi": 10001,
               "ecmp": 8
             }
@@ -2377,18 +3490,100 @@
       }
     },
     {
-      "name": "overlay-l2-1",
+      "name": "overlay-1-l2-1",
       "type": "srl_nokia-network-instance:mac-vrf",
       "admin-state": "enable",
       "interface": [
         {
-          "name": "irb0.1"
+          "name": "irb1.1"
         },
         {
           "name": "lag1.0"
         },
         {
           "name": "lag2.0"
+        }
+      ],
+      "vxlan-interface": [
+        {
+          "name": "vxlan1.1"
+        }
+      ],
+      "protocols": {
+        "bgp-evpn": {
+          "srl_nokia-bgp-evpn:bgp-instance": [
+            {
+              "id": 1,
+              "admin-state": "enable",
+              "vxlan-interface": "vxlan1.1",
+              "evi": 4096,
+              "_annotate_evi": "Note: value affects DF election in case of multi-homing",
+              "ecmp": 8
+            }
+          ]
+        },
+        "srl_nokia-bgp-vpn:bgp-vpn": {
+          "bgp-instance": [
+            {
+              "id": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "overlay-2",
+      "type": "srl_nokia-network-instance:ip-vrf",
+      "admin-state": "enable",
+      "inter-instance-policies": {
+        "apply-policy": {
+          "import-policy": "import-default",
+          "export-policy": "leak-from-tenant-vrfs"
+        }
+      },
+      "interface": [
+        {
+          "name": "irb2.2"
+        },
+        {
+          "name": "lo0.2"
+        }
+      ],
+      "vxlan-interface": [
+        {
+          "name": "vxlan2.10002",
+          "_annotate": "This is symmetric IRB with a L3 VXLAN interface and EVPN RT5 routes"
+        }
+      ],
+      "protocols": {
+        "bgp-evpn": {
+          "srl_nokia-bgp-evpn:bgp-instance": [
+            {
+              "id": 1,
+              "admin-state": "enable",
+              "vxlan-interface": "vxlan2.10002",
+              "evi": 10002,
+              "ecmp": 8
+            }
+          ]
+        },
+        "srl_nokia-bgp-vpn:bgp-vpn": {
+          "bgp-instance": [
+            {
+              "id": 1,
+              "_annotate": "Required to make bgp-evpn oper-state=up"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "overlay-2-l2-2",
+      "type": "srl_nokia-network-instance:mac-vrf",
+      "admin-state": "enable",
+      "interface": [
+        {
+          "name": "irb2.2"
         },
         {
           "name": "lag3.0"
@@ -2399,7 +3594,7 @@
       ],
       "vxlan-interface": [
         {
-          "name": "vxlan0.1"
+          "name": "vxlan2.2"
         }
       ],
       "protocols": {
@@ -2408,8 +3603,8 @@
             {
               "id": 1,
               "admin-state": "enable",
-              "vxlan-interface": "vxlan0.1",
-              "evi": 4096,
+              "vxlan-interface": "vxlan2.2",
+              "evi": 4097,
               "_annotate_evi": "Note: value affects DF election in case of multi-homing",
               "ecmp": 8
             }
@@ -2427,6 +3622,24 @@
   ],
   "srl_nokia-routing-policy:routing-policy": {
     "prefix-set": [
+      {
+        "name": "default-route-v4",
+        "prefix": [
+          {
+            "ip-prefix": "0.0.0.0/0",
+            "mask-length-range": "exact"
+          }
+        ]
+      },
+      {
+        "name": "default-route-v6",
+        "prefix": [
+          {
+            "ip-prefix": "::/0",
+            "mask-length-range": "exact"
+          }
+        ]
+      },
       {
         "name": "links",
         "prefix": [
@@ -2446,6 +3659,24 @@
           {
             "ip-prefix": "::/0",
             "mask-length-range": "128..128"
+          }
+        ]
+      },
+      {
+        "name": "tenant-routes-v4",
+        "prefix": [
+          {
+            "ip-prefix": "10.0.0.0/8",
+            "mask-length-range": "8..32"
+          }
+        ]
+      },
+      {
+        "name": "tenant-routes-v6",
+        "prefix": [
+          {
+            "ip-prefix": "::/0",
+            "mask-length-range": "0..128"
           }
         ]
       }
@@ -2483,6 +3714,29 @@
         ]
       },
       {
+        "name": "import-default",
+        "statement": [
+          {
+            "name": "v4",
+            "match": {
+              "prefix-set": "default-route-v4"
+            },
+            "action": {
+              "policy-result": "accept"
+            }
+          },
+          {
+            "name": "v6",
+            "match": {
+              "prefix-set": "default-route-v6"
+            },
+            "action": {
+              "policy-result": "accept"
+            }
+          }
+        ]
+      },
+      {
         "name": "import-loopbacks",
         "default-action": {
           "policy-result": "reject"
@@ -2500,6 +3754,111 @@
                   "add": "no-advertise"
                 }
               }
+            }
+          }
+        ]
+      },
+      {
+        "name": "leak-from-tenant-vrfs",
+        "default-action": {
+          "policy-result": "reject"
+        },
+        "statement": [
+          {
+            "name": "v4",
+            "match": {
+              "prefix-set": "tenant-routes-v4"
+            },
+            "action": {
+              "policy-result": "accept"
+            }
+          },
+          {
+            "name": "v6",
+            "match": {
+              "prefix-set": "tenant-routes-v6"
+            },
+            "action": {
+              "policy-result": "accept"
+            }
+          }
+        ]
+      },
+      {
+        "name": "leak-from-tenant-vrfs-v4",
+        "default-action": {
+          "policy-result": "reject"
+        },
+        "statement": [
+          {
+            "name": "v4",
+            "match": {
+              "prefix-set": "tenant-routes-v4"
+            },
+            "action": {
+              "policy-result": "accept"
+            }
+          }
+        ]
+      },
+      {
+        "name": "leak-from-tenant-vrfs-v6",
+        "default-action": {
+          "policy-result": "reject"
+        },
+        "statement": [
+          {
+            "name": "v4",
+            "match": {
+              "prefix-set": "tenant-routes-v6"
+            },
+            "action": {
+              "policy-result": "accept"
+            }
+          }
+        ]
+      },
+      {
+        "name": "leak-to-tenant-vrfs",
+        "default-action": {
+          "policy-result": "accept",
+          "bgp": {
+            "local-preference": {
+              "set": 102
+            }
+          }
+        }
+      },
+      {
+        "name": "leak-v4-default",
+        "default-action": {
+          "policy-result": "reject"
+        },
+        "statement": [
+          {
+            "name": "v4",
+            "match": {
+              "prefix-set": "default-route-v4"
+            },
+            "action": {
+              "policy-result": "accept"
+            }
+          }
+        ]
+      },
+      {
+        "name": "leak-v6-default",
+        "default-action": {
+          "policy-result": "reject"
+        },
+        "statement": [
+          {
+            "name": "accept-default",
+            "match": {
+              "prefix-set": "default-route-v6"
+            },
+            "action": {
+              "policy-result": "accept"
             }
           }
         ]
@@ -2528,6 +3887,41 @@
       "name": "vxlan0",
       "vxlan-interface": [
         {
+          "index": 4,
+          "type": "srl_nokia-interfaces:routed",
+          "ingress": {
+            "vni": 4
+          },
+          "egress": {
+            "source-ip": "use-system-ipv4-address"
+          }
+        },
+        {
+          "index": 6,
+          "type": "srl_nokia-interfaces:routed",
+          "ingress": {
+            "vni": 6
+          },
+          "egress": {
+            "source-ip": "use-system-ipv4-address"
+          }
+        },
+        {
+          "index": 65535,
+          "type": "srl_nokia-interfaces:routed",
+          "ingress": {
+            "vni": 65535
+          },
+          "egress": {
+            "source-ip": "use-system-ipv4-address"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vxlan1",
+      "vxlan-interface": [
+        {
           "index": 1,
           "type": "srl_nokia-interfaces:bridged",
           "ingress": {
@@ -2546,12 +3940,27 @@
           "egress": {
             "source-ip": "use-system-ipv4-address"
           }
+        }
+      ]
+    },
+    {
+      "name": "vxlan2",
+      "vxlan-interface": [
+        {
+          "index": 2,
+          "type": "srl_nokia-interfaces:bridged",
+          "ingress": {
+            "vni": 4097
+          },
+          "egress": {
+            "source-ip": "use-system-ipv4-address"
+          }
         },
         {
-          "index": 65535,
+          "index": 10002,
           "type": "srl_nokia-interfaces:routed",
           "ingress": {
-            "vni": 65535
+            "vni": 10002
           },
           "egress": {
             "source-ip": "use-system-ipv4-address"

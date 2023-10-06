@@ -1,21 +1,21 @@
 vrrp_instance MAIN {
   state BACKUP
   interface bond0
-  virtual_router_id 2
+  virtual_router_id 3
   use_vmac
   vmac_xmit_base # to use physical interface for VRRP messages, avoiding vMAC churn
   priority 100
   advert_int 1
-  unicast_src_ip 10.1.0.103
+  unicast_src_ip 10.2.0.144
   unicast_peer {
-    10.1.0.102
+    10.2.0.133
   }
   authentication {
     auth_type PASS
     auth_pass pwd1
   }
   virtual_ipaddress {
-    10.1.0.100/24
+    10.2.0.200/24
   }
   track_interface {
     bond0
@@ -28,21 +28,21 @@ vrrp_instance MAIN {
 vrrp_instance MAIN_v6 {
   state BACKUP
   interface bond0
-  virtual_router_id 2
+  virtual_router_id 3
   use_vmac
   vmac_xmit_base # to use physical interface for VRRP messages, avoiding vMAC churn
   priority 100
   advert_int 1
-  unicast_src_ip 2001:1::103
+  unicast_src_ip 2001:2::144
   unicast_peer {
-    2001:1::102
+    2001:2::133
   }
   authentication {
     auth_type PASS
     auth_pass pwd1
   }
   virtual_ipaddress {
-    2001:1::100/64
+    2001:2::200/64
   }
   track_interface {
     bond0

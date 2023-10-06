@@ -3,9 +3,12 @@
 # Built on Tue Aug 29 13:26:59 PDT 2023 by builder in /builds/237B/R2/panos/main/sros
 # Configuration format version 23.7 revision 0
 
-# Generated 2023-10-04T17:42:10.8Z by admin from 200::
-# Commit ID 52
-#   Committed 2023-10-04T16:22:04.6Z by admin (MD-CLI) from 200::
+# Generated 2023-10-06T17:33:16.6+00:00 by admin from 200::
+# Commit ID 2
+#   Committed 2023-10-06T17:32:16.2+00:00 by admin (MD-CLI) from 200::
+# Commit ID 1
+#   Committed 2023-10-06T16:59:47.6+00:00 by system (MD-CLI) from Console
+#   Log       "System booted version B-23.7.R2."
 
 configure {
     card 1 {
@@ -51,6 +54,9 @@ configure {
         }
     }
     policy-options {
+        community "V4_PREFIXES" {
+            member "target:65534:4" { }
+        }
         community "V6_PREFIXES" {
             member "target:65534:6" { }
         }
@@ -93,6 +99,23 @@ configure {
                 action-type accept
                 community {
                     add ["V6_PREFIXES"]
+                }
+            }
+        }
+        policy-statement "drop-v6-prefixes" {
+            entry 10 {
+                from {
+                    prefix-list ["v6-prefixes"]
+                    evpn-type ip-prefix
+                }
+                action {
+                    action-type reject
+                }
+            }
+            default-action {
+                action-type accept
+                community {
+                    add ["V4_PREFIXES"]
                 }
             }
         }
@@ -281,6 +304,12 @@ configure {
                     }
                 }
             }
+            neighbor "1.1.1.1" {
+                group "evpn-rr"
+            }
+            neighbor "1.1.1.2" {
+                group "evpn-rr"
+            }
             neighbor "192.168.0.1" {
                 group "ebgp"
             }
@@ -313,8 +342,8 @@ configure {
             }
             bgp 1 {
                 route-distinguisher auto-rd
+                vsi-export ["drop-v6-prefixes"]
                 route-target {
-                    export "target:65534:4"
                     import "target:65534:4"
                 }
             }
@@ -700,4 +729,4 @@ persistent-indices {
     }
 }
 
-# Finished 2023-10-04T17:42:10.8Z
+# Finished 2023-10-06T17:33:16.7+00:00
