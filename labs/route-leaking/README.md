@@ -12,11 +12,15 @@ Key feature highlights:
 sudo clab deploy --reconfigure
 ```
 
-# Ping test to VRRP VIP
+# Ping test to VRRP VIP (from client)
 ```
-docker exec -it clab-spine-leaf-evpn-client ping -c3 10.0.0.100
+docker exec -it clab-spine-leaf-evpn-client ping -c3 10.1.0.100
 ```
-
+# Ping test to VRRP VIPs (from gw)
+```
+ping 10.1.0.100 router-instance "internet"
+ping 10.2.0.200 router-instance "internet"
+```
 ## Same for IPv6
 ```
 docker exec -it clab-spine-leaf-evpn-client ping6 -c3 2001:1::100
