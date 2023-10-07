@@ -3,12 +3,9 @@
 # Built on Tue Aug 29 13:26:59 PDT 2023 by builder in /builds/237B/R2/panos/main/sros
 # Configuration format version 23.7 revision 0
 
-# Generated 2023-10-07T22:28:02.0+00:00 by admin from 200::
-# Commit ID 2
-#   Committed 2023-10-07T22:27:35.7+00:00 by admin (MD-CLI) from 200::
-# Commit ID 1
-#   Committed 2023-10-07T22:05:36.6+00:00 by system (MD-CLI) from Console
-#   Log       "System booted version B-23.7.R2."
+# Generated 2023-10-07T22:54:36.6+00:00 by admin from 200::
+# Commit ID 5
+#   Committed 2023-10-07T22:53:02.8+00:00 by admin (MD-CLI) from 200::
 
 configure {
     card 1 {
@@ -281,6 +278,7 @@ configure {
                 peer-as 65534
                 local-address 1.1.2.1
                 split-horizon true
+                multipath-eligible true
                 family {
                     evpn true
                 }
@@ -404,6 +402,7 @@ configure {
             admin-state enable
             service-id 2
             customer "1"
+            ecmp 2
             interface "backend-v4" {
                 admin-state enable
                 vpls "backend-v4" {
@@ -729,4 +728,4 @@ persistent-indices {
     }
 }
 
-# Finished 2023-10-07T22:28:02.0+00:00
+# Finished 2023-10-07T22:54:36.6+00:00
