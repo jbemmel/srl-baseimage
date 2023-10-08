@@ -4,10 +4,10 @@
       "generated-by": "SRLINUX",
       "name": "",
       "comment": "",
-      "created": "2023-10-07T22:28:04.016Z",
+      "created": "2023-10-08T04:13:38.316Z",
       "release": "v23.7.2",
       "enabled-yang-features": ["srl_nokia-features:acl-policer-resource-utilization", "srl_nokia-features:admin-user-roles", "srl_nokia-features:anycast-gw", "srl_nokia-features:arp-nd-datapath-programming", "srl_nokia-features:bgp-add-paths", "srl_nokia-features:bgp-auth-password", "srl_nokia-features:bgp-cfg-afi-safi-list", "srl_nokia-features:bgp-graceful-restart-gaps", "srl_nokia-features:bgp-ipv6-next-hop-tunnel-resolution", "srl_nokia-features:bgp-local-as-container-iso-list", "srl_nokia-features:bgp-max-ecmp-hash-buckets", "srl_nokia-features:bgp-mtu-discovery", "srl_nokia-features:bgp-prefix-limit", "srl_nokia-features:bgp-restart-max-wait", "srl_nokia-features:bgp-rib-afi-safi-list", "srl_nokia-features:bgp-rib-afi-safi-route", "srl_nokia-features:bgp-single-hop-connected-check", "srl_nokia-features:bgp-unnumbered-peers", "srl_nokia-features:bridged", "srl_nokia-features:bt-evpn-vlan-aware-bundle-interop", "srl_nokia-features:cli-plugin-authorization", "srl_nokia-features:dac-link-training", "srl_nokia-features:dhcp-relay-fqdn", "srl_nokia-features:dot1p-classifier-rewrite", "srl_nokia-features:dot1q-vlan-ranges", "srl_nokia-features:dynamic-tcam", "srl_nokia-features:event-handler", "srl_nokia-features:evpn", "srl_nokia-features:evpn-advertise-arp-nd-only-with-mac-table-entry", "srl_nokia-features:evpn-ifl-unequal-ecmp", "srl_nokia-features:evpn-mac-ip-adv-arp-nd-ext-comm", "srl_nokia-features:evpn-mh-ip-aliasing", "srl_nokia-features:evpn-mh-manual-alg", "srl_nokia-features:evpn-mh-pref-alg", "srl_nokia-features:evpn-mh-single-active", "srl_nokia-features:evpn-mh-virtual-es", "srl_nokia-features:fixed", "srl_nokia-features:ingress-subif-policing", "srl_nokia-features:interface-references", "srl_nokia-features:ip-acl-dscp-set", "srl_nokia-features:ip-qos-multifield", "srl_nokia-features:isis-level-database", "srl_nokia-features:isis-lsdb", "srl_nokia-features:isis-nsf", "srl_nokia-features:l2-proxy-arp", "srl_nokia-features:l2-proxy-arp-nd-control-flood-on-evpn", "srl_nokia-features:l2-proxy-nd", "srl_nokia-features:l2cp-transparency", "srl_nokia-features:l3-proxy-arp", "srl_nokia-features:l3-proxy-nd", "srl_nokia-features:lacp-fallback", "srl_nokia-features:lag", "srl_nokia-features:license", "srl_nokia-features:mirroring", "srl_nokia-features:mirroring-intf-stats", "srl_nokia-features:named-queues-and-named-fcs", "srl_nokia-features:packet-tracer", "srl_nokia-features:platform-7220-d2", "srl_nokia-features:ra-guard", "srl_nokia-features:reload-delay", "srl_nokia-features:route-leaking", "srl_nokia-features:routing-policy-bgp-med", "srl_nokia-features:routing-policy-named-statements", "srl_nokia-features:segment-routing-adjacency-sid", "srl_nokia-features:segment-routing-shared-sid", "srl_nokia-features:ssh-host-key-preserve", "srl_nokia-features:storm-control", "srl_nokia-features:subif-policer", "srl_nokia-features:trident3", "srl_nokia-features:unequal-ecmp", "srl_nokia-features:unified-forwarding-tables", "srl_nokia-features:virtual-ip-discovery", "srl_nokia-features:vlan-id-any", "srl_nokia-features:vlan-tpid", "srl_nokia-features:vxlan", "srl_nokia-features:vxlan-stats", "srl_nokia-features:warm-reboot"],
-      "checksum": "1b2f1e8c5ee4daa0$c0924400a83665fa1576f96e5b7512df4b68af07"
+      "checksum": "a4810a24b101156b$cf76b788fb4ccd424bba215001d6812d92477c5e"
     },
     "build": {
       "git-branch": "SRL_23_7_B1",
@@ -2483,24 +2483,7 @@
       ]
     },
     {
-      "name": "irb0",
-      "subinterface": [
-        {
-          "index": 25,
-          "ipv4": {
-            "srl_nokia-interfaces-ip-dhcp-relay:dhcp-relay": {
-              "admin-state": "enable",
-              "gi-address": "1.1.0.2",
-              "use-gi-addr-as-src-ip-addr": true,
-              "network-instance": "evpn-lag-discovery",
-              "server": [
-                "1.1.1.1",
-                "1.1.1.2"
-              ]
-            }
-          }
-        }
-      ]
+      "name": "irb0"
     },
     {
       "name": "irb1",
@@ -2740,56 +2723,6 @@
       "name": "lo0",
       "admin-state": "enable",
       "subinterface": [
-        {
-          "index": 0,
-          "admin-state": "enable",
-          "ipv4": {
-            "admin-state": "enable",
-            "address": [
-              {
-                "ip-prefix": "1.1.0.2/32",
-                "primary": [null]
-              }
-            ]
-          },
-          "ipv6": {
-            "admin-state": "enable",
-            "address": [
-              {
-                "ip-prefix": "fda1:0:101:2:1:242:ac14:140a/128",
-                "_annotate": "for EVPN auto-lag discovery on [1]"
-              },
-              {
-                "ip-prefix": "fda1:0:101:2:2:242:ac14:1402/128",
-                "_annotate": "for EVPN auto-lag discovery on [2]"
-              },
-              {
-                "ip-prefix": "fda1:0:101:2:3:242:ac14:1409/128",
-                "_annotate": "for EVPN auto-lag discovery on [3]"
-              },
-              {
-                "ip-prefix": "fda1:0:101:2:4:242:ac14:1404/128",
-                "_annotate": "for EVPN auto-lag discovery on [4]"
-              },
-              {
-                "ip-prefix": "fdad:0:101:2:1:aac1:ab2d:c556/128",
-                "_annotate": "for DHCP on [1]"
-              },
-              {
-                "ip-prefix": "fdad:0:101:2:2:aac1:ab02:27a4/128",
-                "_annotate": "for DHCP on [2]"
-              },
-              {
-                "ip-prefix": "fdad:0:101:2:3:aac1:ab9c:f303/128",
-                "_annotate": "for DHCP on [3]"
-              },
-              {
-                "ip-prefix": "fdad:0:101:2:4:aac1:abc6:5807/128",
-                "_annotate": "for DHCP on [4]"
-              }
-            ]
-          }
-        },
         {
           "index": 1,
           "description": "Overlay loopback",
