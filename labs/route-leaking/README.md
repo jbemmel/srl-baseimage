@@ -31,6 +31,13 @@ docker exec -it clab-spine-leaf-evpn-client ping6 -c3 2001:1::100
 docker exec -it clab-spine-leaf-evpn-vrrp1 ip link set dev lo down
 ```
 
+# Test the effect of having no ARP entry
+ARP entries can be deleted per full irb interface (all subinterfaces). Each tenant VRF uses a separate major irb interface ( irb1, irb2, etc. )
+```
+/tools interface irb1 subinterface 1 ipv4 arp delete-dynamic
+```
+
+
 ## Note on symmetric IRB
 When using asymmetric IRB (i.e. no VXLAN L3 interface inside IP VRF, not using EVPN RT5 routes) it was found that after failover to VRRP2, Leaf1 would not install the EVPN route to the VIP in its routing table
 
