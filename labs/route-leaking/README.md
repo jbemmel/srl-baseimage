@@ -37,6 +37,10 @@ ARP entries can be deleted per full irb interface (all subinterfaces). Each tena
 /tools interface irb1 subinterface 1 ipv4 arp delete-dynamic
 ```
 
+# Clear all MAC entries in mac-vrf
+```
+/tools network-instance overlay-1-l2-1 bridge-table mac-learning delete-all-macs
+```
 
 ## Note on symmetric IRB
 When using asymmetric IRB (i.e. no VXLAN L3 interface inside IP VRF, not using EVPN RT5 routes) it was found that after failover to VRRP2, Leaf1 would not install the EVPN route to the VIP in its routing table
