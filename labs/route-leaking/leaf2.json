@@ -3685,7 +3685,7 @@
         "prefix": [
           {
             "ip-prefix": "10.0.0.0/8",
-            "mask-length-range": "8..24"
+            "mask-length-range": "8..32"
           }
         ]
       },
@@ -3694,7 +3694,7 @@
         "prefix": [
           {
             "ip-prefix": "2001::/16",
-            "mask-length-range": "64..64"
+            "mask-length-range": "64..128"
           }
         ]
       }
