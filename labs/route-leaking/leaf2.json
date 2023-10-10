@@ -4,10 +4,10 @@
       "generated-by": "SRLINUX",
       "name": "",
       "comment": "",
-      "created": "2023-10-09T16:39:53.673Z",
+      "created": "2023-10-10T14:16:20.005Z",
       "release": "v23.7.2",
       "enabled-yang-features": ["srl_nokia-features:acl-policer-resource-utilization", "srl_nokia-features:admin-user-roles", "srl_nokia-features:anycast-gw", "srl_nokia-features:arp-nd-datapath-programming", "srl_nokia-features:bgp-add-paths", "srl_nokia-features:bgp-auth-password", "srl_nokia-features:bgp-cfg-afi-safi-list", "srl_nokia-features:bgp-graceful-restart-gaps", "srl_nokia-features:bgp-ipv6-next-hop-tunnel-resolution", "srl_nokia-features:bgp-local-as-container-iso-list", "srl_nokia-features:bgp-max-ecmp-hash-buckets", "srl_nokia-features:bgp-mtu-discovery", "srl_nokia-features:bgp-prefix-limit", "srl_nokia-features:bgp-restart-max-wait", "srl_nokia-features:bgp-rib-afi-safi-list", "srl_nokia-features:bgp-rib-afi-safi-route", "srl_nokia-features:bgp-single-hop-connected-check", "srl_nokia-features:bgp-unnumbered-peers", "srl_nokia-features:bridged", "srl_nokia-features:bt-evpn-vlan-aware-bundle-interop", "srl_nokia-features:cli-plugin-authorization", "srl_nokia-features:dac-link-training", "srl_nokia-features:dhcp-relay-fqdn", "srl_nokia-features:dot1p-classifier-rewrite", "srl_nokia-features:dot1q-vlan-ranges", "srl_nokia-features:dynamic-tcam", "srl_nokia-features:event-handler", "srl_nokia-features:evpn", "srl_nokia-features:evpn-advertise-arp-nd-only-with-mac-table-entry", "srl_nokia-features:evpn-ifl-unequal-ecmp", "srl_nokia-features:evpn-mac-ip-adv-arp-nd-ext-comm", "srl_nokia-features:evpn-mh-ip-aliasing", "srl_nokia-features:evpn-mh-manual-alg", "srl_nokia-features:evpn-mh-pref-alg", "srl_nokia-features:evpn-mh-single-active", "srl_nokia-features:evpn-mh-virtual-es", "srl_nokia-features:fixed", "srl_nokia-features:ingress-subif-policing", "srl_nokia-features:interface-references", "srl_nokia-features:ip-acl-dscp-set", "srl_nokia-features:ip-qos-multifield", "srl_nokia-features:isis-level-database", "srl_nokia-features:isis-lsdb", "srl_nokia-features:isis-nsf", "srl_nokia-features:l2-proxy-arp", "srl_nokia-features:l2-proxy-arp-nd-control-flood-on-evpn", "srl_nokia-features:l2-proxy-nd", "srl_nokia-features:l2cp-transparency", "srl_nokia-features:l3-proxy-arp", "srl_nokia-features:l3-proxy-nd", "srl_nokia-features:lacp-fallback", "srl_nokia-features:lag", "srl_nokia-features:license", "srl_nokia-features:mirroring", "srl_nokia-features:mirroring-intf-stats", "srl_nokia-features:named-queues-and-named-fcs", "srl_nokia-features:packet-tracer", "srl_nokia-features:platform-7220-d2", "srl_nokia-features:ra-guard", "srl_nokia-features:reload-delay", "srl_nokia-features:route-leaking", "srl_nokia-features:routing-policy-bgp-med", "srl_nokia-features:routing-policy-named-statements", "srl_nokia-features:segment-routing-adjacency-sid", "srl_nokia-features:segment-routing-shared-sid", "srl_nokia-features:ssh-host-key-preserve", "srl_nokia-features:storm-control", "srl_nokia-features:subif-policer", "srl_nokia-features:trident3", "srl_nokia-features:unequal-ecmp", "srl_nokia-features:unified-forwarding-tables", "srl_nokia-features:virtual-ip-discovery", "srl_nokia-features:vlan-id-any", "srl_nokia-features:vlan-tpid", "srl_nokia-features:vxlan", "srl_nokia-features:vxlan-stats", "srl_nokia-features:warm-reboot"],
-      "checksum": "c873492532def1d0$8daa68ae6d54387451d639c5e4999de568155f8d"
+      "checksum": "d67cf2f905d52f7b$65afe31c1037d72114d66cecec07edcb11f66325"
     },
     "build": {
       "git-branch": "SRL_23_7_B1",
@@ -2800,6 +2800,27 @@
           }
         },
         {
+          "index": 5,
+          "description": "Overlay loopback",
+          "admin-state": "enable",
+          "ipv4": {
+            "admin-state": "enable",
+            "address": [
+              {
+                "ip-prefix": "1.1.0.2/32"
+              }
+            ]
+          },
+          "ipv6": {
+            "admin-state": "enable",
+            "address": [
+              {
+                "ip-prefix": "2001::1:1:0:2/128"
+              }
+            ]
+          }
+        },
+        {
           "index": 6,
           "description": "Overlay loopback",
           "admin-state": "enable",
@@ -3357,6 +3378,51 @@
       }
     },
     {
+      "name": "frontend-combined",
+      "type": "srl_nokia-network-instance:ip-vrf",
+      "admin-state": "enable",
+      "inter-instance-policies": {
+        "apply-policy": {
+          "import-policy": "leak-from-tenant-vrfs",
+          "export-policy": "leak-default-routes"
+        }
+      },
+      "interface": [
+        {
+          "name": "lo0.5"
+        }
+      ],
+      "vxlan-interface": [
+        {
+          "name": "vxlan0.5"
+        }
+      ],
+      "protocols": {
+        "bgp-evpn": {
+          "srl_nokia-bgp-evpn:bgp-instance": [
+            {
+              "id": 1,
+              "admin-state": "enable",
+              "vxlan-interface": "vxlan0.5",
+              "evi": 5,
+              "ecmp": 2
+            }
+          ]
+        },
+        "srl_nokia-bgp-vpn:bgp-vpn": {
+          "bgp-instance": [
+            {
+              "id": 1,
+              "route-target": {
+                "export-rt": "target:65535:5",
+                "import-rt": "target:65534:5"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "frontend-v4",
       "type": "srl_nokia-network-instance:ip-vrf",
       "admin-state": "enable",
@@ -3777,6 +3843,32 @@
         ]
       },
       {
+        "name": "leak-default-routes",
+        "default-action": {
+          "policy-result": "reject"
+        },
+        "statement": [
+          {
+            "name": "v4",
+            "match": {
+              "prefix-set": "default-route-v4"
+            },
+            "action": {
+              "policy-result": "accept"
+            }
+          },
+          {
+            "name": "v6",
+            "match": {
+              "prefix-set": "default-route-v6"
+            },
+            "action": {
+              "policy-result": "accept"
+            }
+          }
+        ]
+      },
+      {
         "name": "leak-from-tenant-vrfs",
         "default-action": {
           "policy-result": "reject"
@@ -3909,6 +4001,16 @@
           "type": "srl_nokia-interfaces:routed",
           "ingress": {
             "vni": 4
+          },
+          "egress": {
+            "source-ip": "use-system-ipv4-address"
+          }
+        },
+        {
+          "index": 5,
+          "type": "srl_nokia-interfaces:routed",
+          "ingress": {
+            "vni": 5
           },
           "egress": {
             "source-ip": "use-system-ipv4-address"

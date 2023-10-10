@@ -3,9 +3,9 @@
 # Built on Tue Aug 29 13:26:59 PDT 2023 by builder in /builds/237B/R2/panos/main/sros
 # Configuration format version 23.7 revision 0
 
-# Generated 2023-10-07T22:54:36.6+00:00 by admin from 200::
-# Commit ID 5
-#   Committed 2023-10-07T22:53:02.8+00:00 by admin (MD-CLI) from 200::
+# Generated 2023-10-10T14:16:18.5+00:00 by admin from 200::
+# Commit ID 2
+#   Committed 2023-10-10T14:15:38.1+00:00 by admin (MD-CLI) from 200::
 
 configure {
     card 1 {
@@ -326,6 +326,42 @@ configure {
                 }
             }
         }
+        vpls "backend" {
+            admin-state enable
+            service-id 5
+            customer "1"
+            vxlan {
+                instance 1 {
+                    vni 5
+                }
+            }
+            routed-vpls {
+                vxlan-ipv4-tep-ecmp true
+            }
+            bgp 1 {
+                route-distinguisher auto-rd
+                route-target {
+                    export "target:65534:5"
+                    import "target:65535:5"
+                }
+            }
+            bgp-evpn {
+                routes {
+                    mac-ip {
+                        advertise true
+                    }
+                    ip-prefix {
+                        advertise true
+                        include-direct-interface-host true
+                    }
+                }
+                vxlan 1 {
+                    admin-state enable
+                    vxlan-instance 1
+                    ecmp 2
+                }
+            }
+        }
         vpls "backend-v4" {
             admin-state enable
             service-id 4
@@ -403,14 +439,25 @@ configure {
             service-id 2
             customer "1"
             ecmp 2
-            interface "backend-v4" {
+            interface "backend" {
                 admin-state enable
+                vpls "backend" {
+                    evpn-tunnel {
+                        ipv6-gateway-address mac
+                    }
+                }
+                ipv6 {
+                }
+            }
+            interface "backend-v4" {
+                admin-state disable
                 vpls "backend-v4" {
                     evpn-tunnel {
                     }
                 }
             }
             interface "backend-v6" {
+                admin-state disable
                 vpls "backend-v6" {
                     evpn-tunnel {
                         ipv6-gateway-address mac
@@ -722,10 +769,11 @@ persistent-indices {
     vrtr-if-id {
         router-name "Base" interface-name "spine1" vrtr-id 1 if-index 2
         router-name "Base" interface-name "spine2" vrtr-id 1 if-index 3
+        router-name "internet" interface-name "backend" vrtr-id 2 if-index 4
         router-name "internet" interface-name "backend-v4" vrtr-id 2 if-index 6
         router-name "internet" interface-name "backend-v6" vrtr-id 2 if-index 7
         router-name "internet" interface-name "loopback" vrtr-id 2 if-index 5
     }
 }
 
-# Finished 2023-10-07T22:54:36.6+00:00
+# Finished 2023-10-10T14:16:18.6+00:00
