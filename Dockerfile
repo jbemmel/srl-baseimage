@@ -12,8 +12,7 @@ ARG P4="/opt/srlinux/python/virtual-env/lib/python3.6/site-packages"
 ENV AGENT_PYTHONPATH="$P1:$P2:$P3:$P4"
 
 # ARG GNMIC_V=0.31.5
-RUN sudo rm -rf /etc/yum.repos.d/epel* /etc/yum.repos.d/elrepo* && \
-    sudo yum clean all && \
+RUN sudo apt update -y && \
     sudo bash -c "$(curl -sL https://get-gnmic.openconfig.net)" 
     # Can add e.g. -- -v 0.31.7
     # sudo curl -sL https://github.com/openconfig/gnmic/releases/download/v${GNMIC_V}/gnmic_${GNMIC_V}_Linux_x86_64.rpm -o /tmp/gnmic.rpm && \
@@ -27,8 +26,9 @@ RUN sudo rm -rf /etc/yum.repos.d/epel* /etc/yum.repos.d/elrepo* && \
 #     sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install pygnmi pylint-protobuf sre_yield
 
 # Install (only) some custom tools, including Python 3.8 to replace outdated 3.6.8
-COPY CentOS-Stream-BaseOS.repo /etc/yum.repos.d/CentOS-Stream-BaseOS.repo
-RUN sudo yum install -y -v jq diffutils python3.8 && sudo pip3 install pylint
+# COPY CentOS-Stream-BaseOS.repo /etc/yum.repos.d/CentOS-Stream-BaseOS.repo
+# RUN sudo yum install -y -v jq diffutils python3.8 && sudo pip3 install pylint
+RUN sudo apt install -y pylint pipx
 
 # Copy custom built pygnmi and dependencies, install into /usr/local. Need to upgrade pip
 # COPY --from=pygnmi /tmp/wheels /tmp/wheels
@@ -37,39 +37,39 @@ RUN sudo yum install -y -v jq diffutils python3.8 && sudo pip3 install pylint
 #     sudo rm -rf /tmp/wheels
 
 # Upgrade ancient version of virtualenv installed on baseimage virtualenv-15.1.0 > virtualenv-20.16.3
-RUN sudo pip3 install virtualenv --upgrade
+# RUN sudo pip3 install virtualenv --upgrade
 
 # Upgrade grpcio - could lead to issues
-RUN sudo rm -rf /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/grpcio-1.18.0+2.dist-info
+# RUN sudo rm -rf /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/grpcio-1.18.0+2.dist-info
 
 # Add pylint and sre_yield as before, this ends up under /usr/local/lib
-RUN sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install grpcio pylint-protobuf sre_yield --upgrade
+# RUN sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install grpcio pylint-protobuf sre_yield --upgrade
 
 # Use custom branch for pygnmi, with better multi-threading support
-RUN sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pip install https://github.com/jbemmel/pygnmi/archive/master.zip
+# RUN sudo PYTHONPATH=$AGENT_PYTHONPATH python3 -m pipx install https://github.com/jbemmel/pygnmi/archive/master.zip
 
 # Fix gNMI path key order until patch is accepted
 # RUN sudo sed -i.orig 's/path_elem.key.items()/sorted(path_elem.key.items())/g' /usr/local/lib/python3.6/site-packages/pygnmi/client.py
 
 # Conditionally add CLI enhancements
-FROM base as base_enhance_cli_1
-ONBUILD COPY ./mgmt_cli_engine_command_loop.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli_engine/command_loop.py
-ONBUILD COPY ./traceroute.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/traceroute.py
-ONBUILD COPY ./arpnd_reports.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/arpnd_reports.py
+# FROM base as base_enhance_cli_1
+# ONBUILD COPY ./mgmt_cli_engine_command_loop.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli_engine/command_loop.py
+# ONBUILD COPY ./traceroute.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/traceroute.py
+# ONBUILD COPY ./arpnd_reports.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/arpnd_reports.py
 
 # show bgp community
-ONBUILD COPY ./bgp_reports_detail.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/
-ONBUILD COPY ./bgp_ipv4_community_route_report.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/
+# ONBUILD COPY ./bgp_reports_detail.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/
+# ONBUILD COPY ./bgp_ipv4_community_route_report.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/
 
 # Integrate custom vxlan-traceroute CLI commands
-ONBUILD COPY ./vxlan_traceroute.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/
-ONBUILD RUN sudo sh -c ' echo -e "vxlan_traceroute = srlinux.mgmt.cli.plugins.vxlan_traceroute:Plugin" \
-  >> /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux-0.1-py3.6.egg-info/entry_points.txt'
+# ONBUILD COPY ./vxlan_traceroute.py /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/
+# ONBUILD RUN sudo sh -c ' echo -e "vxlan_traceroute = srlinux.mgmt.cli.plugins.vxlan_traceroute:Plugin" \
+#  >> /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux-0.1-py3.6.egg-info/entry_points.txt'
 
-FROM base as base_enhance_cli_0
-ONBUILD RUN echo "Omitting CLI enhancements"
+# FROM base as base_enhance_cli_0
+# ONBUILD RUN echo "Omitting CLI enhancements"
 
-FROM base_enhance_cli_${ENHANCE_CLI}
+# FROM base_enhance_cli_${ENHANCE_CLI}
 
 # Test enhanced DHCP YANG model with augment when clause
 # COPY srl_nokia-interfaces-ip-dhcp.yang /opt/srlinux/models/srl_nokia/models/interfaces/
@@ -85,21 +85,20 @@ RUN sudo mkdir -p /home/admin && printf '%s\n' \
 > /home/admin/.srlinuxrc
 
 # Apply IPv6 column width fixes
-RUN sudo sed -i.orig 's/(ancestor_keys=False, print_on_data=True)/(ancestor_keys=False,print_on_data=True,widths=[28])/g' \
-    /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_evpn*_routes_report.py
+# RUN sudo sed -i.orig 's/(ancestor_keys=False, print_on_data=True)/(ancestor_keys=False,print_on_data=True,widths=[28])/g' \
+#    /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_evpn*_routes_report.py
 
 # Fix ISIS ipv4 column width
-RUN sudo sed -i.orig 's/borders=None/borders=None,widths={"Ip Address":15}/g' \
-    /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/isis_adjacency_report.py
+# RUN sudo sed -i.orig 's/borders=None/borders=None,widths={"Ip Address":15}/g' \
+#     /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/isis_adjacency_report.py
 
 # Reduce route summary column widths to have more for IP addresses
-RUN sudo sed -i.orig "s/'Tag ID' : 10,/'Tag ID':10,'Route-distinguisher':15,'VNI':8,'neighbor':10,'IP-address':39,/g" \
-    /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_evpn_reports.py
+# RUN sudo sed -i.orig "s/'Tag ID' : 10,/'Tag ID':10,'Route-distinguisher':15,'VNI':8,'neighbor':10,'IP-address':39,/g" \
+#    /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_evpn_reports.py
 
 # Fix index column for MAC address all
-RUN sudo sed -i.orig 's/10,/11, # JvB increased/g' \
-    /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bridge_table_mac_table_report.py
-
+# RUN sudo sed -i.orig 's/10,/11, # JvB increased/g' \
+#    /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bridge_table_mac_table_report.py
 
 # Fix 4-byte ASN private range to allow target:4200000000:12345 and color:00:4000000000
 # up to 4294967295
@@ -112,7 +111,7 @@ RUN sudo sed -i.orig 's/10,/11, # JvB increased/g' \
 #    sudo sed -i.orig 's|/srl_nokia-netinst:network-instance/srl_nokia-netinst:protocols/srl_nokia-bgp:bgp/srl_nokia-bgp:group/srl_nokia-bgp:group-name|../../../group/group-name|g' network-instance/srl_nokia-bgp.yang
 #    sudo sed -i.orig 's|false() or (/srl_nokia-lldp:system/lldp/interface\[srl_nokia-lldp:name=current()/../../../srl_nokia|true() or (/srl_nokia-lldp:system/lldp/interface\[srl_nokia-lldp:name=current()/../../../srl_nokia|g' interfaces/srl_nokia-interfaces-l2cp.yang
 
-RUN sudo yum install -y lldpad
+# RUN sudo yum install -y lldpad
 
 # sudo sed -i.orig 's/mandatory true/mandatory false/g' system/srl_nokia-gnmi-server.yang
 
@@ -128,7 +127,7 @@ RUN sudo yum install -y lldpad
 #    /opt/srlinux/python/virtual-env/lib/python3.6/site-packages/srlinux/mgmt/cli/plugins/reports/bgp_neigh_advertised_routes_report.py
 
 # Fix boot script errors
-RUN sudo sed -i.orig 's/!srl/! srl/g' /opt/srlinux/bin/bootscript/05_sr_createuser.sh
+# RUN sudo sed -i.orig 's/!srl/! srl/g' /opt/srlinux/bin/bootscript/05_sr_createuser.sh
 #    sudo sed -i.orig 's/python /python3 /g' /opt/srlinux/bin/bootscript/05_sr_createuser.sh
 
 # Make 'type' also a key for network instances? Doesn't work
